@@ -22,7 +22,8 @@ function escapeHTML(str) {
 }
 
 /**
- * Simple SHA-256 hash implementation (for demonstration - NOT cryptographically secure for production)
+ * SHA-256 hash implementation using Web Crypto API
+ * Note: While SHA-256 is cryptographically secure, client-side authentication can still be bypassed.
  */
 async function sha256Hex(message) {
     const msgBuffer = new TextEncoder().encode(message);
@@ -421,14 +422,14 @@ function copyToClipboard() {
         text += `Registrado: ${new Date(r.submittedAt).toLocaleString('es-MX')}\n\n`;
     });
     
-    if (navigator.clipboard && navigator.clipboard.writeText) {
+    if (navigator.clipboard && navigator.clipboard.writeText && window.isSecureContext) {
         navigator.clipboard.writeText(text).then(() => {
             alert('Datos copiados al portapapeles');
         }).catch(() => {
             alert('Error al copiar. Por favor, use el botón de exportar CSV.');
         });
     } else {
-        alert('Su navegador no soporta copiar al portapapeles. Por favor, use el botón de exportar CSV.');
+        alert('Su navegador no soporta copiar al portapapeles o el sitio no está en un contexto seguro (HTTPS). Por favor, use el botón de exportar CSV.');
     }
 }
 
