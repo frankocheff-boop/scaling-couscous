@@ -255,11 +255,11 @@ function createClientCard(reservation) {
                 <div>
                     <div class="info-item">
                         <span class="info-label">📧 Email:</span>
-                        <span class="info-value"><a href="mailto:${escapeHTML(reservation.email)}" style="color: var(--accent);">${escapeHTML(reservation.email)}</a></span>
+                        <span class="info-value"><a href="mailto:${encodeURIComponent(reservation.email)}" style="color: var(--accent);">${escapeHTML(reservation.email)}</a></span>
                     </div>
                     <div class="info-item">
                         <span class="info-label">📱 Teléfono:</span>
-                        <span class="info-value"><a href="tel:${escapeHTML(reservation.phone)}" style="color: var(--accent);">${escapeHTML(reservation.phone)}</a></span>
+                        <span class="info-value"><a href="tel:${encodeURIComponent(reservation.phone)}" style="color: var(--accent);">${escapeHTML(reservation.phone)}</a></span>
                     </div>
                     <div class="info-item">
                         <span class="info-label">🎉 Ocasión:</span>
@@ -270,15 +270,15 @@ function createClientCard(reservation) {
                 <div>
                     <div class="info-item">
                         <span class="info-label">📅 Check-In:</span>
-                        <span class="info-value">${escapeHTML(checkInDate)}</span>
+                        <span class="info-value">${checkInDate}</span>
                     </div>
                     <div class="info-item">
                         <span class="info-label">📅 Check-Out:</span>
-                        <span class="info-value">${escapeHTML(checkOutDate)}</span>
+                        <span class="info-value">${checkOutDate}</span>
                     </div>
                     <div class="info-item">
                         <span class="info-label">👥 Personas:</span>
-                        <span class="info-value">${escapeHTML(String(reservation.adults))} adultos, ${escapeHTML(String(reservation.children))} niños</span>
+                        <span class="info-value">${reservation.adults} adultos, ${reservation.children} niños</span>
                     </div>
                 </div>
             </div>
