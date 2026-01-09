@@ -42,8 +42,19 @@ function escapeHTML(str) {
  * Establecer contraseña de admin (llamar desde la consola del navegador)
  */
 async function setAdminPassword(password) {
-    if (!password || password.length < 8) {
-        console.error('Password must be at least 8 characters / La contraseña debe tener al menos 8 caracteres');
+    if (!password || password.length < 12) {
+        console.error('Password must be at least 12 characters / La contraseña debe tener al menos 12 caracteres');
+        return;
+    }
+    
+    // Check for complexity requirements
+    const hasUppercase = /[A-Z]/.test(password);
+    const hasLowercase = /[a-z]/.test(password);
+    const hasNumber = /\d/.test(password);
+    const hasSpecial = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+    
+    if (!hasUppercase || !hasLowercase || !hasNumber || !hasSpecial) {
+        console.error('Password must contain uppercase, lowercase, number, and special character / La contraseña debe contener mayúscula, minúscula, número y carácter especial');
         return;
     }
     
@@ -86,9 +97,10 @@ async function checkPassword() {
     const storedHash = localStorage.getItem('adminPasswordHash');
     
     if (!storedHash) {
-        errorDiv.textContent = 'No admin password set. Open console and run: setAdminPassword("your-password")';
+        errorDiv.textContent = 'Authentication system not configured / Sistema de autenticación no configurado';
         errorDiv.classList.add('active');
         passwordInput.value = '';
+        console.warn('Admin password not set. Run setAdminPassword("your-password") in console.');
         return;
     }
     
