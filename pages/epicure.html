@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Menú Épicure - Especialidades Chef Franko">
+    <title>Menú Épicure - Chef Franko</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <style>
+        .epicure-hero {
+            background: linear-gradient(135deg, rgba(44, 62, 80, 0.95), rgba(212, 175, 55, 0.85)), 
+                        url('https://placehold.co/1920x600/2C3E50/FFFFFF?text=Epicure+Experience');
+            background-size: cover;
+            background-position: center;
+            color: var(--white);
+            padding: 6rem 2rem 4rem;
+            text-align: center;
+            margin-top: 80px;
+        }
+
+        .epicure-hero h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 4rem;
+            font-weight: 900;
+            color: var(--white);
+            margin-bottom: 1rem;
+            letter-spacing: 2px;
+        }
+
+        .epicure-hero p {
+            font-size: 1.3rem;
+            font-style: italic;
+            opacity: 0.95;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .epicure-section {
+            padding: 4rem 0;
+        }
+
+        .epicure-section:nth-child(even) {
+            background-color: var(--white);
+        }
+
+        .epicure-category-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem;
+            text-align: center;
+            color: var(--secondary);
+            margin-bottom: 0.5rem;
+            position: relative;
+        }
+
+        .epicure-category-subtitle {
+            text-align: center;
+            font-style: italic;
+            color: var(--dark-gray);
+            margin-bottom: 3rem;
+            font-size: 1.1rem;
+        }
+
+        .epicure-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 3rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .epicure-card {
+            background: var(--white);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px var(--shadow);
+            transition: all 0.4s ease;
+            position: relative;
+        }
+
+        .epicure-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px var(--shadow-dark);
+        }
+
+        .epicure-card-image {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            position: relative;
+        }
+
+        .epicure-card-content {
+            padding: 2rem;
+        }
+
+        .epicure-dish-name {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--secondary);
+            margin-bottom: 1rem;
+            line-height: 1.3;
+        }
+
+        .epicure-dish-description {
+            color: var(--text);
+            line-height: 1.8;
+            font-size: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .epicure-dish-ingredients {
+            font-size: 0.9rem;
+            color: var(--dark-gray);
+            font-style: italic;
+            border-top: 1px solid var(--light-gray);
+            padding-top: 1rem;
+        }
+
+        .epicure-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: var(--primary);
+            color: var(--white);
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .divider {
+            width: 100px;
+            height: 3px;
+            background: linear-gradient(to right, var(--primary), var(--accent));
+            margin: 0 auto 2rem;
+        }
+
+        @media (max-width: 768px) {
+            .epicure-hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .epicure-category-title {
+                font-size: 2rem;
+            }
+
+            .epicure-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="../index.html" class="nav-logo">Chef Franko</a>
+            <button class="nav-toggle" id="navToggle">☰</button>
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="../index.html" class="nav-link">Inicio</a></li>
+                <li><a href="formulario-cliente.html" class="nav-link">Reservar</a></li>
+                <li><a href="menu-pos.html" class="nav-link">Menú POS</a></li>
+                <li><a href="epicure.html" class="nav-link">Épicure</a></li>
+                <li><a href="galeria.html" class="nav-link">Galería</a></li>
+                <li><a href="cv.html" class="nav-link">CV</a></li>
+                <li><a href="dashboard-admin.html" class="nav-link">Admin</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="epicure-hero">
+        <h1>Menú Épicure</h1>
+        <p>Una selección de mis creaciones más especiales, donde la técnica se encuentra con la pasión</p>
+    </section>
+
+    <!-- Amuse-Bouche Section -->
+    <section class="epicure-section">
+        <div class="container">
+            <h2 class="epicure-category-title">Amuse-Bouche</h2>
+            <div class="divider"></div>
+            <p class="epicure-category-subtitle">Pequeños bocados que despiertan los sentidos</p>
+            
+            <div class="epicure-grid">
+                <div class="epicure-card fade-in">
+                    <img src="https://placehold.co/400x250/D4AF37/FFFFFF?text=Tartar+de+Atun" alt="Tartar de Atún" class="epicure-card-image">
+                    <span class="epicure-badge">Chef's Choice</span>
+                    <div class="epicure-card-content">
+                        <h3 class="epicure-dish-name">Tartar de Atún con Aguacate</h3>
+                        <p class="epicure-dish-description">
+                            Atún fresco cortado a mano, aguacate cremoso, vinagreta de cítricos y toques de jengibre. 
+                            Servido sobre crocante de wonton.
+                        </p>
+                        <p class="epicure-dish-ingredients">
+                            Atún rojo, aguacate Hass, jengibre, limón, aceite de sésamo
+                        </p>
+                    </div>
+                </div>
+
+                <div class="epicure-card fade-in">
+                    <img src="https://placehold.co/400x250/E67E22/FFFFFF?text=Ceviche" alt="Ceviche" class="epicure-card-image">
+                    <div class="epicure-card-content">
+                        <h3 class="epicure-dish-name">Ceviche de Pescado Blanco</h3>
+                        <p class="epicure-dish-description">
+                            Pescado del día marinado en jugo de limón con cilantro, cebolla morada y ají limo. 
+                            Acompañado de camote dulce y maíz tostado.
+                        </p>
+                        <p class="epicure-dish-ingredients">
+                            Pescado blanco, limón, cilantro, ají limo, camote
+                        </p>
+                    </div>
+                </div>
+
+                <div class="epicure-card fade-in">
+                    <img src="https://placehold.co/400x250/2C3E50/FFFFFF?text=Carpaccio" alt="Carpaccio" class="epicure-card-image">
+                    <div class="epicure-card-content">
+                        <h3 class="epicure-dish-name">Carpaccio de Res</h3>
+                        <p class="epicure-dish-description">
+                            Finas láminas de filete de res, rúcula, parmesano envejecido y reducción balsámica 
+                            con aceite de trufa blanca.
+                        </p>
+                        <p class="epicure-dish-ingredients">
+                            Filete de res, rúcula, parmesano, trufa, balsámico
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Entradas Section -->
+    <section class="epicure-section">
+        <div class="container">
+            <h2 class="epicure-category-title">Entradas</h2>
+            <div class="divider"></div>
+            <p class="epicure-category-subtitle">El comienzo de una experiencia memorable</p>
+            
+            <div class="epicure-grid">
+                <div class="epicure-card fade-in">
+                    <img src="https://placehold.co/400x250/27AE60/FFFFFF?text=Cesar" alt="Ensalada César" class="epicure-card-image">
+                    <div class="epicure-card-content">
+                        <h3 class="epicure-dish-name">Ensalada César con Camarón</h3>
+                        <p class="epicure-dish-description">
+                            La clásica ensalada César reinventada con camarones a la parrilla, lechuga romana, 
+                            crutones artesanales y aderezo César casero.
+                        </p>
+                        <p class="epicure-dish-ingredients">
+                            Camarones, lechuga romana, parmesano, anchoas, mostaza dijon
+                        </p>
+                    </div>
+                </div>
+
+                <div class="epicure-card fade-in">
+                    <img src="https://placehold.co/400x250/E74C3C/FFFFFF?text=Sopa+Langosta" alt="Sopa de Langosta" class="epicure-card-image">
+                    <span class="epicure-badge">Signature</span>
+                    <div class="epicure-card-content">
+                        <h3 class="epicure-dish-name">Sopa de Langosta</h3>
+                        <p class="epicure-dish-description">
+                            Bisque cremoso de langosta con un toque de brandy, servido con crostini y 
+                            trozos generosos de carne de langosta.
+                        </p>
+                        <p class="epicure-dish-ingredients">
+                            Langosta, crema, brandy, puerro, zanahoria, tomillo
+                        </p>
+                    </div>
+                </div>
+
+                <div class="epicure-card fade-in">
+                    <img src="https://placehold.co/400x250/9B59B6/FFFFFF?text=Pulpo" alt="Pulpo" class="epicure-card-image">
+                    <div class="epicure-card-content">
+                        <h3 class="epicure-dish-name">Pulpo a la Parrilla</h3>
+                        <p class="epicure-dish-description">
+                            Tentáculos de pulpo tierno a la parrilla sobre puré de papa ahumado, 
+                            chimichurri de perejil y pimentón.
+                        </p>
+                        <p class="epicure-dish-ingredients">
+                            Pulpo, papa, perejil, pimentón ahumado, limón
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Platos de Mar Section -->
+    <section class="epicure-section">
+        <div class="container">
+            <h2 class="epicure-category-title">Platos de Mar</h2>
+            <div class="divider"></div>
+            <p class="epicure-category-subtitle">Los tesoros del océano en su máxima expresión</p>
+            
+            <div class="epicure-grid">
+                <div class="epicure-card fade-in">
+                    <img src="https://placehold.co/400x250/3498DB/FFFFFF?text=Pescado" alt="Pescado" class="epicure-card-image">
+                    <div class="epicure-card-content">
+                        <h3 class="epicure-dish-name">Filete de Pescado en Costra de Hierbas</h3>
+                        <p class="epicure-dish-description">
+                            Filete de pescado blanco con costra de hierbas frescas, acompañado de 
+                            vegetales asados y salsa beurre blanc.
+                        </p>
+                        <p class="epicure-dish-ingredients">
+                            Pescado blanco, albahaca, perejil, eneldo, mantequilla, vino blanco
+                        </p>
+                    </div>
+                </div>
+
+                <div class="epicure-card fade-in">
+                    <img src="https://placehold.co/400x250/E67E22/FFFFFF?text=Camarones" alt="Camarones" class="epicure-card-image">
+                    <span class="epicure-badge">Popular</span>
+                    <div class="epicure-card-content">
+                        <h3 class="epicure-dish-name">Camarones al Ajillo</h3>
+                        <p class="epicure-dish-description">
+                            Camarones jumbo salteados con abundante ajo, guindilla, vino blanco y perejil. 
+                            Servido con pan tostado.
+                        </p>
+                        <p class="epicure-dish-ingredients">
+                            Camarones jumbo, ajo, guindilla, vino blanco, aceite de oliva
+                        </p>
+                    </div>
+                </div>
+
+                <div class="epicure-card fade-in">
+                    <img src="https://placehold.co/400x250/1ABC9C/FFFFFF?text=Risotto" alt="Risotto" class="epicure-card-image">
+                    <div class="epicure-card-content">
+                        <h3 class="epicure-dish-name">Risotto de Mariscos</h3>
+                        <p class="epicure-dish-description">
+                            Arroz arborio cremoso con camarones, calamares, mejillones y almejas, 
+                            terminado con azafrán y mantequilla.
+                        </p>
+                        <p class="epicure-dish-ingredients">
+                            Arroz arborio, mariscos mixtos, azafrán, vino blanco, parmesano
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Platos de Tierra Section -->
+    <section class="epicure-section">
+        <div class="container">
+            <h2 class="epicure-category-title">Platos de Tierra</h2>
+            <div class="divider"></div>
+            <p class="epicure-category-subtitle">Carnes selectas preparadas con maestría</p>
+            
+            <div class="epicure-grid">
+                <div class="epicure-card fade-in">
+                    <img src="https://placehold.co/400x250/8B4513/FFFFFF?text=Filete" alt="Filete Mignon" class="epicure-card-image">
+                    <span class="epicure-badge">Signature</span>
+                    <div class="epicure-card-content">
+                        <h3 class="epicure-dish-name">Filete Mignon con Reducción de Vino</h3>
+                        <p class="epicure-dish-description">
+                            Tierno filete mignon a la parrilla, acompañado de puré de papa trufado y 
+                            espárragos verdes con reducción de vino tinto.
+                        </p>
+                        <p class="epicure-dish-ingredients">
+                            Filete mignon, vino tinto, trufa, papa, espárragos
+                        </p>
+                    </div>
+                </div>
+
+                <div class="epicure-card fade-in">
+                    <img src="https://placehold.co/400x250/C0392B/FFFFFF?text=Cordero" alt="Rack de Cordero" class="epicure-card-image">
+                    <div class="epicure-card-content">
+                        <h3 class="epicure-dish-name">Rack de Cordero</h3>
+                        <p class="epicure-dish-description">
+                            Rack de cordero con costra de mostaza y hierbas, servido con ratatouille 
+                            provenzal y jus de romero.
+                        </p>
+                        <p class="epicure-dish-ingredients">
+                            Cordero, mostaza dijon, romero, tomillo, verduras mediterráneas
+                        </p>
+                    </div>
+                </div>
+
+                <div class="epicure-card fade-in">
+                    <img src="https://placehold.co/400x250/34495E/FFFFFF?text=Pato" alt="Pato Confitado" class="epicure-card-image">
+                    <span class="epicure-badge">Chef's Choice</span>
+                    <div class="epicure-card-content">
+                        <h3 class="epicure-dish-name">Pechuga de Pato Confitado</h3>
+                        <p class="epicure-dish-description">
+                            Pechuga de pato confitada con piel crujiente, acompañada de puré de manzana, 
+                            coles de Bruselas y reducción de naranja.
+                        </p>
+                        <p class="epicure-dish-ingredients">
+                            Pato, manzana, naranja, coles de Bruselas, miel
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Postres Section -->
+    <section class="epicure-section">
+        <div class="container">
+            <h2 class="epicure-category-title">Postres</h2>
+            <div class="divider"></div>
+            <p class="epicure-category-subtitle">El dulce final perfecto</p>
+            
+            <div class="epicure-grid">
+                <div class="epicure-card fade-in">
+                    <img src="https://placehold.co/400x250/6F4E37/FFFFFF?text=Lava+Cake" alt="Lava Cake" class="epicure-card-image">
+                    <span class="epicure-badge">Popular</span>
+                    <div class="epicure-card-content">
+                        <h3 class="epicure-dish-name">Lava Cake de Chocolate</h3>
+                        <p class="epicure-dish-description">
+                            Bizcocho tibio de chocolate con corazón líquido, servido con helado de 
+                            vainilla y coulis de frambuesa.
+                        </p>
+                        <p class="epicure-dish-ingredients">
+                            Chocolate belga, mantequilla, huevos, vainilla, frambuesas
+                        </p>
+                    </div>
+                </div>
+
+                <div class="epicure-card fade-in">
+                    <img src="https://placehold.co/400x250/D2691E/FFFFFF?text=Tiramisu" alt="Tiramisú" class="epicure-card-image">
+                    <div class="epicure-card-content">
+                        <h3 class="epicure-dish-name">Tiramisú Clásico</h3>
+                        <p class="epicure-dish-description">
+                            La receta tradicional italiana con capas de bizcocho embebido en café, 
+                            crema de mascarpone y cacao amargo.
+                        </p>
+                        <p class="epicure-dish-ingredients">
+                            Mascarpone, café espresso, bizcochos savoiardi, cacao, marsala
+                        </p>
+                    </div>
+                </div>
+
+                <div class="epicure-card fade-in">
+                    <img src="https://placehold.co/400x250/DEB887/FFFFFF?text=Creme+Brulee" alt="Crème Brûlée" class="epicure-card-image">
+                    <span class="epicure-badge">Classic</span>
+                    <div class="epicure-card-content">
+                        <h3 class="epicure-dish-name">Crème Brûlée</h3>
+                        <p class="epicure-dish-description">
+                            Natilla francesa de vainilla con costra caramelizada crujiente, 
+                            servida con frutas del bosque frescas.
+                        </p>
+                        <p class="epicure-dish-ingredients">
+                            Crema, vainilla bourbon, yemas, azúcar, frutas del bosque
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action -->
+    <section class="section" style="background: linear-gradient(135deg, var(--secondary), var(--primary)); color: var(--white); text-align: center;">
+        <div class="container">
+            <h2 style="color: var(--white); font-size: 2.5rem; margin-bottom: 1rem;">¿Listo para tu Experiencia Épicure?</h2>
+            <p style="font-size: 1.2rem; margin-bottom: 2rem; opacity: 0.95;">
+                Reserva ahora y déjame crear una experiencia gastronómica inolvidable para ti
+            </p>
+            <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                <a href="formulario-cliente.html" class="btn btn-primary" style="font-size: 1.1rem; padding: 1.25rem 2.5rem;">
+                    Hacer Reservación
+                </a>
+                <a href="https://wa.me/523221606843" target="_blank" class="btn btn-secondary" style="font-size: 1.1rem; padding: 1.25rem 2.5rem;">
+                    Contactar por WhatsApp
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <p style="margin-bottom: 0.5rem;">
+                <span class="footer-heart">💛</span> Creado por Franko & SOL
+            </p>
+            <p style="font-size: 0.9rem; color: var(--light-gray);">
+                © 2026 Chef Franko Salgado | Puerto Vallarta
+            </p>
+            <div class="footer-links">
+                <a href="tel:+523221606843" class="footer-link">Teléfono</a>
+                <a href="https://wa.me/523221606843" target="_blank" class="footer-link">WhatsApp</a>
+                <a href="cv.html" class="footer-link">CV</a>
+                <a href="galeria.html" class="footer-link">Galería</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script>
+        // Mobile navigation toggle
+        const navToggle = document.getElementById('navToggle');
+        const navMenu = document.getElementById('navMenu');
+
+        navToggle.addEventListener('click', () => {
+            navMenu.classList.toggle('active');
+        });
+
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', () => {
+                navMenu.classList.remove('active');
+            });
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!navToggle.contains(e.target) && !navMenu.contains(e.target)) {
+                navMenu.classList.remove('active');
+            }
+        });
+
+        // Fade in animation on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.animation = 'fadeIn 0.6s ease-out forwards';
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.epicure-card').forEach(card => {
+            observer.observe(card);
+        });
+    </script>
+</body>
+</html>
