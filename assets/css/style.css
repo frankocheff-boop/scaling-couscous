@@ -629,3 +629,59 @@ main {
     color: #0c5460;
     border: 1px solid #bee5eb;
 }
+
+/* ================================================
+   Accessibility Improvements
+   ================================================ */
+
+/* Skip to content link - visible only on focus */
+.skip-link {
+    position: absolute;
+    top: -40px;
+    left: 0;
+    background: var(--primary);
+    color: var(--white);
+    padding: 0.5rem 1rem;
+    text-decoration: none;
+    z-index: 100;
+    border-radius: 0 0 5px 0;
+}
+
+.skip-link:focus {
+    top: 0;
+}
+
+/* Focus visible styles for better keyboard navigation */
+:focus-visible {
+    outline: 3px solid var(--primary);
+    outline-offset: 2px;
+}
+
+/* Accent link class for highlighting important links */
+.accent-link {
+    color: var(--accent);
+    text-decoration: underline;
+    transition: color 0.3s ease;
+}
+
+.accent-link:hover {
+    color: var(--primary);
+}
+
+/* Error state for form inputs */
+.has-error {
+    border-color: var(--danger) !important;
+    background-color: rgba(231, 76, 60, 0.05);
+}
+
+/* Reduced motion support for users with motion sensitivities */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}
