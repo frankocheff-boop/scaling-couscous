@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Dashboard Administrativo - Chef Franko">
+    <title>Dashboard Admin - Chef Franko</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <style>
+        .dashboard-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: var(--white);
+            padding: 1.5rem;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 5px 15px var(--shadow);
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+
+        .filter-controls {
+            background: var(--white);
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 10px var(--shadow);
+        }
+
+        .filter-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            align-items: end;
+        }
+
+        .client-card {
+            background: var(--white);
+            padding: 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px var(--shadow);
+            margin-bottom: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .client-card:hover {
+            box-shadow: 0 5px 20px var(--shadow-dark);
+            transform: translateY(-2px);
+        }
+
+        .client-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid var(--light-gray);
+        }
+
+        .client-name {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--secondary);
+        }
+
+        .client-date {
+            font-size: 0.9rem;
+            color: var(--dark-gray);
+        }
+
+        .client-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .info-item {
+            margin-bottom: 0.5rem;
+        }
+
+        .info-label {
+            font-weight: 600;
+            color: var(--secondary);
+            margin-right: 0.5rem;
+        }
+
+        .info-value {
+            color: var(--text);
+        }
+
+        .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .tag {
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            background-color: var(--light-gray);
+            color: var(--text);
+        }
+
+        .tag-allergy {
+            background-color: #ffebee;
+            color: #c62828;
+        }
+
+        .tag-diet {
+            background-color: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+            color: var(--dark-gray);
+        }
+
+        .empty-state img {
+            width: 150px;
+            margin: 0 auto 1rem;
+            opacity: 0.5;
+        }
+
+        #loginModal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 3000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #loginModal.active {
+            display: flex;
+        }
+
+        .login-box {
+            background: var(--white);
+            padding: 2rem;
+            border-radius: 15px;
+            max-width: 400px;
+            width: 90%;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Modal -->
+    <div id="loginModal" class="active">
+        <div class="login-box">
+            <h2 style="color: var(--secondary); margin-bottom: 1rem;">Dashboard Administrativo</h2>
+            <p style="color: var(--dark-gray); margin-bottom: 2rem;">Ingrese la contraseña para acceder</p>
+            <div class="form-group">
+                <input type="password" id="adminPassword" class="form-input" placeholder="Contraseña" autofocus>
+                <div class="form-error" id="passwordError">Contraseña incorrecta</div>
+            </div>
+            <button onclick="checkPassword()" class="btn btn-primary" style="width: 100%;">Ingresar</button>
+            <p style="margin-top: 1rem; font-size: 0.9rem; color: var(--dark-gray);">
+                <a href="../index.html" style="color: var(--accent);">Volver al inicio</a>
+            </p>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="../index.html" class="nav-logo">Chef Franko</a>
+            <button class="nav-toggle" id="navToggle">☰</button>
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="../index.html" class="nav-link">Inicio</a></li>
+                <li><a href="formulario-cliente.html" class="nav-link">Reservar</a></li>
+                <li><a href="menu-pos.html" class="nav-link">Menú POS</a></li>
+                <li><a href="epicure.html" class="nav-link">Épicure</a></li>
+                <li><a href="galeria.html" class="nav-link">Galería</a></li>
+                <li><a href="cv.html" class="nav-link">CV</a></li>
+                <li><a href="dashboard-admin.html" class="nav-link">Admin</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main id="dashboardContent" style="display: none;">
+        <div class="container">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem;">
+                <h1 class="section-title" style="margin-bottom: 0;">Dashboard Administrativo</h1>
+                <button onclick="logout()" class="btn btn-secondary">Cerrar Sesión</button>
+            </div>
+
+            <!-- Stats -->
+            <div class="dashboard-stats">
+                <div class="stat-card">
+                    <div class="stat-number" id="totalClients">0</div>
+                    <div class="stat-label">Total Reservaciones</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="totalGuests">0</div>
+                    <div class="stat-label">Total Huéspedes</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="upcomingEvents">0</div>
+                    <div class="stat-label">Eventos Próximos</div>
+                </div>
+            </div>
+
+            <!-- Filters -->
+            <div class="filter-controls">
+                <h3 style="color: var(--secondary); margin-bottom: 1rem;">Filtros y Búsqueda</h3>
+                <div class="filter-row">
+                    <div class="form-group" style="margin-bottom: 0;">
+                        <label class="form-label" for="searchName">Buscar por Nombre</label>
+                        <input type="text" id="searchName" class="form-input" placeholder="Nombre del cliente...">
+                    </div>
+                    <div class="form-group" style="margin-bottom: 0;">
+                        <label class="form-label" for="filterDate">Filtrar por Fecha</label>
+                        <input type="date" id="filterDate" class="form-input">
+                    </div>
+                    <div style="display: flex; gap: 0.5rem;">
+                        <button onclick="applyFilters()" class="btn btn-primary">Aplicar</button>
+                        <button onclick="clearFilters()" class="btn btn-secondary">Limpiar</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div style="display: flex; gap: 1rem; margin-bottom: 2rem; flex-wrap: wrap;">
+                <button onclick="exportData()" class="btn btn-accent">📥 Exportar Datos (CSV)</button>
+                <button onclick="copyToClipboard()" class="btn btn-secondary">📋 Copiar al Portapapeles</button>
+                <button onclick="clearAllData()" class="btn btn-secondary" style="background-color: var(--danger);">🗑️ Limpiar Todos los Datos</button>
+            </div>
+
+            <!-- Clients List -->
+            <div id="clientsList">
+                <!-- Los clientes se cargarán aquí dinámicamente -->
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <p style="margin-bottom: 0.5rem;">
+                <span class="footer-heart">💛</span> Creado por Franko & SOL
+            </p>
+            <p style="font-size: 0.9rem; color: var(--light-gray);">
+                © 2026 Chef Franko Salgado | Puerto Vallarta
+            </p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="../assets/js/dashboard.js"></script>
+    <script>
+        // Mobile navigation toggle
+        const navToggle = document.getElementById('navToggle');
+        const navMenu = document.getElementById('navMenu');
+
+        navToggle.addEventListener('click', () => {
+            navMenu.classList.toggle('active');
+        });
+
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', () => {
+                navMenu.classList.remove('active');
+            });
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!navToggle.contains(e.target) && !navMenu.contains(e.target)) {
+                navMenu.classList.remove('active');
+            }
+        });
+
+        // Allow Enter key to submit password
+        document.getElementById('adminPassword').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                checkPassword();
+            }
+        });
+    </script>
+</body>
+</html>

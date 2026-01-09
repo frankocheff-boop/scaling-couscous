@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Formulario de reservación para Chef Franko - Chef Privado">
+    <title>Formulario de Reservación - Chef Franko</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="../index.html" class="nav-logo">Chef Franko</a>
+            <button class="nav-toggle" id="navToggle">☰</button>
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="../index.html" class="nav-link">Inicio</a></li>
+                <li><a href="formulario-cliente.html" class="nav-link">Reservar</a></li>
+                <li><a href="menu-pos.html" class="nav-link">Menú POS</a></li>
+                <li><a href="epicure.html" class="nav-link">Épicure</a></li>
+                <li><a href="galeria.html" class="nav-link">Galería</a></li>
+                <li><a href="cv.html" class="nav-link">CV</a></li>
+                <li><a href="dashboard-admin.html" class="nav-link">Admin</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main>
+        <div class="container" style="max-width: 800px;">
+            <h1 class="section-title">Formulario de Reservación</h1>
+            <p style="text-align: center; color: var(--dark-gray); margin-bottom: 2rem;">
+                Complete el siguiente formulario para reservar su experiencia gastronómica privada
+            </p>
+
+            <!-- Alert Messages -->
+            <div id="alertContainer"></div>
+
+            <!-- Form -->
+            <form id="clientForm" class="card" style="padding: 2rem;">
+                <!-- Personal Information -->
+                <div style="margin-bottom: 2rem;">
+                    <h3 style="color: var(--secondary); margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 2px solid var(--primary);">
+                        Información Personal
+                    </h3>
+                    
+                    <div class="form-group">
+                        <label class="form-label" for="fullName">Nombre Completo *</label>
+                        <input type="text" id="fullName" name="fullName" class="form-input" required>
+                        <div class="form-error" id="fullNameError">Por favor ingrese su nombre completo</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="email">Email *</label>
+                        <input type="email" id="email" name="email" class="form-input" required>
+                        <div class="form-error" id="emailError">Por favor ingrese un email válido</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="phone">Teléfono *</label>
+                        <input type="tel" id="phone" name="phone" class="form-input" placeholder="+52 322 160 6843" required>
+                        <div class="form-error" id="phoneError">Por favor ingrese un teléfono válido</div>
+                    </div>
+                </div>
+
+                <!-- Stay Information -->
+                <div style="margin-bottom: 2rem;">
+                    <h3 style="color: var(--secondary); margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 2px solid var(--primary);">
+                        Información de Hospedaje
+                    </h3>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                        <div class="form-group">
+                            <label class="form-label" for="checkIn">Fecha Check-In *</label>
+                            <input type="date" id="checkIn" name="checkIn" class="form-input" required>
+                            <div class="form-error" id="checkInError">Por favor seleccione una fecha</div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="checkOut">Fecha Check-Out *</label>
+                            <input type="date" id="checkOut" name="checkOut" class="form-input" required>
+                            <div class="form-error" id="checkOutError">La fecha debe ser posterior al check-in</div>
+                        </div>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                        <div class="form-group">
+                            <label class="form-label" for="adults">Número de Adultos *</label>
+                            <input type="number" id="adults" name="adults" class="form-input" min="1" value="2" required>
+                            <div class="form-error" id="adultsError">Mínimo 1 adulto</div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="children">Número de Niños</label>
+                            <input type="number" id="children" name="children" class="form-input" min="0" value="0">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Dietary Requirements -->
+                <div style="margin-bottom: 2rem;">
+                    <h3 style="color: var(--secondary); margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 2px solid var(--primary);">
+                        Restricciones Alimentarias
+                    </h3>
+
+                    <div class="form-group">
+                        <label class="form-label">Alergias Alimentarias</label>
+                        <div class="form-checkbox-group">
+                            <div class="form-checkbox-item">
+                                <input type="checkbox" id="allergyGluten" name="allergies" value="gluten">
+                                <label for="allergyGluten">Gluten</label>
+                            </div>
+                            <div class="form-checkbox-item">
+                                <input type="checkbox" id="allergyDairy" name="allergies" value="lacteos">
+                                <label for="allergyDairy">Lácteos</label>
+                            </div>
+                            <div class="form-checkbox-item">
+                                <input type="checkbox" id="allergyNuts" name="allergies" value="frutos_secos">
+                                <label for="allergyNuts">Frutos Secos</label>
+                            </div>
+                            <div class="form-checkbox-item">
+                                <input type="checkbox" id="allergySeafood" name="allergies" value="mariscos">
+                                <label for="allergySeafood">Mariscos</label>
+                            </div>
+                            <div class="form-checkbox-item">
+                                <input type="checkbox" id="allergyOther" name="allergies" value="otros">
+                                <label for="allergyOther">Otros</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Restricciones Dietéticas</label>
+                        <div class="form-checkbox-group">
+                            <div class="form-checkbox-item">
+                                <input type="checkbox" id="dietVegetarian" name="diet" value="vegetariano">
+                                <label for="dietVegetarian">Vegetariano</label>
+                            </div>
+                            <div class="form-checkbox-item">
+                                <input type="checkbox" id="dietVegan" name="diet" value="vegano">
+                                <label for="dietVegan">Vegano</label>
+                            </div>
+                            <div class="form-checkbox-item">
+                                <input type="checkbox" id="dietKosher" name="diet" value="kosher">
+                                <label for="dietKosher">Kosher</label>
+                            </div>
+                            <div class="form-checkbox-item">
+                                <input type="checkbox" id="dietHalal" name="diet" value="halal">
+                                <label for="dietHalal">Halal</label>
+                            </div>
+                            <div class="form-checkbox-item">
+                                <input type="checkbox" id="dietNone" name="diet" value="ninguna">
+                                <label for="dietNone">Ninguna</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Special Preferences -->
+                <div style="margin-bottom: 2rem;">
+                    <h3 style="color: var(--secondary); margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 2px solid var(--primary);">
+                        Preferencias y Ocasión Especial
+                    </h3>
+
+                    <div class="form-group">
+                        <label class="form-label" for="occasion">Ocasión Especial</label>
+                        <select id="occasion" name="occasion" class="form-select">
+                            <option value="">Seleccione una opción</option>
+                            <option value="cumpleanos">Cumpleaños</option>
+                            <option value="aniversario">Aniversario</option>
+                            <option value="luna_miel">Luna de Miel</option>
+                            <option value="compromiso">Compromiso</option>
+                            <option value="corporativo">Evento Corporativo</option>
+                            <option value="otro">Otro</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="preferences">Preferencias Especiales</label>
+                        <textarea id="preferences" name="preferences" class="form-textarea" 
+                                  placeholder="Cuéntenos sobre sus preferencias culinarias, platos favoritos, estilos de cocina que le gustan, etc."></textarea>
+                    </div>
+                </div>
+
+                <!-- Submit Button -->
+                <div style="text-align: center; margin-top: 2rem;">
+                    <button type="submit" class="btn btn-primary" style="padding: 1rem 3rem; font-size: 1.1rem;">
+                        Enviar Reservación
+                    </button>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <p style="margin-bottom: 0.5rem;">
+                <span class="footer-heart">💛</span> Creado por Franko & SOL
+            </p>
+            <p style="font-size: 0.9rem; color: var(--light-gray);">
+                © 2026 Chef Franko Salgado | Puerto Vallarta
+            </p>
+            <div class="footer-links">
+                <a href="tel:+523221606843" class="footer-link">Teléfono</a>
+                <a href="https://wa.me/523221606843" target="_blank" class="footer-link">WhatsApp</a>
+                <a href="cv.html" class="footer-link">CV</a>
+                <a href="galeria.html" class="footer-link">Galería</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="../assets/js/formulario.js"></script>
+    <script>
+        // Mobile navigation toggle
+        const navToggle = document.getElementById('navToggle');
+        const navMenu = document.getElementById('navMenu');
+
+        navToggle.addEventListener('click', () => {
+            navMenu.classList.toggle('active');
+        });
+
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', () => {
+                navMenu.classList.remove('active');
+            });
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!navToggle.contains(e.target) && !navMenu.contains(e.target)) {
+                navMenu.classList.remove('active');
+            }
+        });
+    </script>
+</body>
+</html>
