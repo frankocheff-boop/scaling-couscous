@@ -6,6 +6,16 @@
     <meta name="description" content="Chef Franko Salgado - Chef Ejecutivo & Chef Privado en Puerto Vallarta. Experiencias gastronómicas únicas y personalizadas.">
     <title>Chef Franko - Bienvenido a mi mundo</title>
     
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="Chef Franko - Bienvenido a mi mundo">
+    <meta property="og:description" content="Chef Ejecutivo & Chef Privado en Puerto Vallarta. Experiencias gastronómicas únicas y personalizadas.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://frankocheff.com">
+    <meta property="og:image" content="https://frankocheff.com/assets/images/chef-franko-og.jpg">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -15,11 +25,13 @@
     <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
+    <!-- Skip Link -->
+    <a href="#main-content" class="skip-link">Saltar al contenido principal</a>
     <!-- Navigation -->
     <nav class="navbar">
         <div class="nav-container">
             <a href="index.html" class="nav-logo">Chef Franko</a>
-            <button class="nav-toggle" id="navToggle">☰</button>
+            <button class="nav-toggle" id="navToggle" aria-controls="navMenu" aria-expanded="false" aria-label="Abrir menú">☰</button>
             <ul class="nav-menu" id="navMenu">
                 <li><a href="index.html" class="nav-link">Inicio</a></li>
                 <li><a href="pages/formulario-cliente.html" class="nav-link">Reservar</a></li>
@@ -33,7 +45,7 @@
     </nav>
 
     <!-- Hero Section -->
-    <section class="hero">
+    <section class="hero" id="main-content">
         <div class="hero-content fade-in">
             <h1>Bienvenido a mi mundo</h1>
             <p class="hero-subtitle">Welcome to my world</p>
@@ -44,7 +56,7 @@
             <div class="hero-buttons">
                 <a href="pages/formulario-cliente.html" class="btn btn-primary">Reservar Experiencia</a>
                 <a href="pages/epicure.html" class="btn btn-secondary">Ver Menú</a>
-                <a href="https://wa.me/523221606843" target="_blank" class="btn btn-accent">WhatsApp</a>
+                <a href="https://wa.me/523221606843" target="_blank" rel="noopener noreferrer" class="btn btn-accent">WhatsApp</a>
             </div>
         </div>
     </section>
@@ -141,7 +153,7 @@
                     </div>
                     <div>
                         <h4 style="color: var(--secondary); margin-bottom: 0.5rem;">📱 WhatsApp</h4>
-                        <p><a href="https://wa.me/523221606843" target="_blank" style="color: var(--accent); font-weight: 600;">Enviar mensaje</a></p>
+                        <p><a href="https://wa.me/523221606843" target="_blank" rel="noopener noreferrer" style="color: var(--accent); font-weight: 600;">Enviar mensaje</a></p>
                     </div>
                     <div>
                         <h4 style="color: var(--secondary); margin-bottom: 0.5rem;">📍 Ubicación</h4>
@@ -172,7 +184,7 @@
             </p>
             <div class="footer-links">
                 <a href="tel:+523221606843" class="footer-link">Teléfono</a>
-                <a href="https://wa.me/523221606843" target="_blank" class="footer-link">WhatsApp</a>
+                <a href="https://wa.me/523221606843" target="_blank" rel="noopener noreferrer" class="footer-link">WhatsApp</a>
                 <a href="pages/cv.html" class="footer-link">CV</a>
                 <a href="pages/galeria.html" class="footer-link">Galería</a>
             </div>
@@ -186,13 +198,17 @@
         const navMenu = document.getElementById('navMenu');
 
         navToggle.addEventListener('click', () => {
-            navMenu.classList.toggle('active');
+            const isExpanded = navMenu.classList.toggle('active');
+            navToggle.setAttribute('aria-expanded', isExpanded);
+            navToggle.setAttribute('aria-label', isExpanded ? 'Cerrar menú' : 'Abrir menú');
         });
 
         // Close menu when clicking on a link
         document.querySelectorAll('.nav-link').forEach(link => {
             link.addEventListener('click', () => {
                 navMenu.classList.remove('active');
+                navToggle.setAttribute('aria-expanded', 'false');
+                navToggle.setAttribute('aria-label', 'Abrir menú');
             });
         });
 
@@ -200,6 +216,8 @@
         document.addEventListener('click', (e) => {
             if (!navToggle.contains(e.target) && !navMenu.contains(e.target)) {
                 navMenu.classList.remove('active');
+                navToggle.setAttribute('aria-expanded', 'false');
+                navToggle.setAttribute('aria-label', 'Abrir menú');
             }
         });
     </script>
