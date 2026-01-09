@@ -629,3 +629,11 @@ main {
     color: #0c5460;
     border: 1px solid #bee5eb;
 }
+
+/* Skip link accessible */
+.skip-link { position: absolute; left: -9999px; top: auto; width: 1px; height: 1px; overflow: hidden; }
+.skip-link:focus { left: 1rem; top: 1rem; width: auto; height: auto; background: var(--white); color: var(--secondary); padding: 0.5rem 1rem; border-radius: 4px; z-index: 2000; }
+:focus-visible { outline: 3px solid var(--primary); outline-offset: 3px; }
+@media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
+.accent-link { color: var(--accent); text-decoration: underline; }
+.has-error { border-color: var(--danger) !important; }
