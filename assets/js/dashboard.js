@@ -3,21 +3,80 @@
  * Gestión y visualización de reservaciones
  */
 
-const ADMIN_PASSWORD = 'franko2025';
+// NOTA DE SEGURIDAD: Esta autenticación local NO sustituye la autenticación en servidor.
+// Es solo para protección básica del lado del cliente. Para producción, implementar
+// autenticación adecuada en el backend.
+
 let allReservations = [];
 let filteredReservations = [];
 
 /**
+ * Helper: escapar texto para evitar XSS
+ */
+function escapeHTML(str) {
+    if (str === undefined || str === null) return '';
+    return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+}
+
+/**
+ * Generar hash SHA-256 de un mensaje
+ */
+async function sha256Hex(message) {
+    const msgUint8 = new TextEncoder().encode(message);
+    const hashBuffer = await crypto.subtle.digest('SHA-256', msgUint8);
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+}
+
+/**
+ * Establecer contraseña de admin (llamar desde consola)
+ * Ejemplo: setAdminPassword("tu-contraseña-segura")
+ */
+window.setAdminPassword = async function(password) {
+    if (!password) {
+        console.error('Debe proporcionar una contraseña');
+        return;
+    }
+    const hash = await sha256Hex(password);
+    localStorage.setItem('chefFrankoAdminHash', hash);
+    alert('Contraseña de admin guardada localmente (hash). NOTA: Esto NO sustituye autenticación en servidor.');
+    console.log('Hash guardado. En producción, usar autenticación en servidor.');
+};
+
+/**
  * Verificar contraseña de administrador
  */
-function checkPassword() {
-    const password = document.getElementById('adminPassword').value;
+async function checkPassword() {
+    const passwordEl = document.getElementById('adminPassword');
     const errorDiv = document.getElementById('passwordError');
     
-    if (password === ADMIN_PASSWORD) {
+    if (!passwordEl) return;
+    
+    const password = passwordEl.value || '';
+    const storedHash = localStorage.getItem('chefFrankoAdminHash');
+    
+    if (!storedHash) {
+        if (errorDiv) {
+            errorDiv.textContent = 'No hay contraseña de admin configurada. Configure una con setAdminPassword("tu-pass") en la consola.';
+            errorDiv.classList.add('active');
+        }
+        return;
+    }
+    
+    const hash = await sha256Hex(password);
+    
+    if (hash === storedHash) {
         // Contraseña correcta
-        document.getElementById('loginModal').classList.remove('active');
-        document.getElementById('dashboardContent').style.display = 'block';
+        const loginModal = document.getElementById('loginModal');
+        if (loginModal) loginModal.classList.remove('active');
+        
+        const dashboard = document.getElementById('dashboardContent');
+        if (dashboard) dashboard.style.display = 'block';
         
         // Guardar sesión
         sessionStorage.setItem('adminLoggedIn', 'true');
@@ -26,9 +85,12 @@ function checkPassword() {
         loadDashboardData();
     } else {
         // Contraseña incorrecta
-        errorDiv.classList.add('active');
-        document.getElementById('adminPassword').value = '';
-        document.getElementById('adminPassword').focus();
+        if (errorDiv) {
+            errorDiv.textContent = 'Contraseña incorrecta';
+            errorDiv.classList.add('active');
+        }
+        passwordEl.value = '';
+        passwordEl.focus();
     }
 }
 
@@ -37,9 +99,15 @@ function checkPassword() {
  */
 function logout() {
     sessionStorage.removeItem('adminLoggedIn');
-    document.getElementById('loginModal').classList.add('active');
-    document.getElementById('dashboardContent').style.display = 'none';
-    document.getElementById('adminPassword').value = '';
+    
+    const loginModal = document.getElementById('loginModal');
+    if (loginModal) loginModal.classList.add('active');
+    
+    const dashboard = document.getElementById('dashboardContent');
+    if (dashboard) dashboard.style.display = 'none';
+    
+    const passwordEl = document.getElementById('adminPassword');
+    if (passwordEl) passwordEl.value = '';
 }
 
 /**
@@ -47,8 +115,12 @@ function logout() {
  */
 document.addEventListener('DOMContentLoaded', function() {
     if (sessionStorage.getItem('adminLoggedIn') === 'true') {
-        document.getElementById('loginModal').classList.remove('active');
-        document.getElementById('dashboardContent').style.display = 'block';
+        const loginModal = document.getElementById('loginModal');
+        if (loginModal) loginModal.classList.remove('active');
+        
+        const dashboard = document.getElementById('dashboardContent');
+        if (dashboard) dashboard.style.display = 'block';
+        
         loadDashboardData();
     }
 });
@@ -78,16 +150,21 @@ function updateStats() {
     const today = new Date().toISOString().split('T')[0];
     
     allReservations.forEach(reservation => {
-        totalGuests += reservation.adults + reservation.children;
+        totalGuests += (reservation.adults || 0) + (reservation.children || 0);
         
         if (reservation.checkIn >= today) {
             upcomingEvents++;
         }
     });
     
-    document.getElementById('totalClients').textContent = totalClients;
-    document.getElementById('totalGuests').textContent = totalGuests;
-    document.getElementById('upcomingEvents').textContent = upcomingEvents;
+    const totalClientsEl = document.getElementById('totalClients');
+    if (totalClientsEl) totalClientsEl.textContent = totalClients;
+    
+    const totalGuestsEl = document.getElementById('totalGuests');
+    if (totalGuestsEl) totalGuestsEl.textContent = totalGuests;
+    
+    const upcomingEventsEl = document.getElementById('upcomingEvents');
+    if (upcomingEventsEl) upcomingEventsEl.textContent = upcomingEvents;
 }
 
 /**
@@ -95,6 +172,8 @@ function updateStats() {
  */
 function renderClientsList() {
     const container = document.getElementById('clientsList');
+    
+    if (!container) return;
     
     if (filteredReservations.length === 0) {
         container.innerHTML = `
@@ -139,24 +218,33 @@ function createClientCard(reservation) {
         day: 'numeric'
     });
     
-    const allergiesHTML = reservation.allergies.length > 0 
-        ? reservation.allergies.map(a => `<span class="tag tag-allergy">${a}</span>`).join('')
+    const allergiesHTML = reservation.allergies && reservation.allergies.length > 0 
+        ? reservation.allergies.map(a => `<span class="tag tag-allergy">${escapeHTML(a)}</span>`).join('')
         : '<span class="tag">Sin alergias</span>';
     
-    const dietHTML = reservation.diet.length > 0
-        ? reservation.diet.map(d => `<span class="tag tag-diet">${d}</span>`).join('')
+    const dietHTML = reservation.diet && reservation.diet.length > 0
+        ? reservation.diet.map(d => `<span class="tag tag-diet">${escapeHTML(d)}</span>`).join('')
         : '<span class="tag">Sin restricciones</span>';
     
     const occasionText = reservation.occasion 
-        ? formatOccasion(reservation.occasion)
+        ? escapeHTML(formatOccasion(reservation.occasion))
         : 'N/A';
+    
+    const preferencesHTML = reservation.preferences 
+        ? `
+            <div style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--light-gray);">
+                <div class="info-label" style="margin-bottom: 0.5rem;">💭 Preferencias Especiales:</div>
+                <div class="info-value" style="font-style: italic; color: var(--dark-gray);">${escapeHTML(reservation.preferences)}</div>
+            </div>
+        `
+        : '';
     
     return `
         <div class="client-card fade-in">
             <div class="client-header">
                 <div>
-                    <div class="client-name">${reservation.fullName}</div>
-                    <div class="client-date">Registrado: ${submittedDate}</div>
+                    <div class="client-name">${escapeHTML(reservation.fullName)}</div>
+                    <div class="client-date">Registrado: ${escapeHTML(submittedDate)}</div>
                 </div>
                 <div>
                     <span class="badge badge-success">Activa</span>
@@ -167,11 +255,11 @@ function createClientCard(reservation) {
                 <div>
                     <div class="info-item">
                         <span class="info-label">📧 Email:</span>
-                        <span class="info-value"><a href="mailto:${reservation.email}" style="color: var(--accent);">${reservation.email}</a></span>
+                        <span class="info-value"><a href="mailto:${escapeHTML(reservation.email)}" style="color: var(--accent);">${escapeHTML(reservation.email)}</a></span>
                     </div>
                     <div class="info-item">
                         <span class="info-label">📱 Teléfono:</span>
-                        <span class="info-value"><a href="tel:${reservation.phone}" style="color: var(--accent);">${reservation.phone}</a></span>
+                        <span class="info-value"><a href="tel:${escapeHTML(reservation.phone)}" style="color: var(--accent);">${escapeHTML(reservation.phone)}</a></span>
                     </div>
                     <div class="info-item">
                         <span class="info-label">🎉 Ocasión:</span>
@@ -182,15 +270,15 @@ function createClientCard(reservation) {
                 <div>
                     <div class="info-item">
                         <span class="info-label">📅 Check-In:</span>
-                        <span class="info-value">${checkInDate}</span>
+                        <span class="info-value">${escapeHTML(checkInDate)}</span>
                     </div>
                     <div class="info-item">
                         <span class="info-label">📅 Check-Out:</span>
-                        <span class="info-value">${checkOutDate}</span>
+                        <span class="info-value">${escapeHTML(checkOutDate)}</span>
                     </div>
                     <div class="info-item">
                         <span class="info-label">👥 Personas:</span>
-                        <span class="info-value">${reservation.adults} adultos, ${reservation.children} niños</span>
+                        <span class="info-value">${escapeHTML(String(reservation.adults))} adultos, ${escapeHTML(String(reservation.children))} niños</span>
                     </div>
                 </div>
             </div>
@@ -205,12 +293,7 @@ function createClientCard(reservation) {
                 <div class="tags">${dietHTML}</div>
             </div>
             
-            ${reservation.preferences ? `
-                <div style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--light-gray);">
-                    <div class="info-label" style="margin-bottom: 0.5rem;">💭 Preferencias Especiales:</div>
-                    <div class="info-value" style="font-style: italic; color: var(--dark-gray);">${reservation.preferences}</div>
-                </div>
-            ` : ''}
+            ${preferencesHTML}
         </div>
     `;
 }
@@ -234,16 +317,19 @@ function formatOccasion(occasion) {
  * Aplicar filtros
  */
 function applyFilters() {
-    const searchName = document.getElementById('searchName').value.toLowerCase();
-    const filterDate = document.getElementById('filterDate').value;
+    const searchNameEl = document.getElementById('searchName');
+    const filterDateEl = document.getElementById('filterDate');
+    
+    const searchName = searchNameEl ? searchNameEl.value.toLowerCase() : '';
+    const filterDate = filterDateEl ? filterDateEl.value : '';
     
     filteredReservations = allReservations.filter(reservation => {
         let matchesName = true;
         let matchesDate = true;
         
         if (searchName) {
-            matchesName = reservation.fullName.toLowerCase().includes(searchName) ||
-                         reservation.email.toLowerCase().includes(searchName);
+            matchesName = (reservation.fullName || '').toLowerCase().includes(searchName) ||
+                         (reservation.email || '').toLowerCase().includes(searchName);
         }
         
         if (filterDate) {
@@ -261,8 +347,12 @@ function applyFilters() {
  * Limpiar filtros
  */
 function clearFilters() {
-    document.getElementById('searchName').value = '';
-    document.getElementById('filterDate').value = '';
+    const searchNameEl = document.getElementById('searchName');
+    const filterDateEl = document.getElementById('filterDate');
+    
+    if (searchNameEl) searchNameEl.value = '';
+    if (filterDateEl) filterDateEl.value = '';
+    
     filteredReservations = [...allReservations];
     renderClientsList();
 }
@@ -286,18 +376,18 @@ function exportData() {
     
     // Crear filas CSV
     const rows = allReservations.map(r => [
-        r.id,
-        r.fullName,
-        r.email,
-        r.phone,
-        r.checkIn,
-        r.checkOut,
-        r.adults,
-        r.children,
-        r.allergies.join('; '),
-        r.diet.join('; '),
-        formatOccasion(r.occasion),
-        r.preferences.replace(/,/g, ';'),
+        r.id || '',
+        r.fullName || '',
+        r.email || '',
+        r.phone || '',
+        r.checkIn || '',
+        r.checkOut || '',
+        r.adults || 0,
+        r.children || 0,
+        (r.allergies && r.allergies.length > 0) ? r.allergies.join('; ') : '',
+        (r.diet && r.diet.length > 0) ? r.diet.join('; ') : '',
+        formatOccasion(r.occasion) || '',
+        (r.preferences || '').replace(/,/g, ';'),
         new Date(r.submittedAt).toLocaleString('es-MX')
     ]);
     
@@ -334,15 +424,15 @@ function copyToClipboard() {
     
     allReservations.forEach((r, index) => {
         text += `--- Reservación #${index + 1} ---\n`;
-        text += `Nombre: ${r.fullName}\n`;
-        text += `Email: ${r.email}\n`;
-        text += `Teléfono: ${r.phone}\n`;
-        text += `Check-In: ${r.checkIn}\n`;
-        text += `Check-Out: ${r.checkOut}\n`;
-        text += `Personas: ${r.adults} adultos, ${r.children} niños\n`;
-        text += `Alergias: ${r.allergies.join(', ') || 'Ninguna'}\n`;
-        text += `Dieta: ${r.diet.join(', ') || 'Ninguna'}\n`;
-        text += `Ocasión: ${formatOccasion(r.occasion)}\n`;
+        text += `Nombre: ${r.fullName || 'N/A'}\n`;
+        text += `Email: ${r.email || 'N/A'}\n`;
+        text += `Teléfono: ${r.phone || 'N/A'}\n`;
+        text += `Check-In: ${r.checkIn || 'N/A'}\n`;
+        text += `Check-Out: ${r.checkOut || 'N/A'}\n`;
+        text += `Personas: ${r.adults || 0} adultos, ${r.children || 0} niños\n`;
+        text += `Alergias: ${(r.allergies && r.allergies.length > 0) ? r.allergies.join(', ') : 'Ninguna'}\n`;
+        text += `Dieta: ${(r.diet && r.diet.length > 0) ? r.diet.join(', ') : 'Ninguna'}\n`;
+        text += `Ocasión: ${formatOccasion(r.occasion) || 'N/A'}\n`;
         if (r.preferences) {
             text += `Preferencias: ${r.preferences}\n`;
         }
