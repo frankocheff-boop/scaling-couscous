@@ -1,23 +1,73 @@
 /**
  * Chef Franko - Dashboard Administrativo
  * Gestión y visualización de reservaciones
+ * 
+ * SECURITY WARNING: This client-side authentication is NOT secure and should NOT be used in production.
+ * This is a temporary solution for a static site. The proper solution is to implement server-side
+ * authentication and authorization. Use setAdminPassword('your-password') from the browser console
+ * to initialize the admin password hash in localStorage.
  */
 
-const ADMIN_PASSWORD = 'franko2025';
 let allReservations = [];
 let filteredReservations = [];
 
 /**
+ * Escape HTML to prevent XSS attacks
+ */
+function escapeHTML(str) {
+    if (str == null) return '';
+    const div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
+}
+
+/**
+ * Simple SHA-256 hash implementation (for demonstration - NOT cryptographically secure for production)
+ */
+async function sha256Hex(message) {
+    const msgBuffer = new TextEncoder().encode(message);
+    const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+}
+
+/**
+ * Set admin password (call from console: setAdminPassword('your-password'))
+ * This stores a SHA-256 hash in localStorage
+ */
+window.setAdminPassword = async function(password) {
+    const hash = await sha256Hex(password);
+    localStorage.setItem('adminPasswordHash', hash);
+    console.log('Admin password hash set successfully');
+    console.warn('WARNING: This is NOT secure authentication. Move to server-side authentication.');
+};
+
+/**
  * Verificar contraseña de administrador
  */
-function checkPassword() {
-    const password = document.getElementById('adminPassword').value;
+async function checkPassword() {
+    const passwordInput = document.getElementById('adminPassword');
     const errorDiv = document.getElementById('passwordError');
+    const loginModal = document.getElementById('loginModal');
+    const dashboardContent = document.getElementById('dashboardContent');
     
-    if (password === ADMIN_PASSWORD) {
+    if (!passwordInput || !errorDiv || !loginModal || !dashboardContent) return;
+    
+    const password = passwordInput.value;
+    const storedHash = localStorage.getItem('adminPasswordHash');
+    
+    if (!storedHash) {
+        errorDiv.textContent = 'No password configured. Use setAdminPassword() from console.';
+        errorDiv.classList.add('active');
+        return;
+    }
+    
+    const inputHash = await sha256Hex(password);
+    
+    if (inputHash === storedHash) {
         // Contraseña correcta
-        document.getElementById('loginModal').classList.remove('active');
-        document.getElementById('dashboardContent').style.display = 'block';
+        loginModal.classList.remove('active');
+        dashboardContent.style.display = 'block';
         
         // Guardar sesión
         sessionStorage.setItem('adminLoggedIn', 'true');
@@ -26,9 +76,10 @@ function checkPassword() {
         loadDashboardData();
     } else {
         // Contraseña incorrecta
+        errorDiv.textContent = 'Contraseña incorrecta';
         errorDiv.classList.add('active');
-        document.getElementById('adminPassword').value = '';
-        document.getElementById('adminPassword').focus();
+        passwordInput.value = '';
+        passwordInput.focus();
     }
 }
 
@@ -36,19 +87,26 @@ function checkPassword() {
  * Cerrar sesión
  */
 function logout() {
+    const loginModal = document.getElementById('loginModal');
+    const dashboardContent = document.getElementById('dashboardContent');
+    const passwordInput = document.getElementById('adminPassword');
+    
     sessionStorage.removeItem('adminLoggedIn');
-    document.getElementById('loginModal').classList.add('active');
-    document.getElementById('dashboardContent').style.display = 'none';
-    document.getElementById('adminPassword').value = '';
+    if (loginModal) loginModal.classList.add('active');
+    if (dashboardContent) dashboardContent.style.display = 'none';
+    if (passwordInput) passwordInput.value = '';
 }
 
 /**
  * Verificar si ya está logueado
  */
 document.addEventListener('DOMContentLoaded', function() {
+    const loginModal = document.getElementById('loginModal');
+    const dashboardContent = document.getElementById('dashboardContent');
+    
     if (sessionStorage.getItem('adminLoggedIn') === 'true') {
-        document.getElementById('loginModal').classList.remove('active');
-        document.getElementById('dashboardContent').style.display = 'block';
+        if (loginModal) loginModal.classList.remove('active');
+        if (dashboardContent) dashboardContent.style.display = 'block';
         loadDashboardData();
     }
 });
@@ -85,9 +143,13 @@ function updateStats() {
         }
     });
     
-    document.getElementById('totalClients').textContent = totalClients;
-    document.getElementById('totalGuests').textContent = totalGuests;
-    document.getElementById('upcomingEvents').textContent = upcomingEvents;
+    const totalClientsEl = document.getElementById('totalClients');
+    const totalGuestsEl = document.getElementById('totalGuests');
+    const upcomingEventsEl = document.getElementById('upcomingEvents');
+    
+    if (totalClientsEl) totalClientsEl.textContent = totalClients;
+    if (totalGuestsEl) totalGuestsEl.textContent = totalGuests;
+    if (upcomingEventsEl) upcomingEventsEl.textContent = upcomingEvents;
 }
 
 /**
@@ -95,6 +157,8 @@ function updateStats() {
  */
 function renderClientsList() {
     const container = document.getElementById('clientsList');
+    
+    if (!container) return;
     
     if (filteredReservations.length === 0) {
         container.innerHTML = `
@@ -140,11 +204,11 @@ function createClientCard(reservation) {
     });
     
     const allergiesHTML = reservation.allergies.length > 0 
-        ? reservation.allergies.map(a => `<span class="tag tag-allergy">${a}</span>`).join('')
+        ? reservation.allergies.map(a => `<span class="tag tag-allergy">${escapeHTML(a)}</span>`).join('')
         : '<span class="tag">Sin alergias</span>';
     
     const dietHTML = reservation.diet.length > 0
-        ? reservation.diet.map(d => `<span class="tag tag-diet">${d}</span>`).join('')
+        ? reservation.diet.map(d => `<span class="tag tag-diet">${escapeHTML(d)}</span>`).join('')
         : '<span class="tag">Sin restricciones</span>';
     
     const occasionText = reservation.occasion 
@@ -155,8 +219,8 @@ function createClientCard(reservation) {
         <div class="client-card fade-in">
             <div class="client-header">
                 <div>
-                    <div class="client-name">${reservation.fullName}</div>
-                    <div class="client-date">Registrado: ${submittedDate}</div>
+                    <div class="client-name">${escapeHTML(reservation.fullName)}</div>
+                    <div class="client-date">Registrado: ${escapeHTML(submittedDate)}</div>
                 </div>
                 <div>
                     <span class="badge badge-success">Activa</span>
@@ -167,30 +231,30 @@ function createClientCard(reservation) {
                 <div>
                     <div class="info-item">
                         <span class="info-label">📧 Email:</span>
-                        <span class="info-value"><a href="mailto:${reservation.email}" style="color: var(--accent);">${reservation.email}</a></span>
+                        <span class="info-value"><a href="mailto:${escapeHTML(reservation.email)}" style="color: var(--accent);">${escapeHTML(reservation.email)}</a></span>
                     </div>
                     <div class="info-item">
                         <span class="info-label">📱 Teléfono:</span>
-                        <span class="info-value"><a href="tel:${reservation.phone}" style="color: var(--accent);">${reservation.phone}</a></span>
+                        <span class="info-value"><a href="tel:${escapeHTML(reservation.phone)}" style="color: var(--accent);">${escapeHTML(reservation.phone)}</a></span>
                     </div>
                     <div class="info-item">
                         <span class="info-label">🎉 Ocasión:</span>
-                        <span class="info-value">${occasionText}</span>
+                        <span class="info-value">${escapeHTML(occasionText)}</span>
                     </div>
                 </div>
                 
                 <div>
                     <div class="info-item">
                         <span class="info-label">📅 Check-In:</span>
-                        <span class="info-value">${checkInDate}</span>
+                        <span class="info-value">${escapeHTML(checkInDate)}</span>
                     </div>
                     <div class="info-item">
                         <span class="info-label">📅 Check-Out:</span>
-                        <span class="info-value">${checkOutDate}</span>
+                        <span class="info-value">${escapeHTML(checkOutDate)}</span>
                     </div>
                     <div class="info-item">
                         <span class="info-label">👥 Personas:</span>
-                        <span class="info-value">${reservation.adults} adultos, ${reservation.children} niños</span>
+                        <span class="info-value">${escapeHTML(String(reservation.adults))} adultos, ${escapeHTML(String(reservation.children))} niños</span>
                     </div>
                 </div>
             </div>
@@ -208,7 +272,7 @@ function createClientCard(reservation) {
             ${reservation.preferences ? `
                 <div style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--light-gray);">
                     <div class="info-label" style="margin-bottom: 0.5rem;">💭 Preferencias Especiales:</div>
-                    <div class="info-value" style="font-style: italic; color: var(--dark-gray);">${reservation.preferences}</div>
+                    <div class="info-value" style="font-style: italic; color: var(--dark-gray);">${escapeHTML(reservation.preferences)}</div>
                 </div>
             ` : ''}
         </div>
@@ -234,8 +298,13 @@ function formatOccasion(occasion) {
  * Aplicar filtros
  */
 function applyFilters() {
-    const searchName = document.getElementById('searchName').value.toLowerCase();
-    const filterDate = document.getElementById('filterDate').value;
+    const searchNameEl = document.getElementById('searchName');
+    const filterDateEl = document.getElementById('filterDate');
+    
+    if (!searchNameEl || !filterDateEl) return;
+    
+    const searchName = searchNameEl.value.toLowerCase();
+    const filterDate = filterDateEl.value;
     
     filteredReservations = allReservations.filter(reservation => {
         let matchesName = true;
@@ -261,8 +330,11 @@ function applyFilters() {
  * Limpiar filtros
  */
 function clearFilters() {
-    document.getElementById('searchName').value = '';
-    document.getElementById('filterDate').value = '';
+    const searchNameEl = document.getElementById('searchName');
+    const filterDateEl = document.getElementById('filterDate');
+    
+    if (searchNameEl) searchNameEl.value = '';
+    if (filterDateEl) filterDateEl.value = '';
     filteredReservations = [...allReservations];
     renderClientsList();
 }
@@ -349,11 +421,15 @@ function copyToClipboard() {
         text += `Registrado: ${new Date(r.submittedAt).toLocaleString('es-MX')}\n\n`;
     });
     
-    navigator.clipboard.writeText(text).then(() => {
-        alert('Datos copiados al portapapeles');
-    }).catch(() => {
-        alert('Error al copiar. Por favor, use el botón de exportar CSV.');
-    });
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(() => {
+            alert('Datos copiados al portapapeles');
+        }).catch(() => {
+            alert('Error al copiar. Por favor, use el botón de exportar CSV.');
+        });
+    } else {
+        alert('Su navegador no soporta copiar al portapapeles. Por favor, use el botón de exportar CSV.');
+    }
 }
 
 /**

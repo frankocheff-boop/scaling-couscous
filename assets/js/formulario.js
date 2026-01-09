@@ -8,16 +8,24 @@ document.addEventListener('DOMContentLoaded', function() {
     const form = document.getElementById('clientForm');
     const alertContainer = document.getElementById('alertContainer');
 
+    // Early return if form doesn't exist on this page
+    if (!form || !alertContainer) return;
+
     // Establecer fecha mínima como hoy
     const today = new Date().toISOString().split('T')[0];
-    document.getElementById('checkIn').setAttribute('min', today);
-    document.getElementById('checkOut').setAttribute('min', today);
+    const checkInField = document.getElementById('checkIn');
+    const checkOutField = document.getElementById('checkOut');
+    
+    if (checkInField) checkInField.setAttribute('min', today);
+    if (checkOutField) checkOutField.setAttribute('min', today);
 
     // Actualizar fecha mínima de check-out cuando cambia check-in
-    document.getElementById('checkIn').addEventListener('change', function() {
-        const checkInDate = this.value;
-        document.getElementById('checkOut').setAttribute('min', checkInDate);
-    });
+    if (checkInField && checkOutField) {
+        checkInField.addEventListener('change', function() {
+            const checkInDate = this.value;
+            checkOutField.setAttribute('min', checkInDate);
+        });
+    }
 
     // Manejar el envío del formulario
     form.addEventListener('submit', function(e) {
@@ -120,7 +128,9 @@ document.addEventListener('DOMContentLoaded', function() {
         const field = document.getElementById(fieldId);
         const errorDiv = document.getElementById(fieldId + 'Error');
         
-        field.style.borderColor = 'var(--danger)';
+        if (field) {
+            field.classList.add('has-error');
+        }
         if (errorDiv) {
             errorDiv.textContent = message;
             errorDiv.classList.add('active');
@@ -134,7 +144,9 @@ document.addEventListener('DOMContentLoaded', function() {
         const field = document.getElementById(fieldId);
         const errorDiv = document.getElementById(fieldId + 'Error');
         
-        field.style.borderColor = 'var(--light-gray)';
+        if (field) {
+            field.classList.remove('has-error');
+        }
         if (errorDiv) {
             errorDiv.classList.remove('active');
         }
