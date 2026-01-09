@@ -36,6 +36,11 @@ async function sha256Hex(message) {
 /**
  * Establecer contraseña de admin (llamar desde consola)
  * Ejemplo: setAdminPassword("tu-contraseña-segura")
+ * 
+ * NOTA: Esta función está intencionalmente expuesta globalmente para permitir
+ * la configuración inicial de la contraseña por el administrador a través de
+ * la consola del navegador. En un entorno de producción, la autenticación
+ * debe realizarse en el servidor.
  */
 window.setAdminPassword = async function(password) {
     if (!password) {
@@ -62,7 +67,7 @@ async function checkPassword() {
     
     if (!storedHash) {
         if (errorDiv) {
-            errorDiv.textContent = 'No hay contraseña de admin configurada. Configure una con setAdminPassword("tu-pass") en la consola.';
+            errorDiv.textContent = 'Autenticación no configurada. Contacte al administrador.';
             errorDiv.classList.add('active');
         }
         return;

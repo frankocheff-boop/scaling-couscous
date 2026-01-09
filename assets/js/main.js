@@ -1,6 +1,11 @@
 /**
  * Chef Franko - Main JavaScript
  * Mobile navigation and common functionality
+ * 
+ * NOTE: This file provides a reusable implementation of mobile navigation
+ * with ARIA support. Currently, the navigation is handled inline in the HTML
+ * files, but this module can be included for future use or in other pages
+ * by adding: <script src="assets/js/main.js"></script>
  */
 
 (function() {
