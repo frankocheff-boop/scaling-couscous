@@ -70,7 +70,10 @@ async function checkPassword() {
         sessionStorage.setItem('adminLoggedIn', 'true');
         loadDashboardData();
     } else {
-        if (errorDiv) errorDiv.classList.add('active');
+        if (errorDiv) {
+            errorDiv.textContent = 'Contraseña incorrecta';
+            errorDiv.classList.add('active');
+        }
         passwordEl.value = '';
         passwordEl.focus();
     }
