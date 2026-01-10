@@ -40,7 +40,10 @@ async function sha256Hex(message) {
  * This stores a SHA-256 hash in localStorage
  */
 window.setAdminPassword = async function(password) {
-    if (!password) return;
+    if (!password) {
+        alert('Error: Debe proporcionar una contraseña.');
+        return;
+    }
     const hash = await sha256Hex(password);
     localStorage.setItem('chefFrankoAdminHash', hash);
     alert('Contraseña de admin guardada localmente (hash).');
