@@ -38,7 +38,7 @@ async function sha256Hex(message) {
  */
 window.setAdminPassword = async function(password) {
     const hash = await sha256Hex(password);
-    localStorage.setItem('adminPasswordHash', hash);
+    localStorage.setItem('chefFrankoAdminHash', hash);
     console.log('Admin password hash set successfully');
     console.warn('WARNING: This is NOT secure authentication. Move to server-side authentication.');
 };
@@ -55,7 +55,7 @@ async function checkPassword() {
     if (!passwordInput || !errorDiv || !loginModal || !dashboardContent) return;
     
     const password = passwordInput.value;
-    const storedHash = localStorage.getItem('adminPasswordHash');
+    const storedHash = localStorage.getItem('chefFrankoAdminHash');
     
     if (!storedHash) {
         errorDiv.textContent = 'No password configured. Use setAdminPassword() from console.';
