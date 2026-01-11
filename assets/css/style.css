@@ -81,6 +81,16 @@ img {
     letter-spacing: 1px;
 }
 
+.nav-logo img {
+    height: 50px;
+    width: auto;
+    transition: transform 0.3s ease;
+}
+
+.nav-logo img:hover {
+    transform: scale(1.05);
+}
+
 .nav-menu {
     display: flex;
     list-style: none;
@@ -393,6 +403,13 @@ main {
     max-width: 1400px;
     margin: 0 auto;
     padding: 0 2rem;
+}
+
+.footer-logo {
+    display: block;
+    margin: 0 auto 1rem;
+    height: 60px;
+    width: auto;
 }
 
 .footer-heart {
