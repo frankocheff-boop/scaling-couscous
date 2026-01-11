@@ -15,10 +15,13 @@ let filteredReservations = [];
  * Escape HTML to prevent XSS attacks
  */
 function escapeHTML(str) {
-    if (str == null) return '';
-    const div = document.createElement('div');
-    div.textContent = str;
-    return div.innerHTML;
+    if (str === undefined || str === null) return '';
+    return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
 }
 
 /**
@@ -37,50 +40,45 @@ async function sha256Hex(message) {
  * This stores a SHA-256 hash in localStorage
  */
 window.setAdminPassword = async function(password) {
+    if (!password) {
+        alert('Error: Debe proporcionar una contraseña.');
+        return;
+    }
     const hash = await sha256Hex(password);
-    localStorage.setItem('adminPasswordHash', hash);
-    console.log('Admin password hash set successfully');
-    console.warn('WARNING: This is NOT secure authentication. Move to server-side authentication.');
+    localStorage.setItem('chefFrankoAdminHash', hash);
+    alert('Contraseña de admin guardada localmente (hash).');
 };
 
 /**
  * Verificar contraseña de administrador
  */
 async function checkPassword() {
-    const passwordInput = document.getElementById('adminPassword');
+    const passwordEl = document.getElementById('adminPassword');
     const errorDiv = document.getElementById('passwordError');
-    const loginModal = document.getElementById('loginModal');
-    const dashboardContent = document.getElementById('dashboardContent');
-    
-    if (!passwordInput || !errorDiv || !loginModal || !dashboardContent) return;
-    
-    const password = passwordInput.value;
-    const storedHash = localStorage.getItem('adminPasswordHash');
-    
+    if (!passwordEl) return;
+    const password = passwordEl.value || '';
+    const storedHash = localStorage.getItem('chefFrankoAdminHash');
     if (!storedHash) {
-        errorDiv.textContent = 'No password configured. Use setAdminPassword() from console.';
-        errorDiv.classList.add('active');
+        if (errorDiv) {
+            errorDiv.textContent = 'No hay contraseña de admin configurada. Configure una con setAdminPassword("tu-pass") en la consola.';
+            errorDiv.classList.add('active');
+        }
         return;
     }
-    
-    const inputHash = await sha256Hex(password);
-    
-    if (inputHash === storedHash) {
-        // Contraseña correcta
-        loginModal.classList.remove('active');
-        dashboardContent.style.display = 'block';
-        
-        // Guardar sesión
+    const hash = await sha256Hex(password);
+    if (hash === storedHash) {
+        document.getElementById('loginModal')?.classList.remove('active');
+        const dashboard = document.getElementById('dashboardContent');
+        if (dashboard) dashboard.style.display = 'block';
         sessionStorage.setItem('adminLoggedIn', 'true');
-        
-        // Cargar datos
         loadDashboardData();
     } else {
-        // Contraseña incorrecta
-        errorDiv.textContent = 'Contraseña incorrecta';
-        errorDiv.classList.add('active');
-        passwordInput.value = '';
-        passwordInput.focus();
+        if (errorDiv) {
+            errorDiv.textContent = 'Contraseña incorrecta';
+            errorDiv.classList.add('active');
+        }
+        passwordEl.value = '';
+        passwordEl.focus();
     }
 }
 
@@ -88,26 +86,22 @@ async function checkPassword() {
  * Cerrar sesión
  */
 function logout() {
-    const loginModal = document.getElementById('loginModal');
-    const dashboardContent = document.getElementById('dashboardContent');
-    const passwordInput = document.getElementById('adminPassword');
-    
     sessionStorage.removeItem('adminLoggedIn');
-    if (loginModal) loginModal.classList.add('active');
-    if (dashboardContent) dashboardContent.style.display = 'none';
-    if (passwordInput) passwordInput.value = '';
+    document.getElementById('loginModal')?.classList.add('active');
+    const dashboard = document.getElementById('dashboardContent');
+    if (dashboard) dashboard.style.display = 'none';
+    const pw = document.getElementById('adminPassword');
+    if (pw) pw.value = '';
 }
 
 /**
  * Verificar si ya está logueado
  */
 document.addEventListener('DOMContentLoaded', function() {
-    const loginModal = document.getElementById('loginModal');
-    const dashboardContent = document.getElementById('dashboardContent');
-    
     if (sessionStorage.getItem('adminLoggedIn') === 'true') {
-        if (loginModal) loginModal.classList.remove('active');
-        if (dashboardContent) dashboardContent.style.display = 'block';
+        document.getElementById('loginModal')?.classList.remove('active');
+        const dashboard = document.getElementById('dashboardContent');
+        if (dashboard) dashboard.style.display = 'block';
         loadDashboardData();
     }
 });
@@ -137,8 +131,7 @@ function updateStats() {
     const today = new Date().toISOString().split('T')[0];
     
     allReservations.forEach(reservation => {
-        totalGuests += reservation.adults + reservation.children;
-        
+        totalGuests += (reservation.adults || 0) + (reservation.children || 0);
         if (reservation.checkIn >= today) {
             upcomingEvents++;
         }
