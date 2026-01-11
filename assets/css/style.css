@@ -661,7 +661,7 @@ main {
     color: var(--primary) !important;
 }
 
-/* Ocultar el banner superior de Google Translate */
+/* Hide Google Translate top banner */
 .goog-te-banner-frame {
     display: none !important;
 }
