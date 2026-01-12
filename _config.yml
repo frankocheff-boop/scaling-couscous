@@ -1,5 +1,6 @@
 # GitHub Pages Configuration
 theme: jekyll-theme-primer
+source: .
 
 # Build settings
 markdown: kramdown
