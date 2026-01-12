@@ -13,3 +13,7 @@ exclude:
   - TUTORIAL_GIT.md
   - LICENSE
   - .github/
+  - .gitignore
+  - Gemfile
+  - Gemfile.lock
+  - "*.gemspec"
