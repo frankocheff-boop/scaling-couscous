@@ -1,0 +1,19 @@
+# GitHub Pages Configuration
+theme: jekyll-theme-primer
+
+# Build settings
+markdown: kramdown
+plugins:
+  - jekyll-github-metadata
+  - jekyll-seo-tag
+
+# Exclude unnecessary files from build
+exclude:
+  - README.md
+  - TUTORIAL_GIT.md
+  - LICENSE
+  - .github/
+  - .gitignore
+  - Gemfile
+  - Gemfile.lock
+  - "*.gemspec"
