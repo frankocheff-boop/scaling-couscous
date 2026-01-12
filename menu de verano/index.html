@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verano State Menu 2025 - Interactive Experience</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Lato:wght@300;400;700&display=swap"
+        rel="stylesheet">
+    <style>
+        /* Custom Font Application */
+        body {
+            font-family: 'Lato', sans-serif;
+        }
+
+        h1,
+        h2,
+        h3,
+        .serif {
+            font-family: 'Playfair Display', serif;
+        }
+
+        /* Chart Container Specifics as per requirements */
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 400px;
+            max-height: 400px;
+        }
+
+        /* Smooth transitions */
+        .card-transition {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            /* Enhanced easing for professional feel */
+        }
+
+        .card-transition:hover {
+            transform: translateY(-5px) scale(1.01);
+            /* Subtle lift and scale */
+            box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Custom active filter button style */
+        .filter-btn.active-custom {
+            background-color: #2D3748;
+            /* Dark Slate */
+            color: #FDFBF7;
+            /* Light Text */
+            box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, 0.1);
+            /* Inner shadow for depth */
+            border-color: #C05621;
+        }
+    </style>
+</head>
+
+<body class="bg-[#FDFBF7] text-gray-800 flex flex-col min-h-screen">
+    <header class="bg-white shadow-md border-b-4 border-[#C05621] sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <div class="flex flex-col">
+                <h1 class="text-3xl md:text-4xl font-bold text-[#C05621] serif tracking-tight">VERANO STATE</h1>
+                <span class="text-xs uppercase tracking-[0.3em] text-gray-500 font-semibold mt-1">Menu 2025 &bull; Chef
+                    Salgado</span>
+            </div>
+            <nav class="hidden md:flex space-x-6">
+                <button onclick="scrollToSection('dashboard')"
+                    class="hover:text-[#C05621] transition-colors font-medium">Overview</button>
+                <button onclick="scrollToSection('menu-explorer')"
+                    class="hover:text-[#C05621] transition-colors font-medium">The Menu</button>
+                <button onclick="scrollToSection('contact-section')"
+                    class="hover:text-[#C05621] transition-colors font-medium">Contact</button>
+            </nav>
+        </div>
+    </header>
+
+    <main class="flex-grow container mx-auto px-4 py-12 space-y-16">
+
+        <section class="text-center max-w-4xl mx-auto space-y-4 animate-fade-in">
+            <h2 class="text-4xl md:text-5xl serif font-bold text-gray-800 tracking-tight">A Culinary Journey of
+                Freshness</h2>
+            <p class="text-xl text-gray-600 leading-relaxed max-w-2xl mx-auto">
+                Welcome to the digital edition of the <strong>Verano State Menu 2025</strong>.
+                Curated by Chef Franko Salgado, this selection highlights authentic Mexican flavors, commitment to
+                organic sourcing, and international classics.
+            </p>
+        </section>
+
+        <section id="dashboard" class="bg-white rounded-xl shadow-2xl p-6 md:p-10 border border-gray-100">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-10 items-center">
+                <div class="lg:col-span-1 space-y-6">
+                    <h3 class="text-3xl serif font-bold text-[#2F855A]">Menu Composition</h3>
+                    <p class="text-gray-600 text-base leading-relaxed">
+                        The menu is intentionally balanced between hearty Breakfast options and comprehensive Dinner
+                        courses. The visualization breaks down the
+                        <strong><span id="total-items-count">0</span> unique dishes</strong> by category. This balance
+                        ensures a full gastronomic experience throughout the day.
+                    </p>
+                    <p class="text-gray-500 text-sm italic border-l-4 border-gray-300 pl-3 py-1">
+                        <strong>Interaction:</strong> Click any chart segment to automatically filter the explorer
+                        below.
+                    </p>
+                    <div class="mt-4 p-5 bg-[#F0FFF4] rounded-xl border border-[#C6F6D5] shadow-inner">
+                        <h4 class="font-bold text-[#2F855A] text-sm mb-3 uppercase tracking-wider">Chef Salgado's Focus:
+                        </h4>
+                        <ul class="text-sm space-y-2 text-gray-700 list-disc list-inside">
+                            <li class="pl-1">Use of **Organic** Spinach and Field Mushrooms.</li>
+                            <li class="pl-1">Sourcing fresh **Local** ingredients (Panela cheese from "El Tuito," San
+                                Blas Shrimp).</li>
+                            <li class="pl-1">Commitment to **Homemade** Lasagna and Croutons.</li>
+                            <li class="pl-1">Blending **Authentic Mexican** recipes (Tortilla Soup, Burritos) with
+                                international favorites.</li>
+                        </ul>
+                    </div>
+                    <button id="reset-chart-filter"
+                        class="hidden mt-4 px-6 py-2 bg-gray-200 hover:bg-gray-300 text-gray-700 font-semibold rounded-lg text-sm transition-colors w-full shadow-md">
+                        Reset Filter
+                    </button>
+                </div>
+
+                <div class="lg:col-span-2 flex flex-col items-center">
+                    <div class="chart-container">
+                        <canvas id="menuCompositionChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="menu-explorer" class="space-y-8">
+            <div class="flex flex-col md:flex-row justify-between items-end border-b-2 border-[#C05621] pb-4 gap-4">
+                <div class="w-full md:w-2/3">
+                    <h3 class="text-3xl serif font-bold text-gray-800">The Culinary Explorer</h3>
+                    <p class="text-gray-500 mt-1 text-base">
+                        Use the filters and search bar to navigate our complete offering.
+                    </p>
+                </div>
+                <div class="w-full md:w-1/3">
+                    <input type="text" id="search-input"
+                        placeholder="Search dish or ingredient (e.g., 'Shrimp' or 'Apple')..."
+                        class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#C05621] focus:border-[#C05621] transition-shadow shadow-sm">
+                </div>
+            </div>
+
+            <div class="flex flex-wrap gap-3 justify-center md:justify-start" id="category-filters">
+                <button
+                    class="filter-btn active-custom px-5 py-2 rounded-full text-sm font-semibold transition-all shadow-md border border-gray-500"
+                    data-category="All">All Items</button>
+                <button
+                    class="filter-btn px-5 py-2 rounded-full text-sm font-semibold bg-white text-gray-600 hover:bg-gray-100 transition-all border border-gray-300"
+                    data-category="Breakfast">Breakfast</button>
+                <button
+                    class="filter-btn px-5 py-2 rounded-full text-sm font-semibold bg-white text-gray-600 hover:bg-gray-100 transition-all border border-gray-300"
+                    data-category="Soup">Soups</button>
+                <button
+                    class="filter-btn px-5 py-2 rounded-full text-sm font-semibold bg-white text-gray-600 hover:bg-gray-100 transition-all border border-gray-300"
+                    data-category="Salad">Salads</button>
+                <button
+                    class="filter-btn px-5 py-2 rounded-full text-sm font-semibold bg-white text-gray-600 hover:bg-gray-100 transition-all border border-gray-300"
+                    data-category="Main">Main Courses</button>
+                <button
+                    class="filter-btn px-5 py-2 rounded-full text-sm font-semibold bg-white text-gray-600 hover:bg-gray-100 transition-all border border-gray-300"
+                    data-category="Sweet">Desserts</button>
+            </div>
+
+            <div id="menu-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+            </div>
+
+            <div id="no-results" class="hidden text-center py-16 bg-white rounded-xl shadow-md border border-gray-200">
+                <div class="text-6xl mb-4 text-gray-300">🔎</div>
+                <h4 class="text-2xl font-bold text-gray-400">No dishes found matching criteria.</h4>
+                <p class="text-gray-500 mt-2">Try checking the "All Items" filter or adjusting your search terms.</p>
+            </div>
+        </section>
+
+        <section id="contact-section" class="bg-white rounded-xl shadow-2xl overflow-hidden border border-gray-100">
+            <div class="grid grid-cols-1 md:grid-cols-2">
+                <div class="p-8 md:p-12 bg-[#2D3748] text-white flex flex-col justify-center">
+                    <h3 class="text-3xl serif font-bold text-[#D69E2E] mb-6">Reservations & Inquiries</h3>
+                    <p class="text-gray-300 mb-8 leading-relaxed">
+                        Do you have questions about private events, specific allergies, or would you like to reserve a
+                        table?
+                        Send us a message or call us directly.
+                    </p>
+
+                    <div class="space-y-4">
+                        <div class="flex items-center space-x-4">
+                            <span class="text-2xl">📞</span>
+                            <div>
+                                <p class="text-sm text-gray-400 uppercase tracking-widest">Phone / WhatsApp</p>
+                                <a href="tel:+523221606843"
+                                    class="text-xl font-bold hover:text-[#D69E2E] transition-colors">
+                                    +52 322 160 6843
+                                </a>
+                            </div>
+                        </div>
+                        <div class="flex items-center space-x-4">
+                            <span class="text-2xl">📍</span>
+                            <div>
+                                <p class="text-sm text-gray-400 uppercase tracking-widest">Location</p>
+                                <p class="font-medium">Verano State, Mexico</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="p-8 md:p-12 bg-white">
+                    <form action="https://formspree.io/f/mvgqblyn" method="POST" class="space-y-6">
+                        <div>
+                            <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Your Email</label>
+                            <input type="email" name="email" id="email" required
+                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#C05621] focus:border-transparent transition-all bg-gray-50">
+                        </div>
+
+                        <div>
+                            <label for="message" class="block text-sm font-medium text-gray-700 mb-1">Message</label>
+                            <textarea name="message" id="message" rows="4" required
+                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#C05621] focus:border-transparent transition-all bg-gray-50"></textarea>
+                        </div>
+
+                        <button type="submit"
+                            class="w-full bg-[#C05621] text-white font-bold py-3 px-6 rounded-lg hover:bg-[#A04618] transition-colors shadow-lg transform hover:-translate-y-1">
+                            Send Message
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-gray-800 text-gray-400 py-8 mt-auto border-t-8 border-gray-900">
+        <div class="container mx-auto px-4 text-center">
+            <h2 class="text-white text-2xl serif mb-2">VERANO STATE</h2>
+            <p class="text-sm">2025 Culinary Selection &copy; Chef Franko Salgado</p>
+            <div class="mt-4 text-xs text-gray-500">
+                <p>Designed for easy exploration. Please inquire directly for pricing or allergy concerns.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // --- Data Layer ---
+        // Derived directly from the provided Source Report text
+        const menuData = [
+            // Breakfast
+            {
+                id: 1,
+                title: "Seasonal Fruits",
+                category: "Breakfast",
+                description: "Fresh selection of seasonal fruits.",
+                tags: ["Fresh", "Healthy", "Fruit"]
+            },
+            {
+                id: 2,
+                title: "Eggs Your Way",
+                category: "Breakfast",
+                description: "Choose from Ranchero style, Mexican style (diced tomato, onion, cilantro), poached, Benedict, scrambled, fried, or a custom omelet/egg whites.",
+                tags: ["Eggs", "Customizable", "Protein"]
+            },
+            {
+                id: 3,
+                title: "Mexican Burritos",
+                category: "Breakfast",
+                description: "Choice of Chicken, Beef, or Shrimp. Served with Guacamole and Mexican Salsa.",
+                tags: ["Mexican", "Hearty", "Chicken", "Beef", "Shrimp"]
+            },
+            // Dinner - Soups
+            {
+                id: 4,
+                title: "Black Bean Soup",
+                category: "Soup",
+                description: "Diced red onion, epazote herb, crispy tortilla strips and smoky bacon.",
+                tags: ["Bacon", "Mexican", "Warm"]
+            },
+            {
+                id: 5,
+                title: "Spinach & Wild Mushroom Soup",
+                category: "Soup",
+                description: "Made from organic spinach and field mushrooms.",
+                tags: ["Vegetarian", "Organic", "Mushroom"]
+            },
+            {
+                id: 6,
+                title: "Authentic Mexican Tortilla Soup",
+                category: "Soup",
+                description: "Diced avocado, fresh mint, and Manchego cheese.",
+                tags: ["Mexican", "Vegetarian", "Cheese", "Avocado"]
+            },
+            // Dinner - Salads
+            {
+                id: 7,
+                title: "Organic Baby Lettuces",
+                category: "Salad",
+                description: "Jicama, endives, watercress and sweet crispy apple ginger and honey dressing.",
+                tags: ["Organic", "Fresh", "Vegetarian"]
+            },
+            {
+                id: 8,
+                title: "Villa Verano Salad",
+                category: "Salad",
+                description: "Three bean medley, grilled red peppers, crispy tortilla strips and fresh Panela cheese from 'El Tuito'.",
+                tags: ["Local Cheese", "Beans", "Vegetarian"]
+            },
+            {
+                id: 9,
+                title: "Baby Spinach Salad",
+                category: "Salad",
+                description: "Crispy smoked bacon, homemade garlic & herb croutons, Swiss cheese and balsamic vinaigrette.",
+                tags: ["Bacon", "Cheese", "Homemade"]
+            },
+            {
+                id: 10,
+                title: "Caprese Salad",
+                category: "Salad",
+                description: "Roma Tomatoes, fresh dairy Mozzarella, organic basil, with Balsamic vinegar and garlic infused olive oil.",
+                tags: ["Italian", "Vegetarian", "Organic"]
+            },
+            // Dinner - Mains
+            {
+                id: 11,
+                title: "Catch of the Day",
+                category: "Main",
+                description: "Pan fried with fresh herbs and white wine sauce, saffron infused pilaf and market fresh vegetables.",
+                tags: ["Seafood", "Fresh", "Rice"]
+            },
+            {
+                id: 12,
+                title: "San Blas Giant Shrimp",
+                category: "Main",
+                description: "Straight from the sea and into the skillet! With garlic butter, pilaf of the day and local seasonal vegetables.",
+                tags: ["Seafood", "Shrimp", "Local"]
+            },
+            {
+                id: 13,
+                title: "Paella Valenciana",
+                category: "Main",
+                description: "Traditional Spanish Paella with saffron rice and mixed meats/seafood.",
+                tags: ["Spanish", "Rice", "Traditional"]
+            },
+            {
+                id: 14,
+                title: "Homemade Lasagna",
+                category: "Main",
+                description: "Our guest's favorite homemade Lasagna.",
+                tags: ["Italian", "Pasta", "Homemade"]
+            },
+            {
+                id: 15,
+                title: "Barbeque Night",
+                category: "Main",
+                description: "Ranchero BBQ ribs and free range Chicken in our own exotic barbecue sauce, stuffed potatoes and caramelized fresh vegetables.",
+                tags: ["Meat", "BBQ", "Chicken", "Ribs"]
+            },
+            // Sweet Creations
+            {
+                id: 16,
+                title: "Artisan Cheese Platter",
+                category: "Sweet",
+                description: "A selection of fine artisan cheeses.",
+                tags: ["Cheese", "Savory"]
+            },
+            {
+                id: 17,
+                title: "Traditional Vanilla Flan",
+                category: "Sweet",
+                description: "Served with dark Caramel.",
+                tags: ["Dessert", "Caramel"]
+            },
+            {
+                id: 18,
+                title: "Authentic Italian Tiramisu",
+                category: "Sweet",
+                description: "Classic coffee-flavoured Italian dessert.",
+                tags: ["Dessert", "Coffee", "Italian"]
+            },
+            {
+                id: 19,
+                title: "Decadent Chocolate Cake",
+                category: "Sweet",
+                description: "Served with French Vanilla ice cream.",
+                tags: ["Dessert", "Chocolate", "Ice Cream"]
+            },
+            {
+                id: 20,
+                title: "Almond Cheese Cake",
+                category: "Sweet",
+                description: "Chef Felipe's special, served with a Berry and red wine coulis.",
+                tags: ["Dessert", "Chef Special", "Berry"]
+            },
+            {
+                id: 21,
+                title: "Poached Pears",
+                category: "Sweet",
+                description: "Poached in spiced red wine, served warm with French vanilla ice cream.",
+                tags: ["Dessert", "Fruit", "Warm"]
+            },
+            {
+                id: 22,
+                title: "Warm Apple Tart",
+                category: "Sweet",
+                description: "Served with Butter Pecan ice cream and caramel sauce.",
+                tags: ["Dessert", "Fruit", "Caramel"]
+            },
+            {
+                id: 23,
+                title: "Fresh Coffee",
+                category: "Sweet",
+                description: "Freshly brewed artisan coffee.",
+                tags: ["Beverage", "Hot"]
+            }
+        ];
+
+        // --- State Management ---
+        const state = {
+            currentFilter: 'All',
+            searchQuery: '',
+            chartInstance: null
+        };
+
+        // --- DOM Elements ---
+        const menuGrid = document.getElementById('menu-grid');
+        const noResults = document.getElementById('no-results');
+        const searchInput = document.getElementById('search-input');
+        const filterButtons = document.querySelectorAll('.filter-btn');
+        const totalItemsCount = document.getElementById('total-items-count');
+        const resetChartBtn = document.getElementById('reset-chart-filter');
+
+        // --- Initialization ---
+        document.addEventListener('DOMContentLoaded', () => {
+            totalItemsCount.textContent = menuData.length;
+            initChart();
+            renderMenu();
+            setupEventListeners();
+        });
+
+        // --- Logic & Interactions ---
+
+        function setupEventListeners() {
+            // Search Input
+            searchInput.addEventListener('input', (e) => {
+                state.searchQuery = e.target.value.toLowerCase();
+                renderMenu();
+            });
+
+            // Filter Buttons
+            filterButtons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    // Update active state visuals
+                    filterButtons.forEach(b => {
+                        b.classList.remove('active-custom');
+                        b.classList.add('bg-white', 'text-gray-600', 'border-gray-300');
+                    });
+                    btn.classList.add('active-custom');
+                    btn.classList.remove('bg-white', 'text-gray-600', 'border-gray-300');
+
+                    // Update state
+                    state.currentFilter = btn.dataset.category;
+
+                    // Reset chart selection visuals if button clicked manually
+                    resetChartBtn.classList.add('hidden');
+
+                    renderMenu();
+                });
+            });
+
+            // Reset Chart Filter
+            resetChartBtn.addEventListener('click', () => {
+                state.currentFilter = 'All';
+                resetChartBtn.classList.add('hidden');
+
+                // Reset buttons visual
+                filterButtons.forEach(b => {
+                    b.classList.remove('active-custom');
+                    b.classList.add('bg-white', 'text-gray-600', 'border-gray-300');
+                    if (b.dataset.category === 'All') {
+                        b.classList.add('active-custom');
+                        b.classList.remove('bg-white', 'text-gray-600', 'border-gray-300');
+                    }
+                });
+
+                renderMenu();
+            });
+        }
+
+        function getCategoryCounts() {
+            const counts = { 'Breakfast': 0, 'Soup': 0, 'Salad': 0, 'Main': 0, 'Sweet': 0 };
+            menuData.forEach(item => {
+                if (counts[item.category] !== undefined) {
+                    counts[item.category]++;
+                }
+            });
+            return counts;
+        }
+
+        function initChart() {
+            const ctx = document.getElementById('menuCompositionChart').getContext('2d');
+            const counts = getCategoryCounts();
+
+            // Chart Colors matching theme
+            const colors = {
+                Breakfast: '#D69E2E', // Mustard Gold
+                Soup: '#C05621',      // Muted Terracotta
+                Salad: '#2F855A',     // Sage Green
+                Main: '#2D3748',      // Dark Slate
+                Sweet: '#E53E3E'      // Red/Berry
+            };
+
+            state.chartInstance = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Breakfast', 'Soups', 'Salads', 'Main Courses', 'Desserts'],
+                    datasets: [{
+                        data: [counts.Breakfast, counts.Soup, counts.Salad, counts.Main, counts.Sweet],
+                        backgroundColor: [
+                            colors.Breakfast,
+                            colors.Soup,
+                            colors.Salad,
+                            colors.Main,
+                            colors.Sweet
+                        ],
+                        borderWidth: 0,
+                        hoverOffset: 10
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                font: { family: 'Lato', size: 12 },
+                                usePointStyle: true,
+                                padding: 20
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function (context) {
+                                    return ` ${context.label}: ${context.raw} items`;
+                                }
+                            },
+                            backgroundColor: 'rgba(255, 255, 255, 0.95)',
+                            titleColor: '#2D3748',
+                            bodyColor: '#2D3748',
+                            borderColor: '#E2E8F0',
+                            borderWidth: 1,
+                            padding: 10
+                        }
+                    },
+                    onClick: (event, elements) => {
+                        if (elements.length > 0) {
+                            const index = elements[0].index;
+                            const label = state.chartInstance.data.labels[index];
+
+                            // Map Label to Category ID
+                            const map = {
+                                'Breakfast': 'Breakfast',
+                                'Soups': 'Soup',
+                                'Salads': 'Salad',
+                                'Main Courses': 'Main',
+                                'Desserts': 'Sweet'
+                            };
+
+                            const category = map[label];
+                            handleChartClick(category);
+                        }
+                    }
+                }
+            });
+        }
+
+        function handleChartClick(category) {
+            state.currentFilter = category;
+
+            // Visual feedback on buttons
+            filterButtons.forEach(b => {
+                b.classList.remove('active-custom');
+                b.classList.add('bg-white', 'text-gray-600', 'border-gray-300');
+                if (b.dataset.category === category) {
+                    b.classList.add('active-custom');
+                    b.classList.remove('bg-white', 'text-gray-600', 'border-gray-300');
+                }
+            });
+
+            resetChartBtn.classList.remove('hidden');
+            renderMenu();
+            scrollToSection('menu-explorer');
+        }
+
+        function scrollToSection(id) {
+            document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function renderMenu() {
+            menuGrid.innerHTML = '';
+
+            // Filter Data
+            const filtered = menuData.filter(item => {
+                const matchesCategory = state.currentFilter === 'All' || item.category === state.currentFilter;
+                const matchesSearch = item.title.toLowerCase().includes(state.searchQuery) ||
+                    item.description.toLowerCase().includes(state.searchQuery) ||
+                    item.tags.some(tag => tag.toLowerCase().includes(state.searchQuery));
+                return matchesCategory && matchesSearch;
+            });
+
+            // Handle No Results
+            if (filtered.length === 0) {
+                noResults.classList.remove('hidden');
+            } else {
+                noResults.classList.add('hidden');
+
+                filtered.forEach(item => {
+                    const card = document.createElement('div');
+                    card.className = 'bg-white rounded-xl shadow-lg border border-gray-200 p-6 card-transition flex flex-col h-full hover:shadow-xl';
+
+                    // Icon logic
+                    let icon = '🍽️';
+                    let iconColor = 'text-gray-500';
+                    if (item.category === 'Breakfast') { icon = '🍳'; iconColor = 'text-[#D69E2E]'; }
+                    if (item.category === 'Soup') { icon = '🥣'; iconColor = 'text-[#C05621]'; }
+                    if (item.category === 'Salad') { icon = '🥗'; iconColor = 'text-[#2F855A]'; }
+                    if (item.category === 'Main') { icon = '🥩'; iconColor = 'text-gray-800'; }
+                    if (item.category === 'Sweet') { icon = '🍰'; iconColor = 'text-[#E53E3E]'; }
+
+                    // Tags HTML
+                    const tagsHtml = item.tags.map(tag =>
+                        `<span class="inline-block bg-gray-100 text-gray-600 text-xs px-2 py-1 rounded-full font-medium mr-2 mb-1 shadow-inner">${tag}</span>`
+                    ).join('');
+
+                    card.innerHTML = `
+                        <div class="flex justify-between items-start mb-3">
+                            <span class="text-4xl ${iconColor}">${icon}</span>
+                            <span class="text-xs font-bold uppercase tracking-widest text-gray-400 border border-gray-300 px-2 py-1 rounded-full">${item.category}</span>
+                        </div>
+                        <h4 class="text-2xl serif font-bold text-gray-800 mb-2">${item.title}</h4>
+                        <p class="text-gray-600 text-sm mb-4 flex-grow leading-relaxed">${item.description}</p>
+                        <div class="mt-auto pt-4 border-t border-gray-100">
+                            ${tagsHtml}
+                        </div>
+                    `;
+                    menuGrid.appendChild(card);
+                });
+            }
+        }
+    </script>
+</body>
+
+</html>
