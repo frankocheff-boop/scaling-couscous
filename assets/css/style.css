@@ -750,7 +750,7 @@ main {
     font-size: 0.85rem;
 }
 
-/* Ocultar elementos innecesarios del widget */
+/* Hide unnecessary widget elements */
 .goog-te-banner-frame.skiptranslate {
     display: none !important;
 }
@@ -781,7 +781,7 @@ body {
     max-width: 150px;
 }
 
-/* Responsive - ocultar en móviles si es necesario */
+/* Responsive - hide on mobile if needed */
 @media (max-width: 768px) {
     #google_translate_element {
         display: none;
