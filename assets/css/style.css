@@ -417,6 +417,73 @@ main {
     color: var(--primary);
 }
 
+/* Chef Privado Section */
+.chef-privado-section {
+    background-color: var(--white);
+    padding: 4rem 0;
+}
+
+.chef-privado-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    align-items: center;
+}
+
+.chef-privado-image-wrapper {
+    position: relative;
+    overflow: hidden;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px var(--shadow-dark);
+}
+
+.chef-privado-image {
+    width: 100%;
+    height: auto;
+    display: block;
+    transition: transform 0.3s ease;
+}
+
+.chef-privado-image:hover {
+    transform: scale(1.05);
+}
+
+.chef-privado-text {
+    padding: 1rem;
+}
+
+.chef-privado-text h2 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    color: var(--secondary);
+}
+
+.chef-privado-text .subtitle {
+    font-size: 1.3rem;
+    color: var(--accent);
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    display: block;
+}
+
+.chef-privado-text p {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: var(--text);
+    margin-bottom: 1.5rem;
+}
+
+.chef-privado-locations {
+    background-color: var(--background);
+    padding: 1rem;
+    border-radius: 10px;
+    border-left: 4px solid var(--primary);
+}
+
+.chef-privado-text .btn {
+    margin-top: 1rem;
+}
+
 /* Utility Classes */
 .text-center {
     text-align: center;
@@ -490,6 +557,23 @@ main {
 
     .btn {
         width: 100%;
+    }
+
+    .chef-privado-content {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+
+    .chef-privado-text h2 {
+        font-size: 2rem;
+    }
+
+    .chef-privado-text .subtitle {
+        font-size: 1.1rem;
+    }
+
+    .chef-privado-text p {
+        font-size: 1rem;
     }
 }
 
