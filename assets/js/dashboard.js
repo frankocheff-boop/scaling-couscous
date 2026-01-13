@@ -2,137 +2,83 @@
  * Chef Franko - Dashboard Administrativo
  * Gestión y visualización de reservaciones
  * 
- * SECURITY WARNING / ADVERTENCIA DE SEGURIDAD:
- * ==============================================
- * This implementation uses client-side authentication with SHA-256 hashing stored in localStorage.
- * Esta implementación usa autenticación del lado del cliente con hash SHA-256 guardado en localStorage.
- * 
- * THIS IS NOT SECURE FOR PRODUCTION USE!
- * ¡ESTO NO ES SEGURO PARA USO EN PRODUCCIÓN!
- * 
- * This is a temporary solution for a static site. For production:
- * Esta es una solución temporal para un sitio estático. Para producción:
- * - Move authentication to a backend server / Mover autenticación a un servidor backend
- * - Use proper session management / Usar gestión de sesión apropiada
- * - Implement server-side authorization / Implementar autorización del lado del servidor
- * - Use HTTPS / Usar HTTPS
- * 
- * To set admin password, open browser console and run:
- * Para establecer contraseña de admin, abre la consola del navegador y ejecuta:
- * 
- * setAdminPassword('your-secure-password-here')
+ * SECURITY WARNING: This client-side authentication is NOT secure and should NOT be used in production.
+ * This is a temporary solution for a static site. The proper solution is to implement server-side
+ * authentication and authorization. Use setAdminPassword('your-password') from the browser console
+ * to initialize the admin password hash in localStorage.
  */
 
 let allReservations = [];
 let filteredReservations = [];
 
 /**
- * Helper: Escape HTML to prevent XSS attacks
- * Escapa HTML para prevenir ataques XSS
+ * Escape HTML to prevent XSS attacks
  */
 function escapeHTML(str) {
-    if (str == null || str === undefined) return '';
-    const div = document.createElement('div');
-    div.textContent = str.toString();
-    return div.innerHTML;
+    if (str === undefined || str === null) return '';
+    return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
 }
 
 /**
- * Set admin password (call from browser console)
- * Establecer contraseña de admin (llamar desde la consola del navegador)
+ * SHA-256 hash implementation using Web Crypto API
+ * Note: While SHA-256 is cryptographically secure, client-side authentication can still be bypassed.
  */
-async function setAdminPassword(password) {
-    if (!password || password.length < 12) {
-        console.error('Password must be at least 12 characters / La contraseña debe tener al menos 12 caracteres');
-        return;
-    }
-    
-    // Check for complexity requirements
-    const hasUppercase = /[A-Z]/.test(password);
-    const hasLowercase = /[a-z]/.test(password);
-    const hasNumber = /\d/.test(password);
-    const hasSpecial = /[!@#$%^&*(),.?":{}|<>]/.test(password);
-    
-    if (!hasUppercase || !hasLowercase || !hasNumber || !hasSpecial) {
-        console.error('Password must contain uppercase, lowercase, number, and special character / La contraseña debe contener mayúscula, minúscula, número y carácter especial');
-        return;
-    }
-    
-    try {
-        // Hash password using SHA-256
-        const encoder = new TextEncoder();
-        const data = encoder.encode(password);
-        const hashBuffer = await crypto.subtle.digest('SHA-256', data);
-        const hashArray = Array.from(new Uint8Array(hashBuffer));
-        const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
-        
-        localStorage.setItem('adminPasswordHash', hashHex);
-        console.log('✅ Admin password set successfully / Contraseña de admin establecida exitosamente');
-        console.log('⚠️  Remember: This is NOT secure for production / Recuerda: Esto NO es seguro para producción');
-    } catch (error) {
-        console.error('Error setting password / Error al establecer contraseña:', error);
-    }
+async function sha256Hex(message) {
+    const msgBuffer = new TextEncoder().encode(message);
+    const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
 }
 
-// Make setAdminPassword available globally for console access
-window.setAdminPassword = setAdminPassword;
+/**
+ * Set admin password (call from console: setAdminPassword('your-password'))
+ * This stores a SHA-256 hash in localStorage
+ */
+window.setAdminPassword = async function(password) {
+    if (!password) {
+        alert('Error: Debe proporcionar una contraseña.');
+        return;
+    }
+    const hash = await sha256Hex(password);
+    localStorage.setItem('chefFrankoAdminHash', hash);
+    alert('Contraseña de admin guardada localmente (hash).');
+};
 
 /**
- * Verify admin password
  * Verificar contraseña de administrador
  */
 async function checkPassword() {
-    const passwordInput = document.getElementById('adminPassword');
+    const passwordEl = document.getElementById('adminPassword');
     const errorDiv = document.getElementById('passwordError');
-    const loginModal = document.getElementById('loginModal');
-    const dashboardContent = document.getElementById('dashboardContent');
-    
-    // Null-safe checks
-    if (!passwordInput || !errorDiv || !loginModal || !dashboardContent) {
-        console.error('Required DOM elements not found / Elementos DOM requeridos no encontrados');
-        return;
-    }
-    
-    const password = passwordInput.value;
-    const storedHash = localStorage.getItem('adminPasswordHash');
-    
+    if (!passwordEl) return;
+    const password = passwordEl.value || '';
+    const storedHash = localStorage.getItem('chefFrankoAdminHash');
     if (!storedHash) {
-        errorDiv.textContent = 'Authentication system not configured / Sistema de autenticación no configurado';
-        errorDiv.classList.add('active');
-        passwordInput.value = '';
-        console.warn('Admin password not set. Run setAdminPassword("your-password") in console.');
+        if (errorDiv) {
+            errorDiv.textContent = 'No hay contraseña de admin configurada. Configure una con setAdminPassword("tu-pass") en la consola.';
+            errorDiv.classList.add('active');
+        }
         return;
     }
-    
-    try {
-        // Hash entered password
-        const encoder = new TextEncoder();
-        const data = encoder.encode(password);
-        const hashBuffer = await crypto.subtle.digest('SHA-256', data);
-        const hashArray = Array.from(new Uint8Array(hashBuffer));
-        const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
-        
-        if (hashHex === storedHash) {
-            // Password correct
-            loginModal.classList.remove('active');
-            dashboardContent.style.display = 'block';
-            
-            // Save session
-            sessionStorage.setItem('adminLoggedIn', 'true');
-            
-            // Load data
-            loadDashboardData();
-        } else {
-            // Password incorrect
-            errorDiv.textContent = 'Contraseña incorrecta / Incorrect password';
+    const hash = await sha256Hex(password);
+    if (hash === storedHash) {
+        document.getElementById('loginModal')?.classList.remove('active');
+        const dashboard = document.getElementById('dashboardContent');
+        if (dashboard) dashboard.style.display = 'block';
+        sessionStorage.setItem('adminLoggedIn', 'true');
+        loadDashboardData();
+    } else {
+        if (errorDiv) {
+            errorDiv.textContent = 'Contraseña incorrecta';
             errorDiv.classList.add('active');
-            passwordInput.value = '';
-            if (passwordInput.focus) passwordInput.focus();
         }
-    } catch (error) {
-        console.error('Error verifying password / Error al verificar contraseña:', error);
-        errorDiv.textContent = 'Error al verificar contraseña / Error verifying password';
-        errorDiv.classList.add('active');
+        passwordEl.value = '';
+        passwordEl.focus();
     }
 }
 
@@ -145,10 +91,11 @@ function logout() {
     const passwordInput = document.getElementById('adminPassword');
     
     sessionStorage.removeItem('adminLoggedIn');
-    
-    if (loginModal) loginModal.classList.add('active');
-    if (dashboardContent) dashboardContent.style.display = 'none';
-    if (passwordInput) passwordInput.value = '';
+    document.getElementById('loginModal')?.classList.add('active');
+    const dashboard = document.getElementById('dashboardContent');
+    if (dashboard) dashboard.style.display = 'none';
+    const pw = document.getElementById('adminPassword');
+    if (pw) pw.value = '';
 }
 
 /**
@@ -160,8 +107,9 @@ document.addEventListener('DOMContentLoaded', function() {
     const dashboardContent = document.getElementById('dashboardContent');
     
     if (sessionStorage.getItem('adminLoggedIn') === 'true') {
-        if (loginModal) loginModal.classList.remove('active');
-        if (dashboardContent) dashboardContent.style.display = 'block';
+        document.getElementById('loginModal')?.classList.remove('active');
+        const dashboard = document.getElementById('dashboardContent');
+        if (dashboard) dashboard.style.display = 'block';
         loadDashboardData();
     }
 });
@@ -211,15 +159,18 @@ function updateStats() {
     
     allReservations.forEach(reservation => {
         totalGuests += (reservation.adults || 0) + (reservation.children || 0);
-        
-        if (reservation.checkIn && reservation.checkIn >= today) {
+        if (reservation.checkIn >= today) {
             upcomingEvents++;
         }
     });
     
-    totalClientsEl.textContent = totalClients;
-    totalGuestsEl.textContent = totalGuests;
-    upcomingEventsEl.textContent = upcomingEvents;
+    const totalClientsEl = document.getElementById('totalClients');
+    const totalGuestsEl = document.getElementById('totalGuests');
+    const upcomingEventsEl = document.getElementById('upcomingEvents');
+    
+    if (totalClientsEl) totalClientsEl.textContent = totalClients;
+    if (totalGuestsEl) totalGuestsEl.textContent = totalGuests;
+    if (upcomingEventsEl) upcomingEventsEl.textContent = upcomingEvents;
 }
 
 /**
@@ -229,10 +180,7 @@ function updateStats() {
 function renderClientsList() {
     const container = document.getElementById('clientsList');
     
-    if (!container) {
-        console.error('clientsList container not found / Contenedor clientsList no encontrado');
-        return;
-    }
+    if (!container) return;
     
     if (filteredReservations.length === 0) {
         container.innerHTML = `
@@ -282,22 +230,12 @@ function createClientCard(reservation) {
         })
         : 'N/A';
     
-    const checkOutDate = reservation.checkOut 
-        ? new Date(reservation.checkOut).toLocaleDateString('es-MX', {
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric'
-        })
-        : 'N/A';
-    
-    const allergies = Array.isArray(reservation.allergies) ? reservation.allergies : [];
-    const allergiesHTML = allergies.length > 0 
-        ? allergies.map(a => `<span class="tag tag-allergy">${escapeHTML(a)}</span>`).join('')
+    const allergiesHTML = reservation.allergies.length > 0 
+        ? reservation.allergies.map(a => `<span class="tag tag-allergy">${escapeHTML(a)}</span>`).join('')
         : '<span class="tag">Sin alergias</span>';
     
-    const diet = Array.isArray(reservation.diet) ? reservation.diet : [];
-    const dietHTML = diet.length > 0
-        ? diet.map(d => `<span class="tag tag-diet">${escapeHTML(d)}</span>`).join('')
+    const dietHTML = reservation.diet.length > 0
+        ? reservation.diet.map(d => `<span class="tag tag-diet">${escapeHTML(d)}</span>`).join('')
         : '<span class="tag">Sin restricciones</span>';
     
     const occasionText = reservation.occasion 
@@ -311,8 +249,8 @@ function createClientCard(reservation) {
         <div class="client-card fade-in">
             <div class="client-header">
                 <div>
-                    <div class="client-name">${fullName}</div>
-                    <div class="client-date">Registrado: ${submittedDate}</div>
+                    <div class="client-name">${escapeHTML(reservation.fullName)}</div>
+                    <div class="client-date">Registrado: ${escapeHTML(submittedDate)}</div>
                 </div>
                 <div>
                     <span class="badge badge-success">Activa</span>
@@ -323,30 +261,30 @@ function createClientCard(reservation) {
                 <div>
                     <div class="info-item">
                         <span class="info-label">📧 Email:</span>
-                        <span class="info-value"><a href="mailto:${email}" style="color: var(--accent);">${email}</a></span>
+                        <span class="info-value"><a href="mailto:${escapeHTML(reservation.email)}" style="color: var(--accent);">${escapeHTML(reservation.email)}</a></span>
                     </div>
                     <div class="info-item">
                         <span class="info-label">📱 Teléfono:</span>
-                        <span class="info-value"><a href="tel:${phone}" style="color: var(--accent);">${phone}</a></span>
+                        <span class="info-value"><a href="tel:${escapeHTML(reservation.phone)}" style="color: var(--accent);">${escapeHTML(reservation.phone)}</a></span>
                     </div>
                     <div class="info-item">
                         <span class="info-label">🎉 Ocasión:</span>
-                        <span class="info-value">${occasionText}</span>
+                        <span class="info-value">${escapeHTML(occasionText)}</span>
                     </div>
                 </div>
                 
                 <div>
                     <div class="info-item">
                         <span class="info-label">📅 Check-In:</span>
-                        <span class="info-value">${checkInDate}</span>
+                        <span class="info-value">${escapeHTML(checkInDate)}</span>
                     </div>
                     <div class="info-item">
                         <span class="info-label">📅 Check-Out:</span>
-                        <span class="info-value">${checkOutDate}</span>
+                        <span class="info-value">${escapeHTML(checkOutDate)}</span>
                     </div>
                     <div class="info-item">
                         <span class="info-label">👥 Personas:</span>
-                        <span class="info-value">${adults} adultos, ${children} niños</span>
+                        <span class="info-value">${escapeHTML(String(reservation.adults))} adultos, ${escapeHTML(String(reservation.children))} niños</span>
                     </div>
                 </div>
             </div>
@@ -364,7 +302,7 @@ function createClientCard(reservation) {
             ${preferences ? `
                 <div style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--light-gray);">
                     <div class="info-label" style="margin-bottom: 0.5rem;">💭 Preferencias Especiales:</div>
-                    <div class="info-value" style="font-style: italic; color: var(--dark-gray);">${preferences}</div>
+                    <div class="info-value" style="font-style: italic; color: var(--dark-gray);">${escapeHTML(reservation.preferences)}</div>
                 </div>
             ` : ''}
         </div>
@@ -392,17 +330,13 @@ function formatOccasion(occasion) {
  * Aplicar filtros
  */
 function applyFilters() {
-    const searchNameInput = document.getElementById('searchName');
-    const filterDateInput = document.getElementById('filterDate');
+    const searchNameEl = document.getElementById('searchName');
+    const filterDateEl = document.getElementById('filterDate');
     
-    // Null-safe checks
-    if (!searchNameInput || !filterDateInput) {
-        console.warn('Filter inputs not found / Campos de filtro no encontrados');
-        return;
-    }
+    if (!searchNameEl || !filterDateEl) return;
     
-    const searchName = searchNameInput.value.toLowerCase();
-    const filterDate = filterDateInput.value;
+    const searchName = searchNameEl.value.toLowerCase();
+    const filterDate = filterDateEl.value;
     
     filteredReservations = allReservations.filter(reservation => {
         let matchesName = true;
@@ -430,12 +364,11 @@ function applyFilters() {
  * Limpiar filtros
  */
 function clearFilters() {
-    const searchNameInput = document.getElementById('searchName');
-    const filterDateInput = document.getElementById('filterDate');
+    const searchNameEl = document.getElementById('searchName');
+    const filterDateEl = document.getElementById('filterDate');
     
-    if (searchNameInput) searchNameInput.value = '';
-    if (filterDateInput) filterDateInput.value = '';
-    
+    if (searchNameEl) searchNameEl.value = '';
+    if (filterDateEl) filterDateEl.value = '';
     filteredReservations = [...allReservations];
     renderClientsList();
 }
@@ -519,26 +452,26 @@ function copyToClipboard() {
         return;
     }
     
-    try {
-        let text = '=== RESERVACIONES CHEF FRANKO ===\n\n';
-        
-        allReservations.forEach((r, index) => {
-            text += `--- Reservación #${index + 1} ---\n`;
-            text += `Nombre: ${r.fullName || 'N/A'}\n`;
-            text += `Email: ${r.email || 'N/A'}\n`;
-            text += `Teléfono: ${r.phone || 'N/A'}\n`;
-            text += `Check-In: ${r.checkIn || 'N/A'}\n`;
-            text += `Check-Out: ${r.checkOut || 'N/A'}\n`;
-            text += `Personas: ${r.adults || 0} adultos, ${r.children || 0} niños\n`;
-            text += `Alergias: ${(r.allergies || []).join(', ') || 'Ninguna'}\n`;
-            text += `Dieta: ${(r.diet || []).join(', ') || 'Ninguna'}\n`;
-            text += `Ocasión: ${formatOccasion(r.occasion || '')}\n`;
-            if (r.preferences) {
-                text += `Preferencias: ${r.preferences}\n`;
-            }
-            text += `Registrado: ${r.submittedAt ? new Date(r.submittedAt).toLocaleString('es-MX') : 'N/A'}\n\n`;
-        });
-        
+    let text = '=== RESERVACIONES CHEF FRANKO ===\n\n';
+    
+    allReservations.forEach((r, index) => {
+        text += `--- Reservación #${index + 1} ---\n`;
+        text += `Nombre: ${r.fullName}\n`;
+        text += `Email: ${r.email}\n`;
+        text += `Teléfono: ${r.phone}\n`;
+        text += `Check-In: ${r.checkIn}\n`;
+        text += `Check-Out: ${r.checkOut}\n`;
+        text += `Personas: ${r.adults} adultos, ${r.children} niños\n`;
+        text += `Alergias: ${r.allergies.join(', ') || 'Ninguna'}\n`;
+        text += `Dieta: ${r.diet.join(', ') || 'Ninguna'}\n`;
+        text += `Ocasión: ${formatOccasion(r.occasion)}\n`;
+        if (r.preferences) {
+            text += `Preferencias: ${r.preferences}\n`;
+        }
+        text += `Registrado: ${new Date(r.submittedAt).toLocaleString('es-MX')}\n\n`;
+    });
+    
+    if (navigator.clipboard && navigator.clipboard.writeText && window.isSecureContext) {
         navigator.clipboard.writeText(text).then(() => {
             alert('Datos copiados al portapapeles');
         }).catch(() => {
@@ -547,6 +480,8 @@ function copyToClipboard() {
     } catch (error) {
         console.error('Error copying to clipboard / Error al copiar:', error);
         alert('Error al copiar. Por favor, use el botón de exportar CSV.');
+    } else {
+        alert('Su navegador no soporta copiar al portapapeles o el sitio no está en un contexto seguro (HTTPS). Por favor, use el botón de exportar CSV.');
     }
 }
 

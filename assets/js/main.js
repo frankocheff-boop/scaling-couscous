@@ -1,39 +1,23 @@
 /**
- * Chef Franko - Main JavaScript
- * Mobile navigation and general UI interactions
+ * Chef Franko - Main Navigation Script
+ * Handles navigation toggle with accessibility support
  */
 
-document.addEventListener('DOMContentLoaded', function() {
-    // Mobile navigation toggle
+document.addEventListener('DOMContentLoaded', function () {
     const navToggle = document.getElementById('navToggle');
     const navMenu = document.getElementById('navMenu');
-
-    if (navToggle && navMenu) {
-        navToggle.addEventListener('click', () => {
-            const isExpanded = navMenu.classList.contains('active');
-            
-            // Toggle menu visibility
-            navMenu.classList.toggle('active');
-            
-            // Update aria-expanded attribute for accessibility
-            navToggle.setAttribute('aria-expanded', !isExpanded);
-        });
-
-        // Close menu when clicking on a link
-        const navLinks = document.querySelectorAll('.nav-link');
-        navLinks.forEach(link => {
-            link.addEventListener('click', () => {
-                navMenu.classList.remove('active');
-                navToggle.setAttribute('aria-expanded', 'false');
-            });
-        });
-
-        // Close menu when clicking outside
-        document.addEventListener('click', (e) => {
-            if (!navToggle.contains(e.target) && !navMenu.contains(e.target)) {
-                navMenu.classList.remove('active');
-                navToggle.setAttribute('aria-expanded', 'false');
-            }
-        });
-    }
+    
+    if (!navToggle || !navMenu) return;
+    
+    navToggle.addEventListener('click', function () {
+        const isActive = navMenu.classList.toggle('active');
+        navToggle.setAttribute('aria-expanded', String(isActive));
+    });
+    
+    navMenu.addEventListener('click', function (e) {
+        if (e.target.tagName === 'A') {
+            navMenu.classList.remove('active');
+            navToggle.setAttribute('aria-expanded', 'false');
+        }
+    });
 });

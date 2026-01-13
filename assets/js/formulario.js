@@ -14,12 +14,14 @@ document.addEventListener('DOMContentLoaded', function() {
         return;
     }
 
+    // Early return if form doesn't exist on this page
+    if (!form || !alertContainer) return;
+
     // Establecer fecha mínima como hoy
     const today = new Date().toISOString().split('T')[0];
     const checkInField = document.getElementById('checkIn');
     const checkOutField = document.getElementById('checkOut');
     
-    // Null-safe checks for date fields
     if (checkInField) checkInField.setAttribute('min', today);
     if (checkOutField) checkOutField.setAttribute('min', today);
 
@@ -132,7 +134,6 @@ document.addEventListener('DOMContentLoaded', function() {
         const field = document.getElementById(fieldId);
         const errorDiv = document.getElementById(fieldId + 'Error');
         
-        // Use .has-error class instead of direct style manipulation
         if (field) {
             field.classList.add('has-error');
         }
@@ -149,7 +150,6 @@ document.addEventListener('DOMContentLoaded', function() {
         const field = document.getElementById(fieldId);
         const errorDiv = document.getElementById(fieldId + 'Error');
         
-        // Remove .has-error class instead of direct style manipulation
         if (field) {
             field.classList.remove('has-error');
         }
