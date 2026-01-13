@@ -732,12 +732,55 @@ main {
 }
 
 /* Skip link accessible */
-.skip-link { position: absolute; left: -9999px; top: auto; width: 1px; height: 1px; overflow: hidden; }
-.skip-link:focus { left: 1rem; top: 1rem; width: auto; height: auto; background: var(--white); color: var(--secondary); padding: 0.5rem 1rem; border-radius: 4px; z-index: 2000; }
-:focus-visible { outline: 3px solid var(--primary); outline-offset: 3px; }
-@media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
-.accent-link { color: var(--accent); text-decoration: underline; }
-.has-error { border-color: var(--danger) !important; }
+./* Error state for form inputs */
+.has-error {
+    border-color: var(--danger) !important;
+    background-color: rgba(231, 76, 60, 0.05);
+}
+
+/* Skip link accessible */
+.skip-link { 
+    position: absolute; 
+    left: -9999px; 
+    top: auto; 
+    width: 1px; 
+    height: 1px; 
+    overflow: hidden; 
+}
+
+.skip-link:focus { 
+    left: 1rem; 
+    top: 1rem; 
+    width: auto; 
+    height: auto; 
+    background: var(--white); 
+    color: var(--secondary); 
+    padding: 0.5rem 1rem; 
+    border-radius: 4px; 
+    z-index: 2000; 
+}
+
+:focus-visible { 
+    outline: 3px solid var(--primary); 
+    outline-offset: 3px; 
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}
+
+.accent-link { 
+    color: var(--accent); 
+    text-decoration: underline; 
+}
 
 /* Google Translate Widget Styles */
 #google_translate_element {
@@ -777,11 +820,11 @@ body {
     border: 1px solid var(--light-gray) !important;
     border-radius: 5px !important;
     background-color: var(--white) !important;
-    color: var(--text) !important;
+    color: var(--secondary) !important; /* Corregido: antes decía --0065 */
     max-width: 150px;
 }
 
-/* Responsive - hide on mobile if needed */
+/* Responsive - hide on mobile */
 @media (max-width: 768px) {
     #google_translate_element {
         display: none;
