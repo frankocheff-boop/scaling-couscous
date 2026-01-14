@@ -324,34 +324,55 @@
 
     <!-- Scripts -->
     <script>
-        // Gallery data - Placeholder images
+        // Gallery data - Professional Unsplash images
         const galleryData = [
             // Platillos
-            { id: 1, category: 'platillos', title: 'Tartar de Atún', image: 'https://placehold.co/400x400/D4AF37/FFFFFF?text=Tartar+de+Atun' },
-            { id: 2, category: 'platillos', title: 'Filete Mignon', image: 'https://placehold.co/400x400/8B4513/FFFFFF?text=Filete+Mignon' },
-            { id: 3, category: 'platillos', title: 'Langosta a la Parrilla', image: 'https://placehold.co/400x400/E74C3C/FFFFFF?text=Langosta' },
-            { id: 4, category: 'platillos', title: 'Risotto de Mariscos', image: 'https://placehold.co/400x400/1ABC9C/FFFFFF?text=Risotto' },
-            { id: 5, category: 'platillos', title: 'Pato Confitado', image: 'https://placehold.co/400x400/34495E/FFFFFF?text=Pato' },
-            { id: 6, category: 'platillos', title: 'Lava Cake', image: 'https://placehold.co/400x400/6F4E37/FFFFFF?text=Lava+Cake' },
-            { id: 7, category: 'platillos', title: 'Ceviche', image: 'https://placehold.co/400x400/E67E22/FFFFFF?text=Ceviche' },
-            { id: 8, category: 'platillos', title: 'Carpaccio de Res', image: 'https://placehold.co/400x400/2C3E50/FFFFFF?text=Carpaccio' },
-            { id: 9, category: 'platillos', title: 'Pulpo a la Parrilla', image: 'https://placehold.co/400x400/9B59B6/FFFFFF?text=Pulpo' },
+            { id: 1, category: 'platillos', title: 'Tartar de Atún', image: 'https://images.unsplash.com/photo-1580959375944-a5113b6f0d9f?w=400&h=400&fit=crop&q=80' },
+            { id: 2, category: 'platillos', title: 'Filete Mignon', image: 'https://images.unsplash.com/photo-1558030006-450675393462?w=400&h=400&fit=crop&q=80' },
+            { id: 3, category: 'platillos', title: 'Langosta a la Parrilla', image: 'https://images.unsplash.com/photo-1589970234952-eb155f3eda6f?w=400&h=400&fit=crop&q=80' },
+            { id: 4, category: 'platillos', title: 'Risotto de Mariscos', image: 'https://images.unsplash.com/photo-1476124369491-c801669cad05?w=400&h=400&fit=crop&q=80' },
+            { id: 5, category: 'platillos', title: 'Pato Confitado', image: 'https://images.unsplash.com/photo-1626200419199-391ae4be7a41?w=400&h=400&fit=crop&q=80' },
+            { id: 6, category: 'platillos', title: 'Lava Cake', image: 'https://images.unsplash.com/photo-1624353365286-3f8d62daad51?w=400&h=400&fit=crop&q=80' },
+            { id: 7, category: 'platillos', title: 'Ceviche', image: 'https://images.unsplash.com/photo-1641239378248-f1df1979d6e6?w=400&h=400&fit=crop&q=80' },
+            { id: 8, category: 'platillos', title: 'Carpaccio de Res', image: 'https://images.unsplash.com/photo-1544025162-d76694265947?w=400&h=400&fit=crop&q=80' },
+            { id: 9, category: 'platillos', title: 'Pulpo a la Parrilla', image: 'https://images.unsplash.com/photo-1625944525533-473f1a3d54e7?w=400&h=400&fit=crop&q=80' },
+            { id: 22, category: 'platillos', title: 'Salmón a la Parrilla', image: 'https://images.unsplash.com/photo-1485921325833-c519f76c4927?w=400&h=400&fit=crop&q=80' },
+            { id: 23, category: 'platillos', title: 'Tacos Gourmet', image: 'https://images.unsplash.com/photo-1565299585323-38d6b0865b47?w=400&h=400&fit=crop&q=80' },
+            { id: 24, category: 'platillos', title: 'Pasta Fresca', image: 'https://images.unsplash.com/photo-1621996346565-e3dbc646d9a9?w=400&h=400&fit=crop&q=80' },
+            { id: 25, category: 'platillos', title: 'Sopa de Mariscos', image: 'https://images.unsplash.com/photo-1612927601601-6638404737ce?w=400&h=400&fit=crop&q=80' },
+            { id: 26, category: 'platillos', title: 'Ensalada Mediterránea', image: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400&h=400&fit=crop&q=80' },
+            { id: 27, category: 'platillos', title: 'Costillas BBQ', image: 'https://images.unsplash.com/photo-1529193591184-b1d58069ecdd?w=400&h=400&fit=crop&q=80' },
+            { id: 28, category: 'platillos', title: 'Tarta de Frutas', image: 'https://images.unsplash.com/photo-1565958011703-44f9829ba187?w=400&h=400&fit=crop&q=80' },
+            { id: 29, category: 'platillos', title: 'Tiramisu', image: 'https://images.unsplash.com/photo-1571877227200-a0d98ea607e9?w=400&h=400&fit=crop&q=80' },
+            { id: 30, category: 'platillos', title: 'Crème Brûlée', image: 'https://images.unsplash.com/photo-1470124182917-cc6e71b22ecc?w=400&h=400&fit=crop&q=80' },
             
             // Eventos
-            { id: 10, category: 'eventos', title: 'Cena Privada en Villa', image: 'https://placehold.co/400x400/27AE60/FFFFFF?text=Cena+Privada' },
-            { id: 11, category: 'eventos', title: 'Evento Corporativo', image: 'https://placehold.co/400x400/3498DB/FFFFFF?text=Corporativo' },
-            { id: 12, category: 'eventos', title: 'Boda en Playa', image: 'https://placehold.co/400x400/E8B4B8/FFFFFF?text=Boda' },
-            { id: 13, category: 'eventos', title: 'Celebración de Aniversario', image: 'https://placehold.co/400x400/F39C12/FFFFFF?text=Aniversario' },
-            { id: 14, category: 'eventos', title: 'Cumpleaños Especial', image: 'https://placehold.co/400x400/9B59B6/FFFFFF?text=Cumpleanos' },
-            { id: 15, category: 'eventos', title: 'Cena Romántica', image: 'https://placehold.co/400x400/C0392B/FFFFFF?text=Romantica' },
+            { id: 10, category: 'eventos', title: 'Cena Privada en Villa', image: 'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=400&h=400&fit=crop&q=80' },
+            { id: 11, category: 'eventos', title: 'Evento Corporativo', image: 'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=400&h=400&fit=crop&q=80' },
+            { id: 12, category: 'eventos', title: 'Boda en Playa', image: 'https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=400&h=400&fit=crop&q=80' },
+            { id: 13, category: 'eventos', title: 'Celebración de Aniversario', image: 'https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?w=400&h=400&fit=crop&q=80' },
+            { id: 14, category: 'eventos', title: 'Cumpleaños Especial', image: 'https://images.unsplash.com/photo-1530103862676-de8c9debad1d?w=400&h=400&fit=crop&q=80' },
+            { id: 15, category: 'eventos', title: 'Cena Romántica', image: 'https://images.unsplash.com/photo-1470337458703-46ad1756a187?w=400&h=400&fit=crop&q=80' },
+            { id: 31, category: 'eventos', title: 'Brunch Ejecutivo', image: 'https://images.unsplash.com/photo-1482049016688-2d3e1b311543?w=400&h=400&fit=crop&q=80' },
+            { id: 32, category: 'eventos', title: 'Fiesta de Fin de Año', image: 'https://images.unsplash.com/photo-1467810563316-b5476525c0f9?w=400&h=400&fit=crop&q=80' },
+            { id: 33, category: 'eventos', title: 'Despedida de Soltera', image: 'https://images.unsplash.com/photo-1527529482837-4698179dc6ce?w=400&h=400&fit=crop&q=80' },
+            { id: 34, category: 'eventos', title: 'Baby Shower', image: 'https://images.unsplash.com/photo-1618397746666-63405ce5d015?w=400&h=400&fit=crop&q=80' },
+            { id: 35, category: 'eventos', title: 'Graduación', image: 'https://images.unsplash.com/photo-1523580494863-6f3031224c94?w=400&h=400&fit=crop&q=80' },
+            { id: 36, category: 'eventos', title: 'Cóctel Empresarial', image: 'https://images.unsplash.com/photo-1560264280-88b68371db39?w=400&h=400&fit=crop&q=80' },
             
             // Behind the Scenes
-            { id: 16, category: 'behind', title: 'En la Cocina', image: 'https://placehold.co/400x400/7F8C8D/FFFFFF?text=Cocina' },
-            { id: 17, category: 'behind', title: 'Preparación de Ingredientes', image: 'https://placehold.co/400x400/16A085/FFFFFF?text=Prep' },
-            { id: 18, category: 'behind', title: 'Mise en Place', image: 'https://placehold.co/400x400/2980B9/FFFFFF?text=Mise+en+Place' },
-            { id: 19, category: 'behind', title: 'Equipo en Acción', image: 'https://placehold.co/400x400/8E44AD/FFFFFF?text=Equipo' },
-            { id: 20, category: 'behind', title: 'Montaje de Platos', image: 'https://placehold.co/400x400/D35400/FFFFFF?text=Montaje' },
-            { id: 21, category: 'behind', title: 'Presentación Final', image: 'https://placehold.co/400x400/27AE60/FFFFFF?text=Presentacion' }
+            { id: 16, category: 'behind', title: 'En la Cocina', image: 'https://images.unsplash.com/photo-1556910103-1c02745aae4d?w=400&h=400&fit=crop&q=80' },
+            { id: 17, category: 'behind', title: 'Preparación de Ingredientes', image: 'https://images.unsplash.com/photo-1466637574441-749b8f19452f?w=400&h=400&fit=crop&q=80' },
+            { id: 18, category: 'behind', title: 'Mise en Place', image: 'https://images.unsplash.com/photo-1577219491135-ce391730fb4c?w=400&h=400&fit=crop&q=80' },
+            { id: 19, category: 'behind', title: 'Equipo en Acción', image: 'https://images.unsplash.com/photo-1600565193348-f74bd3c7ccdf?w=400&h=400&fit=crop&q=80' },
+            { id: 20, category: 'behind', title: 'Montaje de Platos', image: 'https://images.unsplash.com/photo-1571997478779-2adcbbe9ab2f?w=400&h=400&fit=crop&q=80' },
+            { id: 21, category: 'behind', title: 'Presentación Final', image: 'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=400&h=400&fit=crop&q=80' },
+            { id: 37, category: 'behind', title: 'Flambeado', image: 'https://images.unsplash.com/photo-1595295333158-4742f28fbd85?w=400&h=400&fit=crop&q=80' },
+            { id: 38, category: 'behind', title: 'Decoración de Postres', image: 'https://images.unsplash.com/photo-1579372786545-d24232daf58c?w=400&h=400&fit=crop&q=80' },
+            { id: 39, category: 'behind', title: 'Corte de Carnes', image: 'https://images.unsplash.com/photo-1588168333986-5078d3ae3976?w=400&h=400&fit=crop&q=80' },
+            { id: 40, category: 'behind', title: 'Selección de Vinos', image: 'https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=400&h=400&fit=crop&q=80' },
+            { id: 41, category: 'behind', title: 'Organización de Cocina', image: 'https://images.unsplash.com/photo-1556910096-6f5e72db6803?w=400&h=400&fit=crop&q=80' },
+            { id: 42, category: 'behind', title: 'Servicio al Cliente', image: 'https://images.unsplash.com/photo-1559339352-11d035aa65de?w=400&h=400&fit=crop&q=80' }
         ];
 
         let currentFilter = 'all';
