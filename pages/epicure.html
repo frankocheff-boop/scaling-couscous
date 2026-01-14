@@ -163,17 +163,21 @@
     <!-- Navigation -->
     <nav class="navbar">
         <div class="nav-container">
-            <a href="../index.html" class="nav-logo">Chef Franko</a>
+            <a href="../index.html" class="nav-logo">
+                <img src="../assets/fotos-img-png/img(chef4you.jpg" alt="Chef 4 You by Chef Franko" style="height: 50px;">
+            </a>
             <button class="nav-toggle" id="navToggle">☰</button>
             <ul class="nav-menu" id="navMenu">
                 <li><a href="../index.html" class="nav-link">Inicio</a></li>
                 <li><a href="formulario-cliente.html" class="nav-link">Reservar</a></li>
                 <li><a href="menu-pos.html" class="nav-link">Menú POS</a></li>
                 <li><a href="epicure.html" class="nav-link">Épicure</a></li>
+                <li><a href="../menu de verano/index.html" class="nav-link">Menú de Verano</a></li>
                 <li><a href="galeria.html" class="nav-link">Galería</a></li>
                 <li><a href="cv.html" class="nav-link">CV</a></li>
                 <li><a href="dashboard-admin.html" class="nav-link">Admin</a></li>
             </ul>
+            <div id="google_translate_element" class="translate-widget"></div>
         </div>
     </nav>
 
@@ -181,6 +185,77 @@
     <section class="epicure-hero">
         <h1>Menú Épicure</h1>
         <p>Una selección de mis creaciones más especiales, donde la técnica se encuentra con la pasión</p>
+    </section>
+
+    <!-- Signature Menu Section -->
+    <section class="epicure-section" style="background: linear-gradient(to bottom, var(--white), var(--background));">
+        <div class="container">
+            <h2 class="epicure-category-title">Menú Épicure Signature</h2>
+            <div class="divider"></div>
+            <p class="epicure-category-subtitle">Creaciones exclusivas del Chef Franko - La vanguardia de la alta cocina</p>
+            
+            <div class="epicure-grid">
+                <div class="epicure-card fade-in">
+                    <img src="../assets/fotos-img-png/macarron de foiegrass.png" alt="Macarons de Foie Gras" class="epicure-card-image">
+                    <span class="epicure-badge">Signature</span>
+                    <div class="epicure-card-content">
+                        <h3 class="epicure-dish-name">Macarons de Foie Gras</h3>
+                        <p class="epicure-dish-description">
+                            Macarons dorados rellenos de foie gras cremoso, coronados con reducción de frutos rojos 
+                            y microgreens frescos. Una fusión perfecta entre la pastelería francesa y la haute cuisine.
+                        </p>
+                        <p class="epicure-dish-ingredients">
+                            Foie gras, almendra, frutos rojos, microgreens, reducción balsámica
+                        </p>
+                    </div>
+                </div>
+
+                <div class="epicure-card fade-in">
+                    <img src="../assets/fotos-img-png/langosta concha nitrogeno.JPG" alt="Langosta con Nitrógeno" class="epicure-card-image">
+                    <span class="epicure-badge">Chef's Choice</span>
+                    <div class="epicure-card-content">
+                        <h3 class="epicure-dish-name">Langosta con Nitrógeno Líquido</h3>
+                        <p class="epicure-dish-description">
+                            Espectacular presentación de langosta fresca con técnica de nitrógeno líquido, 
+                            creando una experiencia visual y gastronómica única. Servida en su concha natural.
+                        </p>
+                        <p class="epicure-dish-ingredients">
+                            Langosta, nitrógeno líquido, hierbas aromáticas, mantequilla clarificada
+                        </p>
+                    </div>
+                </div>
+
+                <div class="epicure-card fade-in">
+                    <img src="../assets/fotos-img-png/ravioly.png" alt="Ravioli Artesanal" class="epicure-card-image">
+                    <span class="epicure-badge">Signature</span>
+                    <div class="epicure-card-content">
+                        <h3 class="epicure-dish-name">Ravioli Artesanal de Autor</h3>
+                        <p class="epicure-dish-description">
+                            Ravioli translúcido elaborado a mano sobre cama verde aromática, acompañado de tuile 
+                            crujiente naranja y delicada salsa de azafrán. Técnica y sabor en perfecta armonía.
+                        </p>
+                        <p class="epicure-dish-ingredients">
+                            Pasta fresca, relleno de mariscos, azafrán, espinaca, tuile de parmesano
+                        </p>
+                    </div>
+                </div>
+
+                <div class="epicure-card fade-in">
+                    <img src="../assets/fotos-img-png/esferificacion de maracuya.png" alt="Esferificación de Maracuyá" class="epicure-card-image">
+                    <span class="epicure-badge">Chef's Choice</span>
+                    <div class="epicure-card-content">
+                        <h3 class="epicure-dish-name">Esferificación de Maracuyá</h3>
+                        <p class="epicure-dish-description">
+                            Esfera perfecta de maracuyá sobre piedras volcánicas estilo zen, coronada con microgreens. 
+                            Un postre de autor que explota en el paladar con intensidad tropical.
+                        </p>
+                        <p class="epicure-dish-ingredients">
+                            Maracuyá, alginato de sodio, cloruro de calcio, microgreens, azúcar
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
     </section>
 
     <!-- Amuse-Bouche Section -->
@@ -207,29 +282,27 @@
                 </div>
 
                 <div class="epicure-card fade-in">
-                    <img src="https://placehold.co/400x250/E67E22/FFFFFF?text=Ceviche" alt="Ceviche" class="epicure-card-image">
+                    <img src="../assets/ceviche-pescado.png" alt="Ceviche de Pescado" class="epicure-card-image">
                     <div class="epicure-card-content">
-                        <h3 class="epicure-dish-name">Ceviche de Pescado Blanco</h3>
+                        <h3 class="epicure-dish-name">Ceviche de Pescado</h3>
                         <p class="epicure-dish-description">
-                            Pescado del día marinado en jugo de limón con cilantro, cebolla morada y ají limo. 
-                            Acompañado de camote dulce y maíz tostado.
+                            Pescado fresco del día marinado en cítricos, cebolla morada, cilantro, chile serrano y toque de aguacate.
                         </p>
                         <p class="epicure-dish-ingredients">
-                            Pescado blanco, limón, cilantro, ají limo, camote
+                            Pescado blanco, cítricos, cebolla morada, cilantro, chile serrano, aguacate
                         </p>
                     </div>
                 </div>
 
                 <div class="epicure-card fade-in">
-                    <img src="https://placehold.co/400x250/2C3E50/FFFFFF?text=Carpaccio" alt="Carpaccio" class="epicure-card-image">
+                    <img src="../assets/Gemini_Generated_Image_carpacio de res4o7kox4o7kox4o7k.png" alt="Carpaccio de Res" class="epicure-card-image">
                     <div class="epicure-card-content">
                         <h3 class="epicure-dish-name">Carpaccio de Res</h3>
                         <p class="epicure-dish-description">
-                            Finas láminas de filete de res, rúcula, parmesano envejecido y reducción balsámica 
-                            con aceite de trufa blanca.
+                            Finas láminas de res premium, aceite de oliva extra virgen, alcaparras, rúcula fresca y lascas de parmesano.
                         </p>
                         <p class="epicure-dish-ingredients">
-                            Filete de res, rúcula, parmesano, trufa, balsámico
+                            Res premium, aceite de oliva extra virgen, alcaparras, rúcula, parmesano
                         </p>
                     </div>
                 </div>
@@ -476,6 +549,7 @@
     <!-- Footer -->
     <footer class="footer">
         <div class="footer-content">
+            <img src="../assets/fotos-img-png/img(chef4you.jpg" alt="Chef 4 You by Chef Franko" class="footer-logo">
             <p style="margin-bottom: 0.5rem;">
                 <span class="footer-heart">💛</span> Creado por Franko & SOL
             </p>
@@ -531,5 +605,18 @@
             observer.observe(card);
         });
     </script>
+
+    <!-- Google Translate -->
+    <script>
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({
+        pageLanguage: 'es',
+        includedLanguages: 'en,fr,de,it,pt,ja,zh-CN,ko,ru',
+        layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+        autoDisplay: false
+      }, 'google_translate_element');
+    }
+    </script>
+    <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 </body>
 </html>

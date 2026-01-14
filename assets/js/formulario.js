@@ -7,17 +7,31 @@
 document.addEventListener('DOMContentLoaded', function() {
     const form = document.getElementById('clientForm');
     const alertContainer = document.getElementById('alertContainer');
+    
+    // Null-safe guard: Exit if required elements don't exist
+    if (!form || !alertContainer) {
+        console.error('Required form elements not found');
+        return;
+    }
+
+    // Early return if form doesn't exist on this page
+    if (!form || !alertContainer) return;
 
     // Establecer fecha mínima como hoy
     const today = new Date().toISOString().split('T')[0];
-    document.getElementById('checkIn').setAttribute('min', today);
-    document.getElementById('checkOut').setAttribute('min', today);
+    const checkInField = document.getElementById('checkIn');
+    const checkOutField = document.getElementById('checkOut');
+    
+    if (checkInField) checkInField.setAttribute('min', today);
+    if (checkOutField) checkOutField.setAttribute('min', today);
 
     // Actualizar fecha mínima de check-out cuando cambia check-in
-    document.getElementById('checkIn').addEventListener('change', function() {
-        const checkInDate = this.value;
-        document.getElementById('checkOut').setAttribute('min', checkInDate);
-    });
+    if (checkInField && checkOutField) {
+        checkInField.addEventListener('change', function() {
+            const checkInDate = this.value;
+            checkOutField.setAttribute('min', checkInDate);
+        });
+    }
 
     // Manejar el envío del formulario
     form.addEventListener('submit', function(e) {
@@ -53,30 +67,30 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Validar nombre completo
         const fullName = document.getElementById('fullName');
-        if (fullName.value.trim().length < 3) {
+        if (fullName && fullName.value.trim().length < 3) {
             showError('fullName', 'El nombre debe tener al menos 3 caracteres');
             isValid = false;
-        } else {
+        } else if (fullName) {
             hideError('fullName');
         }
 
         // Validar email
         const email = document.getElementById('email');
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailRegex.test(email.value)) {
+        if (email && !emailRegex.test(email.value)) {
             showError('email', 'Por favor ingrese un email válido');
             isValid = false;
-        } else {
+        } else if (email) {
             hideError('email');
         }
 
         // Validar teléfono
         const phone = document.getElementById('phone');
         const phoneRegex = /^[\d\s\+\-\(\)]+$/;
-        if (phone.value.trim().length < 8 || !phoneRegex.test(phone.value)) {
+        if (phone && (phone.value.trim().length < 8 || !phoneRegex.test(phone.value))) {
             showError('phone', 'Por favor ingrese un teléfono válido');
             isValid = false;
-        } else {
+        } else if (phone) {
             hideError('phone');
         }
 
@@ -84,29 +98,29 @@ document.addEventListener('DOMContentLoaded', function() {
         const checkIn = document.getElementById('checkIn');
         const checkOut = document.getElementById('checkOut');
         
-        if (!checkIn.value) {
+        if (checkIn && !checkIn.value) {
             showError('checkIn', 'Por favor seleccione una fecha de check-in');
             isValid = false;
-        } else {
+        } else if (checkIn) {
             hideError('checkIn');
         }
 
-        if (!checkOut.value) {
+        if (checkOut && !checkOut.value) {
             showError('checkOut', 'Por favor seleccione una fecha de check-out');
             isValid = false;
-        } else if (checkIn.value && new Date(checkOut.value) <= new Date(checkIn.value)) {
+        } else if (checkOut && checkIn && checkIn.value && new Date(checkOut.value) <= new Date(checkIn.value)) {
             showError('checkOut', 'La fecha de check-out debe ser posterior al check-in');
             isValid = false;
-        } else {
+        } else if (checkOut) {
             hideError('checkOut');
         }
 
         // Validar número de adultos
         const adults = document.getElementById('adults');
-        if (parseInt(adults.value) < 1) {
+        if (adults && parseInt(adults.value) < 1) {
             showError('adults', 'Debe haber al menos 1 adulto');
             isValid = false;
-        } else {
+        } else if (adults) {
             hideError('adults');
         }
 
@@ -120,7 +134,9 @@ document.addEventListener('DOMContentLoaded', function() {
         const field = document.getElementById(fieldId);
         const errorDiv = document.getElementById(fieldId + 'Error');
         
-        field.style.borderColor = 'var(--danger)';
+        if (field) {
+            field.classList.add('has-error');
+        }
         if (errorDiv) {
             errorDiv.textContent = message;
             errorDiv.classList.add('active');
@@ -134,7 +150,9 @@ document.addEventListener('DOMContentLoaded', function() {
         const field = document.getElementById(fieldId);
         const errorDiv = document.getElementById(fieldId + 'Error');
         
-        field.style.borderColor = 'var(--light-gray)';
+        if (field) {
+            field.classList.remove('has-error');
+        }
         if (errorDiv) {
             errorDiv.classList.remove('active');
         }
@@ -152,19 +170,30 @@ document.addEventListener('DOMContentLoaded', function() {
         const diet = Array.from(document.querySelectorAll('input[name="diet"]:checked'))
             .map(cb => cb.value);
 
+        // Null-safe access with defaults and trimming
+        const fullNameField = document.getElementById('fullName');
+        const emailField = document.getElementById('email');
+        const phoneField = document.getElementById('phone');
+        const checkInField = document.getElementById('checkIn');
+        const checkOutField = document.getElementById('checkOut');
+        const adultsField = document.getElementById('adults');
+        const childrenField = document.getElementById('children');
+        const occasionField = document.getElementById('occasion');
+        const preferencesField = document.getElementById('preferences');
+
         const formData = {
             id: Date.now(), // ID único basado en timestamp
-            fullName: document.getElementById('fullName').value.trim(),
-            email: document.getElementById('email').value.trim(),
-            phone: document.getElementById('phone').value.trim(),
-            checkIn: document.getElementById('checkIn').value,
-            checkOut: document.getElementById('checkOut').value,
-            adults: parseInt(document.getElementById('adults').value),
-            children: parseInt(document.getElementById('children').value),
+            fullName: fullNameField ? fullNameField.value.trim() : '',
+            email: emailField ? emailField.value.trim() : '',
+            phone: phoneField ? phoneField.value.trim() : '',
+            checkIn: checkInField ? checkInField.value : '',
+            checkOut: checkOutField ? checkOutField.value : '',
+            adults: adultsField ? parseInt(adultsField.value) : 0,
+            children: childrenField ? parseInt(childrenField.value) : 0,
             allergies: allergies,
             diet: diet,
-            occasion: document.getElementById('occasion').value,
-            preferences: document.getElementById('preferences').value.trim(),
+            occasion: occasionField ? occasionField.value : '',
+            preferences: preferencesField ? preferencesField.value.trim() : '',
             submittedAt: new Date().toISOString(),
             status: 'pending'
         };

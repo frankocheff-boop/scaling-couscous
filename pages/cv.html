@@ -302,17 +302,21 @@
     <!-- Navigation -->
     <nav class="navbar">
         <div class="nav-container">
-            <a href="../index.html" class="nav-logo">Chef Franko</a>
+            <a href="../index.html" class="nav-logo">
+                <img src="../assets/fotos-img-png/img(chef4you.jpg" alt="Chef 4 You by Chef Franko" style="height: 50px;">
+            </a>
             <button class="nav-toggle" id="navToggle">☰</button>
             <ul class="nav-menu" id="navMenu">
                 <li><a href="../index.html" class="nav-link">Inicio</a></li>
                 <li><a href="formulario-cliente.html" class="nav-link">Reservar</a></li>
                 <li><a href="menu-pos.html" class="nav-link">Menú POS</a></li>
                 <li><a href="epicure.html" class="nav-link">Épicure</a></li>
+                <li><a href="../menu de verano/index.html" class="nav-link">Menú de Verano</a></li>
                 <li><a href="galeria.html" class="nav-link">Galería</a></li>
                 <li><a href="cv.html" class="nav-link">CV</a></li>
                 <li><a href="dashboard-admin.html" class="nav-link">Admin</a></li>
             </ul>
+            <div id="google_translate_element" class="translate-widget"></div>
         </div>
     </nav>
 
@@ -674,6 +678,7 @@
     <!-- Footer -->
     <footer class="footer">
         <div class="footer-content">
+            <img src="../assets/fotos-img-png/img(chef4you.jpg" alt="Chef 4 You by Chef Franko" class="footer-logo">
             <p style="margin-bottom: 0.5rem;">
                 <span class="footer-heart">💛</span> Creado por Franko & SOL
             </p>
@@ -731,5 +736,18 @@
             observer.observe(grid);
         });
     </script>
+
+    <!-- Google Translate -->
+    <script>
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({
+        pageLanguage: 'es',
+        includedLanguages: 'en,fr,de,it,pt,ja,zh-CN,ko,ru',
+        layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+        autoDisplay: false
+      }, 'google_translate_element');
+    }
+    </script>
+    <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 </body>
 </html>
