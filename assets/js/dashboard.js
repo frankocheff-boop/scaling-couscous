@@ -456,15 +456,15 @@ function copyToClipboard() {
     
     allReservations.forEach((r, index) => {
         text += `--- Reservación #${index + 1} ---\n`;
-        text += `Nombre: ${r.fullName}\n`;
-        text += `Email: ${r.email}\n`;
-        text += `Teléfono: ${r.phone}\n`;
-        text += `Check-In: ${r.checkIn}\n`;
-        text += `Check-Out: ${r.checkOut}\n`;
-        text += `Personas: ${r.adults} adultos, ${r.children} niños\n`;
-        text += `Alergias: ${r.allergies.join(', ') || 'Ninguna'}\n`;
-        text += `Dieta: ${r.diet.join(', ') || 'Ninguna'}\n`;
-        text += `Ocasión: ${formatOccasion(r.occasion)}\n`;
+        text += `Nombre: ${r.fullName || 'N/A'}\n`;
+        text += `Email: ${r.email || 'N/A'}\n`;
+        text += `Teléfono: ${r.phone || 'N/A'}\n`;
+        text += `Check-In: ${r.checkIn || 'N/A'}\n`;
+        text += `Check-Out: ${r.checkOut || 'N/A'}\n`;
+        text += `Personas: ${r.adults || 0} adultos, ${r.children || 0} niños\n`;
+        text += `Alergias: ${(r.allergies && r.allergies.length > 0) ? r.allergies.join(', ') : 'Ninguna'}\n`;
+        text += `Dieta: ${(r.diet && r.diet.length > 0) ? r.diet.join(', ') : 'Ninguna'}\n`;
+        text += `Ocasión: ${formatOccasion(r.occasion) || 'N/A'}\n`;
         if (r.preferences) {
             text += `Preferencias: ${r.preferences}\n`;
         }

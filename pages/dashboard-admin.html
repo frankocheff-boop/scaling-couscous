@@ -175,6 +175,9 @@
     </style>
 </head>
 <body>
+    <!-- Skip Link -->
+    <a href="#dashboardContent" class="skip-link">Saltar al contenido principal</a>
+    
     <!-- Login Modal -->
     <div id="loginModal" class="active">
         <div class="login-box">
@@ -290,18 +293,24 @@
         const navMenu = document.getElementById('navMenu');
 
         navToggle.addEventListener('click', () => {
-            navMenu.classList.toggle('active');
+            const isExpanded = navMenu.classList.toggle('active');
+            navToggle.setAttribute('aria-expanded', isExpanded);
+            navToggle.setAttribute('aria-label', isExpanded ? 'Cerrar menú' : 'Abrir menú');
         });
 
         document.querySelectorAll('.nav-link').forEach(link => {
             link.addEventListener('click', () => {
                 navMenu.classList.remove('active');
+                navToggle.setAttribute('aria-expanded', 'false');
+                navToggle.setAttribute('aria-label', 'Abrir menú');
             });
         });
 
         document.addEventListener('click', (e) => {
             if (!navToggle.contains(e.target) && !navMenu.contains(e.target)) {
                 navMenu.classList.remove('active');
+                navToggle.setAttribute('aria-expanded', 'false');
+                navToggle.setAttribute('aria-label', 'Abrir menú');
             }
         });
 
