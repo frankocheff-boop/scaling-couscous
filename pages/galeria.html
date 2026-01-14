@@ -16,7 +16,7 @@
     <style>
         .gallery-hero {
             background: linear-gradient(135deg, rgba(44, 62, 80, 0.9), rgba(212, 175, 55, 0.8)),
-                        url('https://placehold.co/1920x400/2C3E50/FFFFFF?text=Gallery');
+                        url('https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=1920&h=400&fit=crop&q=80');
             background-size: cover;
             background-position: center;
             color: var(--white);
@@ -324,34 +324,34 @@
 
     <!-- Scripts -->
     <script>
-        // Gallery data - Placeholder images
+        // Gallery data - Real Unsplash images
         const galleryData = [
             // Platillos
-            { id: 1, category: 'platillos', title: 'Tartar de Atún', image: 'https://placehold.co/400x400/D4AF37/FFFFFF?text=Tartar+de+Atun' },
-            { id: 2, category: 'platillos', title: 'Filete Mignon', image: 'https://placehold.co/400x400/8B4513/FFFFFF?text=Filete+Mignon' },
-            { id: 3, category: 'platillos', title: 'Langosta a la Parrilla', image: 'https://placehold.co/400x400/E74C3C/FFFFFF?text=Langosta' },
-            { id: 4, category: 'platillos', title: 'Risotto de Mariscos', image: 'https://placehold.co/400x400/1ABC9C/FFFFFF?text=Risotto' },
-            { id: 5, category: 'platillos', title: 'Pato Confitado', image: 'https://placehold.co/400x400/34495E/FFFFFF?text=Pato' },
-            { id: 6, category: 'platillos', title: 'Lava Cake', image: 'https://placehold.co/400x400/6F4E37/FFFFFF?text=Lava+Cake' },
-            { id: 7, category: 'platillos', title: 'Ceviche', image: 'https://placehold.co/400x400/E67E22/FFFFFF?text=Ceviche' },
-            { id: 8, category: 'platillos', title: 'Carpaccio de Res', image: 'https://placehold.co/400x400/2C3E50/FFFFFF?text=Carpaccio' },
-            { id: 9, category: 'platillos', title: 'Pulpo a la Parrilla', image: 'https://placehold.co/400x400/9B59B6/FFFFFF?text=Pulpo' },
+            { id: 1, category: 'platillos', title: 'Tartar de Atún', image: 'https://images.unsplash.com/photo-1579584425555-c3ce17fd4351?w=400&h=400&fit=crop&q=80' },
+            { id: 2, category: 'platillos', title: 'Filete Mignon', image: 'https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=400&h=400&fit=crop&q=80' },
+            { id: 3, category: 'platillos', title: 'Langosta a la Parrilla', image: 'https://images.unsplash.com/photo-1625944525533-473f1a3d54e7?w=400&h=400&fit=crop&q=80' },
+            { id: 4, category: 'platillos', title: 'Risotto de Mariscos', image: 'https://images.unsplash.com/photo-1476124369491-f6e5f8dd1b4b?w=400&h=400&fit=crop&q=80' },
+            { id: 5, category: 'platillos', title: 'Pato Confitado', image: 'https://images.unsplash.com/photo-1606851094291-bf48e0781a93?w=400&h=400&fit=crop&q=80' },
+            { id: 6, category: 'platillos', title: 'Lava Cake', image: 'https://images.unsplash.com/photo-1624353365286-3f8d62daad51?w=400&h=400&fit=crop&q=80' },
+            { id: 7, category: 'platillos', title: 'Ceviche', image: 'https://images.unsplash.com/photo-1596040033229-a0b6e2e43e14?w=400&h=400&fit=crop&q=80' },
+            { id: 8, category: 'platillos', title: 'Carpaccio de Res', image: 'https://images.unsplash.com/photo-1544025162-d76694265947?w=400&h=400&fit=crop&q=80' },
+            { id: 9, category: 'platillos', title: 'Pulpo a la Parrilla', image: 'https://images.unsplash.com/photo-1559737558-2f5a70c3628d?w=400&h=400&fit=crop&q=80' },
             
             // Eventos
-            { id: 10, category: 'eventos', title: 'Cena Privada en Villa', image: 'https://placehold.co/400x400/27AE60/FFFFFF?text=Cena+Privada' },
-            { id: 11, category: 'eventos', title: 'Evento Corporativo', image: 'https://placehold.co/400x400/3498DB/FFFFFF?text=Corporativo' },
-            { id: 12, category: 'eventos', title: 'Boda en Playa', image: 'https://placehold.co/400x400/E8B4B8/FFFFFF?text=Boda' },
-            { id: 13, category: 'eventos', title: 'Celebración de Aniversario', image: 'https://placehold.co/400x400/F39C12/FFFFFF?text=Aniversario' },
-            { id: 14, category: 'eventos', title: 'Cumpleaños Especial', image: 'https://placehold.co/400x400/9B59B6/FFFFFF?text=Cumpleanos' },
-            { id: 15, category: 'eventos', title: 'Cena Romántica', image: 'https://placehold.co/400x400/C0392B/FFFFFF?text=Romantica' },
+            { id: 10, category: 'eventos', title: 'Cena Privada en Villa', image: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=400&h=400&fit=crop&q=80' },
+            { id: 11, category: 'eventos', title: 'Evento Corporativo', image: 'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=400&h=400&fit=crop&q=80' },
+            { id: 12, category: 'eventos', title: 'Boda en Playa', image: 'https://images.unsplash.com/photo-1519741497674-611481863552?w=400&h=400&fit=crop&q=80' },
+            { id: 13, category: 'eventos', title: 'Celebración de Aniversario', image: 'https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?w=400&h=400&fit=crop&q=80' },
+            { id: 14, category: 'eventos', title: 'Cumpleaños Especial', image: 'https://images.unsplash.com/photo-1530103862676-de8c9debad1d?w=400&h=400&fit=crop&q=80' },
+            { id: 15, category: 'eventos', title: 'Cena Romántica', image: 'https://images.unsplash.com/photo-1514933651103-005eec06c04b?w=400&h=400&fit=crop&q=80' },
             
             // Behind the Scenes
-            { id: 16, category: 'behind', title: 'En la Cocina', image: 'https://placehold.co/400x400/7F8C8D/FFFFFF?text=Cocina' },
-            { id: 17, category: 'behind', title: 'Preparación de Ingredientes', image: 'https://placehold.co/400x400/16A085/FFFFFF?text=Prep' },
-            { id: 18, category: 'behind', title: 'Mise en Place', image: 'https://placehold.co/400x400/2980B9/FFFFFF?text=Mise+en+Place' },
-            { id: 19, category: 'behind', title: 'Equipo en Acción', image: 'https://placehold.co/400x400/8E44AD/FFFFFF?text=Equipo' },
-            { id: 20, category: 'behind', title: 'Montaje de Platos', image: 'https://placehold.co/400x400/D35400/FFFFFF?text=Montaje' },
-            { id: 21, category: 'behind', title: 'Presentación Final', image: 'https://placehold.co/400x400/27AE60/FFFFFF?text=Presentacion' }
+            { id: 16, category: 'behind', title: 'En la Cocina', image: 'https://images.unsplash.com/photo-1556910103-1c02745aae4d?w=400&h=400&fit=crop&q=80' },
+            { id: 17, category: 'behind', title: 'Preparación de Ingredientes', image: 'https://images.unsplash.com/photo-1466637574441-749b8f19452f?w=400&h=400&fit=crop&q=80' },
+            { id: 18, category: 'behind', title: 'Mise en Place', image: 'https://images.unsplash.com/photo-1607532941433-304659e8198a?w=400&h=400&fit=crop&q=80' },
+            { id: 19, category: 'behind', title: 'Equipo en Acción', image: 'https://images.unsplash.com/photo-1577219491135-ce391730fb2c?w=400&h=400&fit=crop&q=80' },
+            { id: 20, category: 'behind', title: 'Montaje de Platos', image: 'https://images.unsplash.com/photo-1600565193348-f74bd3c7ccdf?w=400&h=400&fit=crop&q=80' },
+            { id: 21, category: 'behind', title: 'Presentación Final', image: 'https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=400&h=400&fit=crop&q=80' }
         ];
 
         let currentFilter = 'all';
