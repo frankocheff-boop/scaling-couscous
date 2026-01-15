@@ -83,9 +83,13 @@ async function checkPassword() {
 }
 
 /**
- * Cerrar sesión
+ * Logout / Cerrar sesión
  */
 function logout() {
+    const loginModal = document.getElementById('loginModal');
+    const dashboardContent = document.getElementById('dashboardContent');
+    const passwordInput = document.getElementById('adminPassword');
+    
     sessionStorage.removeItem('adminLoggedIn');
     document.getElementById('loginModal')?.classList.add('active');
     const dashboard = document.getElementById('dashboardContent');
@@ -95,9 +99,13 @@ function logout() {
 }
 
 /**
+ * Check if already logged in
  * Verificar si ya está logueado
  */
 document.addEventListener('DOMContentLoaded', function() {
+    const loginModal = document.getElementById('loginModal');
+    const dashboardContent = document.getElementById('dashboardContent');
+    
     if (sessionStorage.getItem('adminLoggedIn') === 'true') {
         document.getElementById('loginModal')?.classList.remove('active');
         const dashboard = document.getElementById('dashboardContent');
@@ -107,24 +115,43 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 /**
+ * Load all dashboard data
  * Cargar todos los datos del dashboard
  */
 function loadDashboardData() {
-    // Obtener reservaciones de localStorage
-    allReservations = JSON.parse(localStorage.getItem('chefFrankoReservations')) || [];
-    filteredReservations = [...allReservations];
-    
-    // Actualizar estadísticas
-    updateStats();
-    
-    // Renderizar lista de clientes
-    renderClientsList();
+    try {
+        // Get reservations from localStorage
+        const stored = localStorage.getItem('chefFrankoReservations');
+        allReservations = stored ? JSON.parse(stored) : [];
+        filteredReservations = [...allReservations];
+        
+        // Update statistics
+        updateStats();
+        
+        // Render clients list
+        renderClientsList();
+    } catch (error) {
+        console.error('Error loading dashboard data / Error al cargar datos del dashboard:', error);
+        allReservations = [];
+        filteredReservations = [];
+    }
 }
 
 /**
+ * Update statistics
  * Actualizar estadísticas
  */
 function updateStats() {
+    const totalClientsEl = document.getElementById('totalClients');
+    const totalGuestsEl = document.getElementById('totalGuests');
+    const upcomingEventsEl = document.getElementById('upcomingEvents');
+    
+    // Null-safe checks
+    if (!totalClientsEl || !totalGuestsEl || !upcomingEventsEl) {
+        console.warn('Stats elements not found / Elementos de estadísticas no encontrados');
+        return;
+    }
+    
     const totalClients = allReservations.length;
     let totalGuests = 0;
     let upcomingEvents = 0;
@@ -147,6 +174,7 @@ function updateStats() {
 }
 
 /**
+ * Render clients list
  * Renderizar lista de clientes
  */
 function renderClientsList() {
@@ -165,37 +193,42 @@ function renderClientsList() {
         return;
     }
     
-    // Ordenar por fecha de envío (más reciente primero)
+    // Sort by submission date (most recent first)
     const sorted = [...filteredReservations].sort((a, b) => 
-        new Date(b.submittedAt) - new Date(a.submittedAt)
+        new Date(b.submittedAt || 0) - new Date(a.submittedAt || 0)
     );
     
     container.innerHTML = sorted.map(reservation => createClientCard(reservation)).join('');
 }
 
 /**
- * Crear tarjeta de cliente
+ * Create client card with escaped HTML
+ * Crear tarjeta de cliente con HTML escapado
  */
 function createClientCard(reservation) {
-    const submittedDate = new Date(reservation.submittedAt).toLocaleDateString('es-MX', {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric',
-        hour: '2-digit',
-        minute: '2-digit'
-    });
+    // Escape all user-provided data
+    const fullName = escapeHTML(reservation.fullName);
+    const email = escapeHTML(reservation.email);
+    const phone = escapeHTML(reservation.phone);
+    const preferences = escapeHTML(reservation.preferences);
     
-    const checkInDate = new Date(reservation.checkIn).toLocaleDateString('es-MX', {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric'
-    });
+    const submittedDate = reservation.submittedAt 
+        ? new Date(reservation.submittedAt).toLocaleDateString('es-MX', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
+        })
+        : 'N/A';
     
-    const checkOutDate = new Date(reservation.checkOut).toLocaleDateString('es-MX', {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric'
-    });
+    const checkInDate = reservation.checkIn 
+        ? new Date(reservation.checkIn).toLocaleDateString('es-MX', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        })
+        : 'N/A';
     
     const allergiesHTML = reservation.allergies.length > 0 
         ? reservation.allergies.map(a => `<span class="tag tag-allergy">${escapeHTML(a)}</span>`).join('')
@@ -206,8 +239,11 @@ function createClientCard(reservation) {
         : '<span class="tag">Sin restricciones</span>';
     
     const occasionText = reservation.occasion 
-        ? formatOccasion(reservation.occasion)
+        ? escapeHTML(formatOccasion(reservation.occasion))
         : 'N/A';
+    
+    const adults = parseInt(reservation.adults) || 0;
+    const children = parseInt(reservation.children) || 0;
     
     return `
         <div class="client-card fade-in">
@@ -263,7 +299,7 @@ function createClientCard(reservation) {
                 <div class="tags">${dietHTML}</div>
             </div>
             
-            ${reservation.preferences ? `
+            ${preferences ? `
                 <div style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--light-gray);">
                     <div class="info-label" style="margin-bottom: 0.5rem;">💭 Preferencias Especiales:</div>
                     <div class="info-value" style="font-style: italic; color: var(--dark-gray);">${escapeHTML(reservation.preferences)}</div>
@@ -274,6 +310,7 @@ function createClientCard(reservation) {
 }
 
 /**
+ * Format occasion text
  * Formatear texto de ocasión
  */
 function formatOccasion(occasion) {
@@ -289,6 +326,7 @@ function formatOccasion(occasion) {
 }
 
 /**
+ * Apply filters
  * Aplicar filtros
  */
 function applyFilters() {
@@ -305,8 +343,9 @@ function applyFilters() {
         let matchesDate = true;
         
         if (searchName) {
-            matchesName = reservation.fullName.toLowerCase().includes(searchName) ||
-                         reservation.email.toLowerCase().includes(searchName);
+            const name = (reservation.fullName || '').toLowerCase();
+            const email = (reservation.email || '').toLowerCase();
+            matchesName = name.includes(searchName) || email.includes(searchName);
         }
         
         if (filterDate) {
@@ -321,6 +360,7 @@ function applyFilters() {
 }
 
 /**
+ * Clear filters
  * Limpiar filtros
  */
 function clearFilters() {
@@ -334,6 +374,7 @@ function clearFilters() {
 }
 
 /**
+ * Export data to CSV
  * Exportar datos a CSV
  */
 function exportData() {
@@ -342,52 +383,67 @@ function exportData() {
         return;
     }
     
-    // Crear encabezados CSV
-    const headers = [
-        'ID', 'Nombre', 'Email', 'Teléfono', 
-        'Check-In', 'Check-Out', 'Adultos', 'Niños',
-        'Alergias', 'Restricciones Dietéticas', 'Ocasión', 
-        'Preferencias', 'Fecha de Registro'
-    ];
-    
-    // Crear filas CSV
-    const rows = allReservations.map(r => [
-        r.id,
-        r.fullName,
-        r.email,
-        r.phone,
-        r.checkIn,
-        r.checkOut,
-        r.adults,
-        r.children,
-        r.allergies.join('; '),
-        r.diet.join('; '),
-        formatOccasion(r.occasion),
-        r.preferences.replace(/,/g, ';'),
-        new Date(r.submittedAt).toLocaleString('es-MX')
-    ]);
-    
-    // Construir CSV
-    let csv = headers.join(',') + '\n';
-    rows.forEach(row => {
-        csv += row.map(field => `"${field}"`).join(',') + '\n';
-    });
-    
-    // Descargar archivo
-    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-    const link = document.createElement('a');
-    const url = URL.createObjectURL(blob);
-    link.setAttribute('href', url);
-    link.setAttribute('download', `reservaciones_chef_franko_${Date.now()}.csv`);
-    link.style.visibility = 'hidden';
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    
-    alert('Datos exportados exitosamente');
+    try {
+        // Create CSV headers
+        const headers = [
+            'ID', 'Nombre', 'Email', 'Teléfono', 
+            'Check-In', 'Check-Out', 'Adultos', 'Niños',
+            'Alergias', 'Restricciones Dietéticas', 'Ocasión', 
+            'Preferencias', 'Fecha de Registro'
+        ];
+        
+        // Create CSV rows with proper escaping
+        const rows = allReservations.map(r => [
+            r.id || '',
+            r.fullName || '',
+            r.email || '',
+            r.phone || '',
+            r.checkIn || '',
+            r.checkOut || '',
+            r.adults || 0,
+            r.children || 0,
+            (r.allergies || []).join('; '),
+            (r.diet || []).join('; '),
+            formatOccasion(r.occasion || ''),
+            (r.preferences || '').replace(/,/g, ';'),
+            r.submittedAt ? new Date(r.submittedAt).toLocaleString('es-MX') : ''
+        ]);
+        
+        // Build CSV
+        let csv = headers.join(',') + '\n';
+        rows.forEach(row => {
+            // Properly escape CSV fields
+            csv += row.map(field => {
+                const str = String(field);
+                // Escape quotes and wrap in quotes if contains comma, newline, or quote
+                if (str.includes(',') || str.includes('\n') || str.includes('"')) {
+                    return '"' + str.replace(/"/g, '""') + '"';
+                }
+                return str;
+            }).join(',') + '\n';
+        });
+        
+        // Download file
+        const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+        const link = document.createElement('a');
+        const url = URL.createObjectURL(blob);
+        link.setAttribute('href', url);
+        link.setAttribute('download', `reservaciones_chef_franko_${Date.now()}.csv`);
+        link.style.visibility = 'hidden';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+        
+        alert('Datos exportados exitosamente');
+    } catch (error) {
+        console.error('Error exporting data / Error al exportar datos:', error);
+        alert('Error al exportar datos. Por favor intente nuevamente.');
+    }
 }
 
 /**
+ * Copy data to clipboard
  * Copiar datos al portapapeles
  */
 function copyToClipboard() {
@@ -400,15 +456,15 @@ function copyToClipboard() {
     
     allReservations.forEach((r, index) => {
         text += `--- Reservación #${index + 1} ---\n`;
-        text += `Nombre: ${r.fullName}\n`;
-        text += `Email: ${r.email}\n`;
-        text += `Teléfono: ${r.phone}\n`;
-        text += `Check-In: ${r.checkIn}\n`;
-        text += `Check-Out: ${r.checkOut}\n`;
-        text += `Personas: ${r.adults} adultos, ${r.children} niños\n`;
-        text += `Alergias: ${r.allergies.join(', ') || 'Ninguna'}\n`;
-        text += `Dieta: ${r.diet.join(', ') || 'Ninguna'}\n`;
-        text += `Ocasión: ${formatOccasion(r.occasion)}\n`;
+        text += `Nombre: ${r.fullName || 'N/A'}\n`;
+        text += `Email: ${r.email || 'N/A'}\n`;
+        text += `Teléfono: ${r.phone || 'N/A'}\n`;
+        text += `Check-In: ${r.checkIn || 'N/A'}\n`;
+        text += `Check-Out: ${r.checkOut || 'N/A'}\n`;
+        text += `Personas: ${r.adults || 0} adultos, ${r.children || 0} niños\n`;
+        text += `Alergias: ${(r.allergies && r.allergies.length > 0) ? r.allergies.join(', ') : 'Ninguna'}\n`;
+        text += `Dieta: ${(r.diet && r.diet.length > 0) ? r.diet.join(', ') : 'Ninguna'}\n`;
+        text += `Ocasión: ${formatOccasion(r.occasion) || 'N/A'}\n`;
         if (r.preferences) {
             text += `Preferencias: ${r.preferences}\n`;
         }
@@ -421,12 +477,16 @@ function copyToClipboard() {
         }).catch(() => {
             alert('Error al copiar. Por favor, use el botón de exportar CSV.');
         });
+    } catch (error) {
+        console.error('Error copying to clipboard / Error al copiar:', error);
+        alert('Error al copiar. Por favor, use el botón de exportar CSV.');
     } else {
         alert('Su navegador no soporta copiar al portapapeles o el sitio no está en un contexto seguro (HTTPS). Por favor, use el botón de exportar CSV.');
     }
 }
 
 /**
+ * Clear all data
  * Limpiar todos los datos
  */
 function clearAllData() {
@@ -444,17 +504,22 @@ function clearAllData() {
         );
         
         if (doubleCheck) {
-            localStorage.removeItem('chefFrankoReservations');
-            allReservations = [];
-            filteredReservations = [];
-            updateStats();
-            renderClientsList();
-            alert('Todos los datos han sido eliminados');
+            try {
+                localStorage.removeItem('chefFrankoReservations');
+                allReservations = [];
+                filteredReservations = [];
+                updateStats();
+                renderClientsList();
+                alert('Todos los datos han sido eliminados');
+            } catch (error) {
+                console.error('Error clearing data / Error al limpiar datos:', error);
+                alert('Error al eliminar datos. Por favor intente nuevamente.');
+            }
         }
     }
 }
 
-// Event listeners para filtros en tiempo real
+// Event listeners for real-time filters
 document.addEventListener('DOMContentLoaded', function() {
     const searchInput = document.getElementById('searchName');
     if (searchInput) {
