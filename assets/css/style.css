@@ -519,6 +519,104 @@ main {
     margin-top: 1rem;
 }
 
+/* Gourmet Gallery Section */
+.gourmet-gallery-section {
+    background: linear-gradient(135deg, var(--secondary) 0%, #1a252f 100%);
+    padding: 4rem 0;
+    position: relative;
+    overflow: hidden;
+}
+
+.gourmet-gallery-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: radial-gradient(circle at 20% 50%, rgba(212, 175, 55, 0.1) 0%, transparent 50%),
+                      radial-gradient(circle at 80% 80%, rgba(230, 126, 34, 0.1) 0%, transparent 50%);
+    pointer-events: none;
+}
+
+.gourmet-gallery-section .section-title {
+    color: var(--white);
+    text-align: center;
+    font-size: 2.8rem;
+    margin-bottom: 1rem;
+}
+
+.gourmet-gallery-section .section-subtitle {
+    color: var(--primary);
+    text-align: center;
+    font-size: 1.3rem;
+    font-weight: 400;
+    margin-bottom: 3rem;
+    font-style: italic;
+}
+
+.gourmet-gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+    position: relative;
+    z-index: 1;
+}
+
+.gourmet-gallery-item {
+    position: relative;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+    transition: all 0.4s ease;
+    background-color: var(--white);
+}
+
+.gourmet-gallery-item:hover {
+    transform: translateY(-10px) scale(1.02);
+    box-shadow: 0 20px 60px rgba(212, 175, 55, 0.4);
+}
+
+.gourmet-gallery-item img {
+    width: 100%;
+    height: auto;
+    display: block;
+    transition: transform 0.4s ease;
+}
+
+.gourmet-gallery-item:hover img {
+    transform: scale(1.1);
+}
+
+.gourmet-gallery-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(to top, rgba(44, 62, 80, 0.95) 0%, transparent 100%);
+    padding: 2rem;
+    transform: translateY(100%);
+    transition: transform 0.4s ease;
+}
+
+.gourmet-gallery-item:hover .gourmet-gallery-overlay {
+    transform: translateY(0);
+}
+
+.gourmet-gallery-overlay h3 {
+    color: var(--primary);
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.gourmet-gallery-overlay p {
+    color: var(--white);
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin: 0;
+}
+
 /* Utility Classes */
 .text-center {
     text-align: center;
@@ -609,6 +707,25 @@ main {
 
     .chef-privado-text p {
         font-size: 1rem;
+    }
+
+    .gourmet-gallery-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+
+    .gourmet-gallery-section .section-title {
+        font-size: 2rem;
+    }
+
+    .gourmet-gallery-section .section-subtitle {
+        font-size: 1.1rem;
+    }
+
+    .gourmet-gallery-overlay {
+        transform: translateY(0);
+        position: relative;
+        background: rgba(44, 62, 80, 0.9);
     }
 }
 
