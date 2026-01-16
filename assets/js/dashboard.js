@@ -58,13 +58,38 @@ async function checkPassword() {
     if (!passwordEl) return;
     const password = passwordEl.value || '';
     const storedHash = localStorage.getItem('chefFrankoAdminHash');
+    
+    // Si no hay contraseña configurada, usar la contraseña por defecto "chef2024"
     if (!storedHash) {
-        if (errorDiv) {
-            errorDiv.textContent = 'No hay contraseña de admin configurada. Configure una con setAdminPassword("tu-pass") en la consola.';
-            errorDiv.classList.add('active');
+        const defaultPassword = 'chef2024';
+        const defaultHash = await sha256Hex(defaultPassword);
+        
+        // Verificar si ingresó la contraseña por defecto
+        const enteredHash = await sha256Hex(password);
+        if (enteredHash === defaultHash) {
+            // Guardar hash por defecto para futuras sesiones
+            localStorage.setItem('chefFrankoAdminHash', defaultHash);
+            document.getElementById('loginModal')?.classList.remove('active');
+            const dashboard = document.getElementById('dashboardContent');
+            if (dashboard) dashboard.style.display = 'block';
+            sessionStorage.setItem('adminLoggedIn', 'true');
+            loadDashboardData();
+            
+            // Mostrar mensaje sugiriendo cambiar la contraseña
+            setTimeout(() => {
+                alert('⚠️ Está usando la contraseña por defecto. Por seguridad, se recomienda cambiarla usando:\n\nsetAdminPassword("nueva-contraseña")\n\nen la consola del navegador.');
+            }, 500);
+        } else {
+            if (errorDiv) {
+                errorDiv.textContent = 'Contraseña incorrecta';
+                errorDiv.classList.add('active');
+            }
+            passwordEl.value = '';
+            passwordEl.focus();
         }
         return;
     }
+    
     const hash = await sha256Hex(password);
     if (hash === storedHash) {
         document.getElementById('loginModal')?.classList.remove('active');

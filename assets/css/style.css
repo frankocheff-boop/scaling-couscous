@@ -88,6 +88,7 @@ img {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    position: relative;
 }
 
 .nav-logo {
@@ -801,13 +802,15 @@ main {
 
 /* Google Translate Widget Styles */
 #google_translate_element {
-    display: inline-block;
-    margin-left: auto;
+    position: absolute;
+    right: 2rem;
+    top: 50%;
+    transform: translateY(-50%);
 }
 
 .translate-widget {
-    max-width: 200px;
-    font-size: 0.85rem;
+    max-width: 120px;
+    font-size: 0.8rem;
 }
 
 /* Hide unnecessary widget elements */
