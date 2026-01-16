@@ -189,10 +189,6 @@ function updateStats() {
         }
     });
     
-    const totalClientsEl = document.getElementById('totalClients');
-    const totalGuestsEl = document.getElementById('totalGuests');
-    const upcomingEventsEl = document.getElementById('upcomingEvents');
-    
     if (totalClientsEl) totalClientsEl.textContent = totalClients;
     if (totalGuestsEl) totalGuestsEl.textContent = totalGuests;
     if (upcomingEventsEl) upcomingEventsEl.textContent = upcomingEvents;
@@ -249,6 +245,14 @@ function createClientCard(reservation) {
     
     const checkInDate = reservation.checkIn 
         ? new Date(reservation.checkIn).toLocaleDateString('es-MX', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        })
+        : 'N/A';
+    
+    const checkOutDate = reservation.checkOut 
+        ? new Date(reservation.checkOut).toLocaleDateString('es-MX', {
             year: 'numeric',
             month: 'long',
             day: 'numeric'
@@ -502,9 +506,6 @@ function copyToClipboard() {
         }).catch(() => {
             alert('Error al copiar. Por favor, use el botón de exportar CSV.');
         });
-    } catch (error) {
-        console.error('Error copying to clipboard / Error al copiar:', error);
-        alert('Error al copiar. Por favor, use el botón de exportar CSV.');
     } else {
         alert('Su navegador no soporta copiar al portapapeles o el sitio no está en un contexto seguro (HTTPS). Por favor, use el botón de exportar CSV.');
     }
