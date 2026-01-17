@@ -860,6 +860,12 @@ main {
     border: 1px solid #f5c6cb;
 }
 
+.alert-warning {
+    background-color: #fff3cd;
+    color: #856404;
+    border: 1px solid #ffeeba;
+}
+
 .alert-info {
     background-color: #d1ecf1;
     color: #0c5460;

@@ -49,14 +49,25 @@ document.addEventListener('DOMContentLoaded', function() {
         // Guardar en localStorage
         saveToLocalStorage(formData);
 
-        // Mostrar mensaje de éxito
-        showAlert('¡Reservación enviada con éxito! Nos pondremos en contacto pronto.', 'success');
-
-        // Limpiar formulario después de 2 segundos
-        setTimeout(() => {
-            form.reset();
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }, 2000);
+        // Enviar email con EmailJS
+        sendEmail(formData)
+            .then(() => {
+                showAlert('¡Reservación enviada! Te contactaremos pronto por email.', 'success');
+                // Limpiar formulario después de 2 segundos
+                setTimeout(() => {
+                    form.reset();
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                }, 2000);
+            })
+            .catch((error) => {
+                console.error('Error sending email:', error);
+                showAlert('Reservación guardada localmente. Por favor contacta por WhatsApp para confirmar.', 'warning');
+                // Limpiar formulario después de 3 segundos
+                setTimeout(() => {
+                    form.reset();
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                }, 3000);
+            });
     });
 
     /**
@@ -159,6 +170,48 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     /**
+     * Enviar email con EmailJS
+     * Configure sus credenciales de EmailJS:
+     * 1. Cree una cuenta en https://www.emailjs.com/
+     * 2. Configure un servicio de email (Gmail, Outlook, etc.)
+     * 3. Cree una plantilla de email con las variables listadas abajo
+     * 4. Reemplace 'YOUR_SERVICE_ID' y 'YOUR_TEMPLATE_ID' con sus IDs reales
+     */
+    function sendEmail(formData) {
+        // TODO: Replace these with your actual EmailJS service_id and template_id
+        // Get these from: https://dashboard.emailjs.com/admin
+        const SERVICE_ID = 'YOUR_SERVICE_ID';  // e.g., 'service_abc123'
+        const TEMPLATE_ID = 'YOUR_TEMPLATE_ID'; // e.g., 'template_xyz789'
+        
+        const templateParams = {
+            from_name: formData.fullName,
+            from_email: formData.email,
+            phone: formData.phone,
+            check_in: formData.checkIn,
+            check_out: formData.checkOut,
+            adults: formData.adults,
+            children: formData.children,
+            allergies: formData.allergies.join(', ') || 'Ninguna',
+            dietary_restrictions: formData.diet.join(', ') || 'Ninguna',
+            occasion: formData.occasion || 'No especificada',
+            preferences: formData.preferences || 'Ninguna'
+        };
+
+        // Check if EmailJS is configured
+        if (typeof emailjs === 'undefined') {
+            console.warn('EmailJS not loaded. Email functionality disabled.');
+            return Promise.reject(new Error('EmailJS not configured'));
+        }
+
+        if (SERVICE_ID === 'YOUR_SERVICE_ID' || TEMPLATE_ID === 'YOUR_TEMPLATE_ID') {
+            console.warn('EmailJS credentials not configured. Please update service_id and template_id in formulario.js');
+            return Promise.reject(new Error('EmailJS not configured'));
+        }
+
+        return emailjs.send(SERVICE_ID, TEMPLATE_ID, templateParams);
+    }
+
+    /**
      * Recopilar todos los datos del formulario
      */
     function collectFormData() {
@@ -226,7 +279,13 @@ document.addEventListener('DOMContentLoaded', function() {
      * Mostrar alerta al usuario
      */
     function showAlert(message, type) {
-        const alertClass = type === 'success' ? 'alert-success' : 'alert-error';
+        let alertClass = 'alert-error';
+        if (type === 'success') {
+            alertClass = 'alert-success';
+        } else if (type === 'warning') {
+            alertClass = 'alert-warning';
+        }
+        
         const alertHTML = `
             <div class="alert ${alertClass}" style="animation: fadeIn 0.3s ease;">
                 ${message}
