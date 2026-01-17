@@ -926,8 +926,8 @@ main {
 }
 
 .translate-widget {
-    max-width: 120px;
-    font-size: 0.8rem;
+    max-width: 90px;
+    font-size: 0.75rem;
 }
 
 /* Hide unnecessary widget elements */
@@ -951,14 +951,37 @@ body {
     display: inline-block;
 }
 
+/* Google Translate logo hidden */
+.goog-logo-link {
+    display: none !important;
+}
+
+.goog-te-gadget .goog-te-combo {
+    margin: 0 !important;
+}
+
 .goog-te-combo {
-    padding: 0.4rem 0.5rem !important;
-    font-size: 0.85rem !important;
-    border: 1px solid var(--light-gray) !important;
+    padding: 0.3rem 0.4rem !important;
+    font-size: 0.75rem !important;
+    border: 1px solid var(--primary) !important;
     border-radius: 5px !important;
     background-color: var(--white) !important;
-    color: var(--secondary) !important; /* Corregido: antes decía --0065 */
-    max-width: 150px;
+    color: var(--secondary) !important;
+    max-width: 90px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 1px 3px rgba(212, 175, 55, 0.1);
+}
+
+.goog-te-combo:hover {
+    border-color: var(--accent) !important;
+    box-shadow: 0 2px 5px rgba(212, 175, 55, 0.2);
+    transform: translateY(-1px);
+}
+
+.goog-te-combo:focus {
+    outline: 2px solid var(--primary);
+    outline-offset: 2px;
 }
 
 /* Responsive - hide on mobile */
