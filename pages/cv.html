@@ -671,7 +671,7 @@
                 Estoy disponible para servicios de chef privado, consultoría gastronómica y eventos especiales
             </p>
             <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
-                <a href="#" onclick="alert('Función de descarga de PDF próximamente disponible'); return false;" class="download-btn">
+                <a href="#" onclick="event.preventDefault(); downloadCV(event);" class="download-btn">
                     <span>📄</span>
                     Descargar CV (PDF)
                 </a>
@@ -746,6 +746,137 @@
             observer.observe(grid);
         });
     </script>
+
+    <!-- PDF Generation Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+    <!-- PDF Download Function -->
+    <script>
+        /**
+         * Generate and download CV as PDF
+         * Uses html2canvas to capture sections and jsPDF to create the PDF
+         */
+        async function downloadCV(event) {
+            // Prevent default link behavior
+            if (event) event.preventDefault();
+            
+            // Get the button that triggered the download
+            const btn = event ? event.target.closest('.download-btn') : document.querySelector('.download-btn');
+            if (!btn) return;
+            
+            // Show loading state
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<span>⏳</span> Generando PDF...';
+            btn.style.pointerEvents = 'none';
+            
+            try {
+                const { jsPDF } = window.jspdf;
+                
+                // Constants for PDF dimensions (A4 paper size in mm)
+                const A4_WIDTH_MM = 210;
+                const A4_HEIGHT_MM = 297;
+                
+                // Elements to capture (excluding navbar and footer)
+                const hero = document.querySelector('.cv-hero');
+                const sections = document.querySelectorAll('.cv-section');
+                
+                const pdf = new jsPDF('p', 'mm', 'a4');
+                let yOffset = 0;
+                
+                // Capture hero section
+                const heroCanvas = await html2canvas(hero, {
+                    scale: 2,
+                    useCORS: true,
+                    logging: false,
+                    backgroundColor: '#ffffff'
+                });
+                
+                const heroImgData = heroCanvas.toDataURL('image/png');
+                const heroImgWidth = A4_WIDTH_MM;
+                const heroImgHeight = (heroCanvas.height * heroImgWidth) / heroCanvas.width;
+                
+                pdf.addImage(heroImgData, 'PNG', 0, yOffset, heroImgWidth, heroImgHeight);
+                yOffset += heroImgHeight;
+                
+                // Capture each section
+                for (let i = 0; i < sections.length; i++) {
+                    const canvas = await html2canvas(sections[i], {
+                        scale: 2,
+                        useCORS: true,
+                        logging: false,
+                        backgroundColor: '#ffffff'
+                    });
+                    
+                    const imgData = canvas.toDataURL('image/png');
+                    const imgWidth = A4_WIDTH_MM;
+                    const imgHeight = (canvas.height * imgWidth) / canvas.width;
+                    
+                    // If it doesn't fit on current page, add new page
+                    if (yOffset + imgHeight > A4_HEIGHT_MM || i > 0) {
+                        pdf.addPage();
+                        yOffset = 0;
+                    }
+                    
+                    pdf.addImage(imgData, 'PNG', 0, yOffset, imgWidth, imgHeight);
+                    yOffset += imgHeight;
+                }
+                
+                // Download PDF
+                pdf.save('CV_ChefFrankoSalgado.pdf');
+                
+                // Show success message
+                showSuccessMessage();
+                
+            } catch (error) {
+                console.error('Error generating PDF:', error);
+                alert('Hubo un error al generar el PDF. Por favor intente de nuevo.');
+            } finally {
+                // Restore button
+                btn.innerHTML = originalText;
+                btn.style.pointerEvents = 'auto';
+            }
+        }
+
+        /**
+         * Show success message after PDF download
+         */
+        function showSuccessMessage() {
+            const message = document.createElement('div');
+            message.style.cssText = `
+                position: fixed;
+                top: 100px;
+                right: 20px;
+                background: #27AE60;
+                color: white;
+                padding: 1rem 2rem;
+                border-radius: 10px;
+                box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+                z-index: 10000;
+                animation: slideIn 0.3s ease;
+            `;
+            message.innerHTML = '✅ CV descargado exitosamente';
+            document.body.appendChild(message);
+            
+            setTimeout(() => {
+                message.style.animation = 'slideOut 0.3s ease';
+                setTimeout(() => message.remove(), 300);
+            }, 3000);
+        }
+    </script>
+
+    <!-- Animation Styles for PDF Success Message -->
+    <style>
+        @keyframes slideIn {
+            from { transform: translateX(400px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        @keyframes slideOut {
+            from { transform: translateX(0); opacity: 1; }
+            to { transform: translateX(400px); opacity: 0; }
+        }
+    </style>
 
     <!-- Google Translate -->
     <script>
