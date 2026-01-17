@@ -671,7 +671,7 @@
                 Estoy disponible para servicios de chef privado, consultoría gastronómica y eventos especiales
             </p>
             <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
-                <a href="#" onclick="downloadCV(); return false;" class="download-btn">
+                <a href="#" onclick="event.preventDefault(); downloadCV(event);" class="download-btn">
                     <span>📄</span>
                     Descargar CV (PDF)
                 </a>
@@ -757,9 +757,12 @@
          * Generate and download CV as PDF
          * Uses html2canvas to capture sections and jsPDF to create the PDF
          */
-        async function downloadCV() {
+        async function downloadCV(event) {
+            // Prevent default link behavior
+            if (event) event.preventDefault();
+            
             // Get the button that triggered the download
-            const btn = event.target.closest('.download-btn');
+            const btn = event ? event.target.closest('.download-btn') : document.querySelector('.download-btn');
             if (!btn) return;
             
             // Show loading state
@@ -769,6 +772,10 @@
             
             try {
                 const { jsPDF } = window.jspdf;
+                
+                // Constants for PDF dimensions (A4 paper size in mm)
+                const A4_WIDTH_MM = 210;
+                const A4_HEIGHT_MM = 297;
                 
                 // Elements to capture (excluding navbar and footer)
                 const hero = document.querySelector('.cv-hero');
@@ -786,7 +793,7 @@
                 });
                 
                 const heroImgData = heroCanvas.toDataURL('image/png');
-                const heroImgWidth = 210; // A4 width in mm
+                const heroImgWidth = A4_WIDTH_MM;
                 const heroImgHeight = (heroCanvas.height * heroImgWidth) / heroCanvas.width;
                 
                 pdf.addImage(heroImgData, 'PNG', 0, yOffset, heroImgWidth, heroImgHeight);
@@ -802,11 +809,11 @@
                     });
                     
                     const imgData = canvas.toDataURL('image/png');
-                    const imgWidth = 210;
+                    const imgWidth = A4_WIDTH_MM;
                     const imgHeight = (canvas.height * imgWidth) / canvas.width;
                     
                     // If it doesn't fit on current page, add new page
-                    if (yOffset + imgHeight > 297 || i > 0) {
+                    if (yOffset + imgHeight > A4_HEIGHT_MM || i > 0) {
                         pdf.addPage();
                         yOffset = 0;
                     }
