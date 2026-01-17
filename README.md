@@ -217,16 +217,19 @@ localStorage.clear();
 - Sanitización de inputs
 - Sin exposición de datos sensibles
 
+## ✅ Mejoras Implementadas
+
+- [x] **Envío de emails automático**: EmailJS integrado en el formulario de cliente para notificaciones automáticas
+- [x] **Cargar imágenes reales en la galería**: Galería actualizada con imágenes locales del proyecto
+- [x] **Generación de PDF del CV**: Descarga de CV en formato PDF usando html2canvas y jsPDF
+
 ## 🚧 Próximas Mejoras
 
 - [ ] Integración con backend (Node.js/PHP)
 - [ ] Base de datos real (MySQL/MongoDB)
 - [ ] Sistema de autenticación mejorado
-- [ ] Envío de emails automático
 - [ ] Integración con calendario
 - [ ] Sistema de pagos
-- [ ] Cargar imágenes reales en la galería
-- [ ] Generación de PDF del CV
 
 ## 📄 Licencia
 
