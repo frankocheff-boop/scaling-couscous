@@ -231,6 +231,13 @@ localStorage.clear();
 - [ ] Integración con calendario
 - [ ] Sistema de pagos
 
+## 📖 Guías de Git
+
+¿Necesitas ayuda con Git y GitHub? Tenemos guías completas:
+
+- **[Guía Rápida de Merge](MERGE_GUIDE.md)** - Aprende cómo fusionar ramas a main paso a paso
+- **[Tutorial Completo de Git](TUTORIAL_GIT.md)** - Guía completa de Git, branches, commits y Pull Requests
+
 ## 📄 Licencia
 
 Ver archivo [LICENSE](LICENSE) para más detalles.
