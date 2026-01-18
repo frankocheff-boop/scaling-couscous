@@ -326,8 +326,13 @@ Si tienes problemas:
 5. **Prueba antes de hacer merge** - ejecuta tests si existen
 6. **Actualiza main regularmente** en tu rama de trabajo:
    ```bash
+   # Opción 1: Merge (más simple, historial completo)
    git checkout tu-rama
    git merge main
+   
+   # Opción 2: Rebase (historial más limpio, avanzado)
+   git checkout tu-rama
+   git rebase main
    ```
 
 ---
