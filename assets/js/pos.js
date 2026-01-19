@@ -6,34 +6,34 @@
 // Datos del menú
 const menuData = {
     'amuse-bouche': [
-        { id: 'ab1', name: 'Tartar de Atún con Aguacate', image: 'https://placehold.co/250x150/D4AF37/FFFFFF?text=Tartar+Atun' },
-        { id: 'ab2', name: 'Ceviche de Pescado Blanco', image: 'https://placehold.co/250x150/E67E22/FFFFFF?text=Ceviche' },
-        { id: 'ab3', name: 'Carpaccio de Res', image: 'https://placehold.co/250x150/2C3E50/FFFFFF?text=Carpaccio' }
+        { id: 'ab1', name: 'Tartar de Atún con Aguacate', image: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400&h=300&fit=crop&q=80' },
+        { id: 'ab2', name: 'Ceviche de Pescado Blanco', image: 'https://images.unsplash.com/photo-1611250282021-10f85343876e?w=400&h=300&fit=crop&q=80' },
+        { id: 'ab3', name: 'Carpaccio de Res', image: 'https://images.unsplash.com/photo-1544025162-d76694265947?w=400&h=300&fit=crop&q=80' }
     ],
     'entradas': [
-        { id: 'en1', name: 'Ensalada César con Camarón', image: 'https://placehold.co/250x150/27AE60/FFFFFF?text=Cesar' },
-        { id: 'en2', name: 'Sopa de Langosta', image: 'https://placehold.co/250x150/E74C3C/FFFFFF?text=Langosta' },
-        { id: 'en3', name: 'Pulpo a la Parrilla', image: 'https://placehold.co/250x150/9B59B6/FFFFFF?text=Pulpo' }
+        { id: 'en1', name: 'Ensalada César con Camarón', image: 'https://images.unsplash.com/photo-1546793665-c74683f339c1?w=400&h=300&fit=crop&q=80' },
+        { id: 'en2', name: 'Sopa de Langosta', image: 'https://images.unsplash.com/photo-1609501676725-7186f017a4b7?w=400&h=300&fit=crop&q=80' },
+        { id: 'en3', name: 'Pulpo a la Parrilla', image: 'https://images.unsplash.com/photo-1604909052743-94e838986d24?w=400&h=300&fit=crop&q=80' }
     ],
     'platos-mar': [
-        { id: 'pm1', name: 'Filete de Pescado en Costra de Hierbas', image: 'https://placehold.co/250x150/3498DB/FFFFFF?text=Pescado' },
-        { id: 'pm2', name: 'Camarones al Ajillo', image: 'https://placehold.co/250x150/E67E22/FFFFFF?text=Camarones' },
-        { id: 'pm3', name: 'Risotto de Mariscos', image: 'https://placehold.co/250x150/1ABC9C/FFFFFF?text=Risotto' }
+        { id: 'pm1', name: 'Filete de Pescado en Costra de Hierbas', image: 'https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?w=400&h=300&fit=crop&q=80' },
+        { id: 'pm2', name: 'Camarones al Ajillo', image: 'https://images.unsplash.com/photo-1565680018434-b513d5e5fd47?w=400&h=300&fit=crop&q=80' },
+        { id: 'pm3', name: 'Risotto de Mariscos', image: 'https://images.unsplash.com/photo-1476124369491-f4346d3c1e0f?w=400&h=300&fit=crop&q=80' }
     ],
     'platos-tierra': [
-        { id: 'pt1', name: 'Filete Mignon con Reducción de Vino', image: 'https://placehold.co/250x150/8B4513/FFFFFF?text=Filete' },
-        { id: 'pt2', name: 'Rack de Cordero', image: 'https://placehold.co/250x150/C0392B/FFFFFF?text=Cordero' },
-        { id: 'pt3', name: 'Pechuga de Pato Confitado', image: 'https://placehold.co/250x150/34495E/FFFFFF?text=Pato' }
+        { id: 'pt1', name: 'Filete Mignon con Reducción de Vino', image: 'https://images.unsplash.com/photo-1558030006-450675393462?w=400&h=300&fit=crop&q=80' },
+        { id: 'pt2', name: 'Rack de Cordero', image: 'https://images.unsplash.com/photo-1588168333986-5078d3ae3976?w=400&h=300&fit=crop&q=80' },
+        { id: 'pt3', name: 'Pechuga de Pato Confitado', image: 'https://images.unsplash.com/photo-1432139555190-58524dae6a55?w=400&h=300&fit=crop&q=80' }
     ],
     'postres': [
-        { id: 'po1', name: 'Lava Cake de Chocolate', image: 'https://placehold.co/250x150/6F4E37/FFFFFF?text=Lava+Cake' },
-        { id: 'po2', name: 'Tiramisú Clásico', image: 'https://placehold.co/250x150/D2691E/FFFFFF?text=Tiramisu' },
-        { id: 'po3', name: 'Crème Brûlée', image: 'https://placehold.co/250x150/DEB887/FFFFFF?text=Creme+Brulee' }
+        { id: 'po1', name: 'Lava Cake de Chocolate', image: 'https://images.unsplash.com/photo-1624353365286-3f8d62daad51?w=400&h=300&fit=crop&q=80' },
+        { id: 'po2', name: 'Tiramisú Clásico', image: 'https://images.unsplash.com/photo-1571877227200-a0d98ea607e9?w=400&h=300&fit=crop&q=80' },
+        { id: 'po3', name: 'Crème Brûlée', image: 'https://images.unsplash.com/photo-1470124182917-cc6e71b22ecc?w=400&h=300&fit=crop&q=80' }
     ],
     'cocteles': [
-        { id: 'co1', name: 'Margarita de Autor', image: 'https://placehold.co/250x150/FFD700/FFFFFF?text=Margarita' },
-        { id: 'co2', name: 'Mojito Clásico', image: 'https://placehold.co/250x150/98FF98/FFFFFF?text=Mojito' },
-        { id: 'co3', name: 'Old Fashioned', image: 'https://placehold.co/250x150/CD853F/FFFFFF?text=Old+Fashioned' }
+        { id: 'co1', name: 'Margarita de Autor', image: 'https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?w=400&h=300&fit=crop&q=80' },
+        { id: 'co2', name: 'Mojito Clásico', image: 'https://images.unsplash.com/photo-1551538827-9c037cb4f32a?w=400&h=300&fit=crop&q=80' },
+        { id: 'co3', name: 'Old Fashioned', image: 'https://images.unsplash.com/photo-1470337458703-46ad1756a187?w=400&h=300&fit=crop&q=80' }
     ]
 };
 
