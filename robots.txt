@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+
+# Disallow admin pages
+Disallow: /pages/dashboard-admin.html
+
+# Sitemap location
+Sitemap: https://www.cheffranko.com/sitemap.xml

@@ -1,0 +1,167 @@
+# 🚀 Guía de Despliegue - Chef Franko Website
+
+## ✅ Checklist Pre-Despliegue
+
+Todos los siguientes items están LISTOS:
+
+- ✅ Traductor Google reemplazado por banderas (ES/EN/FR)
+- ✅ Referencias a "Verano Estate" eliminadas
+- ✅ Rutas de imágenes del logo corregidas
+- ✅ Menú "Verano" cambiado a "Menú Especial"
+- ✅ Imágenes temporales de ceviche y bisque agregadas
+- ✅ Meta tags SEO optimizados
+- ✅ Open Graph y Twitter Cards configurados
+- ✅ robots.txt creado
+- ✅ sitemap.xml creado
+- ✅ netlify.toml configurado
+- ✅ _redirects creado
+- ✅ .gitignore creado
+
+---
+
+## 📦 Opción 1: Despliegue Rápido en Netlify (Drag & Drop)
+
+### Paso 1: Preparar archivos
+La carpeta `scaling-couscous` ya está lista para subir.
+
+### Paso 2: Desplegar
+1. Ve a: **https://app.netlify.com/drop**
+2. Arrastra la carpeta completa `scaling-couscous` a la ventana
+3. Espera 1-2 minutos
+4. ✅ Tu sitio estará en línea con una URL temporal
+
+### Paso 3: Configurar dominio personalizado
+1. En Netlify Dashboard, ve a **Site settings** → **Domain management**
+2. Click **Add custom domain**
+3. Ingresa: `www.cheffranko.com`
+4. Netlify te dará estos registros DNS:
+
+**Opción A - Con WWW:**
+```
+Tipo: CNAME
+Nombre: www
+Valor: tu-sitio-netlify.netlify.app
+```
+
+**Opción B - Sin WWW (apex domain):**
+```
+Tipo: A
+Nombre: @
+Valor: 75.2.60.5
+
+Tipo: AAAA
+Nombre: @
+Valor: 2600:1f1c:7c5:d900:0:0:0:0
+```
+
+5. Ve a tu proveedor de dominios (GoDaddy, Namecheap, etc.)
+6. Agrega los registros DNS
+7. Espera 5-30 minutos para propagación
+8. ✅ Tu sitio estará en **www.cheffranko.com**
+
+---
+
+## 🔄 Opción 2: Despliegue Continuo con GitHub
+
+### Paso 1: Subir a GitHub
+```bash
+cd "c:\Users\aaron\clon chef4yuo\scaling-couscous"
+git add .
+git commit -m "Sitio listo para producción"
+git push origin main
+```
+
+### Paso 2: Conectar con Netlify
+1. Ve a: **https://app.netlify.com**
+2. Click **New site from Git**
+3. Conecta tu repositorio de GitHub
+4. Configuración:
+   - **Build command:** (dejar vacío)
+   - **Publish directory:** `.` (punto)
+5. Click **Deploy site**
+6. Sigue los pasos de configuración de dominio arriba
+
+**Ventaja:** Cada vez que hagas `git push`, tu sitio se actualizará automáticamente.
+
+---
+
+## 🌐 Verificación Post-Despliegue
+
+Una vez desplegado, verifica:
+
+1. **Página principal:** www.cheffranko.com
+2. **Navegación:** Todas las páginas cargan correctamente
+3. **Imágenes:** El logo y fotos se ven bien
+4. **Traductor:** Las banderas funcionan
+5. **Formulario:** El formulario de reservación guarda datos
+6. **Responsive:** Se ve bien en móvil
+7. **WhatsApp:** El botón de WhatsApp funciona
+
+---
+
+## 📱 Contacto en el Sitio
+
+El sitio incluye:
+- 📞 Teléfono: +52 322 160 6843
+- 📱 WhatsApp: https://wa.me/523221606843
+- 📧 Email: info@frankocheff.com
+
+---
+
+## 🔧 Actualizar el Sitio Después
+
+### Si usaste Drag & Drop:
+1. Haz cambios en los archivos locales
+2. Ve a tu sitio en Netlify Dashboard
+3. Drag & drop la carpeta actualizada en **Deploys**
+
+### Si usaste GitHub:
+1. Haz cambios en los archivos locales
+2. Ejecuta:
+```bash
+git add .
+git commit -m "Descripción de cambios"
+git push origin main
+```
+3. Netlify desplegará automáticamente en 1-2 minutos
+
+---
+
+## 🎯 URLs Importantes
+
+- **Sitio principal:** index.html
+- **Reservaciones:** pages/formulario-cliente.html
+- **Menú Épicure:** pages/epicure.html
+- **Galería:** pages/galeria.html
+- **CV:** pages/cv.html
+- **Admin Dashboard:** pages/dashboard-admin.html (protegido con contraseña)
+
+---
+
+## 🚨 Solución de Problemas
+
+### Las imágenes no cargan:
+- Verifica que la estructura de carpetas se mantenga intacta
+- Asegúrate de subir la carpeta `assets/` completa
+
+### El dominio no funciona:
+- Espera 24 horas para propagación DNS completa
+- Verifica los registros DNS en tu proveedor
+- Usa herramientas como https://dnschecker.org
+
+### Las banderas no funcionan:
+- Verifica que el archivo `assets/css/style.css` se haya subido
+- Revisa la consola del navegador (F12) para errores
+
+---
+
+## 📞 Soporte
+
+Si necesitas ayuda:
+1. Verifica la documentación de Netlify: https://docs.netlify.com
+2. Revisa el dashboard de Netlify para logs de deploy
+3. Contacta soporte de tu proveedor de dominios para DNS
+
+---
+
+✅ **Tu sitio está 100% listo para publicación**

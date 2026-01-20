@@ -3,14 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Chef Franko Salgado - Chef Ejecutivo & Chef Privado en Puerto Vallarta. Experiencias gastronómicas únicas y personalizadas.">
-    <title>Chef Franko - Bienvenido a mi mundo</title>
+    <meta name="description" content="Chef Franko Salgado - Chef Ejecutivo & Chef Privado en Puerto Vallarta, Riviera Nayarit y Costa Rica. Experiencias gastronómicas únicas, menús personalizados y alta cocina.">
+    <meta name="keywords" content="chef privado, chef ejecutivo, Puerto Vallarta, Riviera Nayarit, Costa Rica, alta cocina, gastronomía, menú personalizado, chef a domicilio">
+    <meta name="author" content="Chef Franko Salgado">
+    <title>Chef Franko - Chef Privado en Puerto Vallarta | Alta Cocina</title>
     
     <!-- Open Graph Meta Tags -->
-    <meta property="og:title" content="Chef Franko - Bienvenido a mi mundo">
-    <meta property="og:description" content="Chef Ejecutivo & Chef Privado en Puerto Vallarta. Experiencias gastronómicas únicas y personalizadas.">
+    <meta property="og:title" content="Chef Franko - Chef Privado en Puerto Vallarta">
+    <meta property="og:description" content="Chef Ejecutivo & Chef Privado. Experiencias gastronómicas únicas en Puerto Vallarta, Riviera Nayarit y Costa Rica.">
     <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.cheffranko.com">
+    <meta property="og:image" content="https://www.cheffranko.com/assets/fotos-img-png/chef-franko-profile.jpg">
+    <meta property="og:site_name" content="Chef Franko">
+    <meta property="og:locale" content="es_MX">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Chef Franko - Chef Privado">
+    <meta name="twitter:description" content="Experiencias gastronómicas únicas y personalizadas">
+    <meta name="twitter:image" content="https://www.cheffranko.com/assets/fotos-img-png/chef-franko-profile.jpg">
+    
+    <!-- SEO -->
     <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://www.cheffranko.com">
     
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -41,7 +56,7 @@
     <nav class="navbar">
         <div class="nav-container">
             <a href="index.html" class="nav-logo">
-                <img src="assets/fotos-img-png/img(chef4you.jpg" alt="Chef 4 You by Chef Franko" style="height: 50px;">
+                <img src="assets/fotos-img-png/img(chef4you).jpg" alt="Chef 4 You by Chef Franko" style="height: 50px;">
             </a>
             <button class="nav-toggle" id="navToggle" aria-controls="navMenu" aria-expanded="false" aria-label="Abrir menú">☰</button>
             <ul class="nav-menu" id="navMenu">
@@ -49,12 +64,16 @@
                 <li><a href="pages/formulario-cliente.html" class="nav-link">Reservar</a></li>
                 <li><a href="pages/menu-pos.html" class="nav-link">Menú POS</a></li>
                 <li><a href="pages/epicure.html" class="nav-link">Épicure</a></li>
-                <li><a href="menu de verano/index.html" class="nav-link">Menú de Verano</a></li>
+                <li><a href="menu de verano/index.html" class="nav-link">Menú Especial</a></li>
                 <li><a href="pages/galeria.html" class="nav-link">Galería</a></li>
                 <li><a href="pages/cv.html" class="nav-link">CV</a></li>
                 <li><a href="pages/dashboard-admin.html" class="nav-link">Admin</a></li>
             </ul>
-            <div id="google_translate_element" class="translate-widget"></div>
+            <div class="language-flags">
+                <button onclick="changeLanguage('es')" title="Español" class="flag-btn">🇪🇸</button>
+                <button onclick="changeLanguage('en')" title="English" class="flag-btn">🇺🇸</button>
+                <button onclick="changeLanguage('fr')" title="Français" class="flag-btn">🇫🇷</button>
+            </div>
         </div>
     </nav>
 
@@ -213,7 +232,7 @@
                      style="border-radius: 50%; margin: 0 auto 2rem; width: 200px; height: 200px; object-fit: cover; box-shadow: 0 10px 30px var(--shadow);">
                 <h3 style="font-size: 2rem; margin-bottom: 1rem; color: var(--secondary);">Chef Franko Salgado</h3>
                 <p style="font-size: 1.2rem; color: var(--dark-gray); margin-bottom: 1rem;">
-                    Chef Ejecutivo en Verano Estate & Chef Privado
+                    Chef Ejecutivo & Chef Privado Profesional
                 </p>
                 <p style="font-size: 1rem; color: var(--text); line-height: 1.8; margin-bottom: 2rem;">
                     Con más de 18 años de experiencia en cocina internacional y gastronomía de alto nivel, 
@@ -357,7 +376,7 @@
     <!-- Footer -->
     <footer class="footer">
         <div class="footer-content">
-            <img src="assets/fotos-img-png/img(chef4you.jpg" alt="Chef 4 You by Chef Franko" class="footer-logo">
+            <img src="assets/fotos-img-png/img(chef4you).jpg" alt="Chef 4 You by Chef Franko" class="footer-logo">
             <p style="margin-bottom: 0.5rem;">
                 <span class="footer-heart"♐></span> Creado por chefFranko
             </p>
@@ -376,17 +395,28 @@
     <!-- Navigation Script -->
     <script src="assets/js/main.js"></script>
 
-    <!-- Google Translate -->
+    <!-- Language Change Script -->
     <script>
-    function googleTranslateElementInit() {
-      new google.translate.TranslateElement({
-        pageLanguage: 'es',
-        includedLanguages: 'en,fr,de,it,pt,ja,zh-CN,ko,ru',
-        layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
-        autoDisplay: false
-      }, 'google_translate_element');
+    function changeLanguage(lang) {
+        const translations = {
+            'es': window.location.href,
+            'en': window.location.href + (window.location.href.includes('?') ? '&' : '?') + 'lang=en',
+            'fr': window.location.href + (window.location.href.includes('?') ? '&' : '?') + 'lang=fr'
+        };
+        
+        // Store selected language
+        localStorage.setItem('selectedLanguage', lang);
+        
+        // Redirect to Google Translate
+        const url = window.location.href.split('?')[0].split('#')[0];
+        if (lang === 'es') {
+            window.location.href = url;
+        } else if (lang === 'en') {
+            window.location.href = 'https://translate.google.com/translate?sl=es&tl=en&u=' + encodeURIComponent(url);
+        } else if (lang === 'fr') {
+            window.location.href = 'https://translate.google.com/translate?sl=es&tl=fr&u=' + encodeURIComponent(url);
+        }
     }
     </script>
-    <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 </body>
 </html>
