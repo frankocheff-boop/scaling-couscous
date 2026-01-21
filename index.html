@@ -397,35 +397,27 @@
                 <a href="pages/galeria.html" class="footer-link">Galería</a>opener noreferrer" class="footer-link">WhatsApp</a>
             </div> href="pages/cv.html" class="footer-link">CV</a>
         </div>  <a href="pages/galeria.html" class="footer-link">Galería</a>
-    </footer>/div>
-        </div>
+    </footer>
+
     <!-- Navigation Script -->
     <script src="assets/js/main.js"></script>
-    <!-- Navigation Script -->
-    <!-- Language Change Script -->></script>
+    
+    <!-- Language Change Script -->
     <script>
     function changeLanguage(lang) {
-        const translations = {
-            'es': window.location.href,
-            'en': window.location.href + (window.location.href.includes('?') ? '&' : '?') + 'lang=en',
-            'fr': window.location.href + (window.location.href.includes('?') ? '&' : '?') + 'lang=fr'
-        };  'en': window.location.href + (window.location.href.includes('?') ? '&' : '?') + 'lang=en',
-            'fr': window.location.href + (window.location.href.includes('?') ? '&' : '?') + 'lang=fr'
         // Store selected language
         localStorage.setItem('selectedLanguage', lang);
-        // Store selected language
-        // Redirect to Google Translateanguage', lang);
+        
+        // Redirect to Google Translate
         const url = window.location.href.split('?')[0].split('#')[0];
-        if (lang === 'es') {e Translate
-            window.location.href = url;f.split('?')[0].split('#')[0];
+        if (lang === 'es') {
+            window.location.href = url;
         } else if (lang === 'en') {
             window.location.href = 'https://translate.google.com/translate?sl=es&tl=en&u=' + encodeURIComponent(url);
         } else if (lang === 'fr') {
             window.location.href = 'https://translate.google.com/translate?sl=es&tl=fr&u=' + encodeURIComponent(url);
-        } else if (lang === 'fr') {
-    }       window.location.href = 'https://translate.google.com/translate?sl=es&tl=fr&u=' + encodeURIComponent(url);
+        }
+    }
     </script>
-</body>
-</html>cript>
 </body>
 </html>
