@@ -229,16 +229,6 @@
             }
         }
     </style>
-    
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=AW-17881572818"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-
-      gtag('config', 'AW-17881572818');
-    </script>
 </head>
 <body>
     <!-- Navigation -->
@@ -253,16 +243,12 @@
                 <li><a href="formulario-cliente.html" class="nav-link">Reservar</a></li>
                 <li><a href="menu-pos.html" class="nav-link">Menú POS</a></li>
                 <li><a href="epicure.html" class="nav-link">Épicure</a></li>
-                <li><a href="../menu de verano/index.html" class="nav-link">Menú Especial</a></li>
+                <li><a href="../menu de verano/index.html" class="nav-link">Menú de Verano</a></li>
                 <li><a href="galeria.html" class="nav-link">Galería</a></li>
                 <li><a href="cv.html" class="nav-link">CV</a></li>
                 <li><a href="dashboard-admin.html" class="nav-link">Admin</a></li>
             </ul>
-            <div class="language-flags">
-                <button onclick="changeLanguage('es')" title="Español" class="flag-btn">🇪🇸</button>
-                <button onclick="changeLanguage('en')" title="English" class="flag-btn">🇺🇸</button>
-                <button onclick="changeLanguage('fr')" title="Français" class="flag-btn">🇫🇷</button>
-            </div>
+            <div id="google_translate_element" class="translate-widget"></div>
         </div>
     </nav>
 
@@ -338,50 +324,55 @@
 
     <!-- Scripts -->
     <script>
-        // Gallery data - Mix of local images and professional Unsplash fallbacks
-        // To add more images: Place your photos in ../assets/images/ or ../assets/fotos-img-png/
-        // and update the image paths below
+        // Gallery data - Professional Unsplash images
         const galleryData = [
-            // Platillos - Using local images from the project
-            { id: 1, category: 'platillos', title: 'Collage Gourmet', image: '../assets/images/platillos-gourmet-1.jpg' },
-            { id: 2, category: 'platillos', title: 'Platillos Gourmet', image: '../assets/images/platillos-gourmet-2.jpg' },
-            { id: 3, category: 'platillos', title: 'Especialidades del Chef', image: '../assets/images/platillos-gourmet-3.jpg' },
-            { id: 4, category: 'platillos', title: 'Esferificación de Maracuyá', image: '../assets/fotos-img-png/esferificacion de maracuya.png' },
-            { id: 5, category: 'platillos', title: 'Macarrón de Foie Gras', image: '../assets/fotos-img-png/macarron de foiegrass.png' },
-            { id: 6, category: 'platillos', title: 'Plato de Alta Cocina', image: '../assets/fotos-img-png/plato de alta cocina.png' },
-            { id: 7, category: 'platillos', title: 'Postre de Alta Cocina', image: '../assets/fotos-img-png/postre de alta cocin.png' },
-            { id: 8, category: 'platillos', title: 'Ravioli Gourmet', image: '../assets/fotos-img-png/ravioly.png' },
-            { id: 9, category: 'platillos', title: 'Sorbete de Maracuyá', image: '../assets/fotos-img-png/soprbet de maracuya.png' },
-            { id: 10, category: 'platillos', title: 'Langosta con Nitrógeno', image: '../assets/fotos-img-png/langosta concha nitrogeno.JPG' },
-            { id: 11, category: 'platillos', title: 'Collage Elegante', image: '../assets/fotos-img-png/Un elegante collage .png' },
-            { id: 12, category: 'platillos', title: 'Fotografía Realista', image: '../assets/fotos-img-png/fotografías realista.png' },
-            
-            // Additional platillos with Unsplash fallbacks
+            // Platillos
+            { id: 1, category: 'platillos', title: 'Tartar de Atún', image: 'https://images.unsplash.com/photo-1580959375944-a5113b6f0d9f?w=400&h=400&fit=crop&q=80' },
+            { id: 2, category: 'platillos', title: 'Filete Mignon', image: 'https://images.unsplash.com/photo-1558030006-450675393462?w=400&h=400&fit=crop&q=80' },
+            { id: 3, category: 'platillos', title: 'Langosta a la Parrilla', image: 'https://images.unsplash.com/photo-1589970234952-eb155f3eda6f?w=400&h=400&fit=crop&q=80' },
+            { id: 4, category: 'platillos', title: 'Risotto de Mariscos', image: 'https://images.unsplash.com/photo-1476124369491-c801669cad05?w=400&h=400&fit=crop&q=80' },
+            { id: 5, category: 'platillos', title: 'Pato Confitado', image: 'https://images.unsplash.com/photo-1626200419199-391ae4be7a41?w=400&h=400&fit=crop&q=80' },
+            { id: 6, category: 'platillos', title: 'Lava Cake', image: 'https://images.unsplash.com/photo-1624353365286-3f8d62daad51?w=400&h=400&fit=crop&q=80' },
+            { id: 7, category: 'platillos', title: 'Ceviche', image: 'https://images.unsplash.com/photo-1641239378248-f1df1979d6e6?w=400&h=400&fit=crop&q=80' },
+            { id: 8, category: 'platillos', title: 'Carpaccio de Res', image: 'https://images.unsplash.com/photo-1544025162-d76694265947?w=400&h=400&fit=crop&q=80' },
+            { id: 9, category: 'platillos', title: 'Pulpo a la Parrilla', image: 'https://images.unsplash.com/photo-1625944525533-473f1a3d54e7?w=400&h=400&fit=crop&q=80' },
             { id: 22, category: 'platillos', title: 'Salmón a la Parrilla', image: 'https://images.unsplash.com/photo-1485921325833-c519f76c4927?w=400&h=400&fit=crop&q=80' },
             { id: 23, category: 'platillos', title: 'Tacos Gourmet', image: 'https://images.unsplash.com/photo-1565299585323-38d6b0865b47?w=400&h=400&fit=crop&q=80' },
             { id: 24, category: 'platillos', title: 'Pasta Fresca', image: 'https://images.unsplash.com/photo-1621996346565-e3dbc646d9a9?w=400&h=400&fit=crop&q=80' },
             { id: 25, category: 'platillos', title: 'Sopa de Mariscos', image: 'https://images.unsplash.com/photo-1612927601601-6638404737ce?w=400&h=400&fit=crop&q=80' },
+            { id: 26, category: 'platillos', title: 'Ensalada Mediterránea', image: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400&h=400&fit=crop&q=80' },
+            { id: 27, category: 'platillos', title: 'Costillas BBQ', image: 'https://images.unsplash.com/photo-1529193591184-b1d58069ecdd?w=400&h=400&fit=crop&q=80' },
+            { id: 28, category: 'platillos', title: 'Tarta de Frutas', image: 'https://images.unsplash.com/photo-1565958011703-44f9829ba187?w=400&h=400&fit=crop&q=80' },
+            { id: 29, category: 'platillos', title: 'Tiramisu', image: 'https://images.unsplash.com/photo-1571877227200-a0d98ea607e9?w=400&h=400&fit=crop&q=80' },
+            { id: 30, category: 'platillos', title: 'Crème Brûlée', image: 'https://images.unsplash.com/photo-1470124182917-cc6e71b22ecc?w=400&h=400&fit=crop&q=80' },
             
-            // Eventos - Using local and Unsplash images
-            { id: 13, category: 'eventos', title: 'Evento Especial 1', image: '../assets/fotos-img-png/0cb8d152-8104-4ca0-addb-eb3b1dff0efa.JPG' },
-            { id: 14, category: 'eventos', title: 'Evento Especial 2', image: '../assets/fotos-img-png/b6e2ab37-70ac-4996-98f1-d5d8c6e6ad55.JPG' },
-            { id: 15, category: 'eventos', title: 'Presentación Gourmet', image: '../assets/fotos-img-png/d283be0c-e9c8-411e-8fd3-9d96a5f68dd7.JPG' },
-            { id: 16, category: 'eventos', title: 'Servicio de Catering', image: '../assets/fotos-img-png/d8b5ccc3-1d19-4e41-8935-fa54cfb9519e.JPG' },
+            // Eventos
             { id: 10, category: 'eventos', title: 'Cena Privada en Villa', image: 'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=400&h=400&fit=crop&q=80' },
             { id: 11, category: 'eventos', title: 'Evento Corporativo', image: 'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=400&h=400&fit=crop&q=80' },
             { id: 12, category: 'eventos', title: 'Boda en Playa', image: 'https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=400&h=400&fit=crop&q=80' },
+            { id: 13, category: 'eventos', title: 'Celebración de Aniversario', image: 'https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?w=400&h=400&fit=crop&q=80' },
+            { id: 14, category: 'eventos', title: 'Cumpleaños Especial', image: 'https://images.unsplash.com/photo-1530103862676-de8c9debad1d?w=400&h=400&fit=crop&q=80' },
+            { id: 15, category: 'eventos', title: 'Cena Romántica', image: 'https://images.unsplash.com/photo-1470337458703-46ad1756a187?w=400&h=400&fit=crop&q=80' },
             { id: 31, category: 'eventos', title: 'Brunch Ejecutivo', image: 'https://images.unsplash.com/photo-1482049016688-2d3e1b311543?w=400&h=400&fit=crop&q=80' },
             { id: 32, category: 'eventos', title: 'Fiesta de Fin de Año', image: 'https://images.unsplash.com/photo-1467810563316-b5476525c0f9?w=400&h=400&fit=crop&q=80' },
+            { id: 33, category: 'eventos', title: 'Despedida de Soltera', image: 'https://images.unsplash.com/photo-1527529482837-4698179dc6ce?w=400&h=400&fit=crop&q=80' },
+            { id: 34, category: 'eventos', title: 'Baby Shower', image: 'https://images.unsplash.com/photo-1618397746666-63405ce5d015?w=400&h=400&fit=crop&q=80' },
+            { id: 35, category: 'eventos', title: 'Graduación', image: 'https://images.unsplash.com/photo-1523580494863-6f3031224c94?w=400&h=400&fit=crop&q=80' },
+            { id: 36, category: 'eventos', title: 'Cóctel Empresarial', image: 'https://images.unsplash.com/photo-1560264280-88b68371db39?w=400&h=400&fit=crop&q=80' },
             
-            // Behind the Scenes - Using local and Unsplash images
-            { id: 17, category: 'behind', title: 'Chef Franko en Acción', image: '../assets/fotos-img-png/chef-franko-profile.jpg' },
-            { id: 18, category: 'behind', title: 'Creatividad Culinaria', image: '../assets/fotos-img-png/blob-8a2f07b.png' },
-            { id: 19, category: 'behind', title: 'En la Cocina', image: 'https://images.unsplash.com/photo-1556910103-1c02745aae4d?w=400&h=400&fit=crop&q=80' },
-            { id: 20, category: 'behind', title: 'Preparación de Ingredientes', image: 'https://images.unsplash.com/photo-1466637574441-749b8f19452f?w=400&h=400&fit=crop&q=80' },
-            { id: 21, category: 'behind', title: 'Mise en Place', image: 'https://images.unsplash.com/photo-1577219491135-ce391730fb4c?w=400&h=400&fit=crop&q=80' },
+            // Behind the Scenes
+            { id: 16, category: 'behind', title: 'En la Cocina', image: 'https://images.unsplash.com/photo-1556910103-1c02745aae4d?w=400&h=400&fit=crop&q=80' },
+            { id: 17, category: 'behind', title: 'Preparación de Ingredientes', image: 'https://images.unsplash.com/photo-1466637574441-749b8f19452f?w=400&h=400&fit=crop&q=80' },
+            { id: 18, category: 'behind', title: 'Mise en Place', image: 'https://images.unsplash.com/photo-1577219491135-ce391730fb4c?w=400&h=400&fit=crop&q=80' },
+            { id: 19, category: 'behind', title: 'Equipo en Acción', image: 'https://images.unsplash.com/photo-1600565193348-f74bd3c7ccdf?w=400&h=400&fit=crop&q=80' },
+            { id: 20, category: 'behind', title: 'Montaje de Platos', image: 'https://images.unsplash.com/photo-1571997478779-2adcbbe9ab2f?w=400&h=400&fit=crop&q=80' },
+            { id: 21, category: 'behind', title: 'Presentación Final', image: 'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=400&h=400&fit=crop&q=80' },
             { id: 37, category: 'behind', title: 'Flambeado', image: 'https://images.unsplash.com/photo-1595295333158-4742f28fbd85?w=400&h=400&fit=crop&q=80' },
             { id: 38, category: 'behind', title: 'Decoración de Postres', image: 'https://images.unsplash.com/photo-1579372786545-d24232daf58c?w=400&h=400&fit=crop&q=80' },
-            { id: 39, category: 'behind', title: 'Corte de Carnes', image: 'https://images.unsplash.com/photo-1588168333986-5078d3ae3976?w=400&h=400&fit=crop&q=80' }
+            { id: 39, category: 'behind', title: 'Corte de Carnes', image: 'https://images.unsplash.com/photo-1588168333986-5078d3ae3976?w=400&h=400&fit=crop&q=80' },
+            { id: 40, category: 'behind', title: 'Selección de Vinos', image: 'https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=400&h=400&fit=crop&q=80' },
+            { id: 41, category: 'behind', title: 'Organización de Cocina', image: 'https://images.unsplash.com/photo-1556910096-6f5e72db6803?w=400&h=400&fit=crop&q=80' },
+            { id: 42, category: 'behind', title: 'Servicio al Cliente', image: 'https://images.unsplash.com/photo-1559339352-11d035aa65de?w=400&h=400&fit=crop&q=80' }
         ];
 
         let currentFilter = 'all';
@@ -429,13 +420,10 @@
             grid.style.display = 'grid';
             emptyMessage.style.display = 'none';
             
-            // Render items with lazy loading and error fallback
+            // Render items with lazy loading
             grid.innerHTML = filteredData.map((item, index) => `
-                <div class="gallery-item fade-in" onclick="openLightbox(${index})">
-                    <img src="${item.image}" 
-                         alt="${item.title}" 
-                         loading="lazy"
-                         onerror="this.src='https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=400&h=400&fit=crop&q=80'">
+                <div class="gallery-item fade-in" onclick="openLightbox(${index})" loading="lazy">
+                    <img src="${item.image}" alt="${item.title}" loading="lazy">
                     <div class="gallery-overlay">
                         <div class="gallery-title">${item.title}</div>
                         <div class="gallery-category">${getCategoryName(item.category)}</div>
@@ -552,19 +540,17 @@
         setTimeout(observeGalleryItems, 100);
     </script>
 
-    <!-- Language Change Script -->
+    <!-- Google Translate -->
     <script>
-    function changeLanguage(lang) {
-        localStorage.setItem('selectedLanguage', lang);
-        const url = window.location.href.split('?')[0].split('#')[0];
-        if (lang === 'es') {
-            window.location.href = url;
-        } else if (lang === 'en') {
-            window.location.href = 'https://translate.google.com/translate?sl=es&tl=en&u=' + encodeURIComponent(url);
-        } else if (lang === 'fr') {
-            window.location.href = 'https://translate.google.com/translate?sl=es&tl=fr&u=' + encodeURIComponent(url);
-        }
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({
+        pageLanguage: 'es',
+        includedLanguages: 'en,fr,de,it,pt,ja,zh-CN,ko,ru',
+        layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+        autoDisplay: false
+      }, 'google_translate_element');
     }
     </script>
+    <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 </body>
 </html>

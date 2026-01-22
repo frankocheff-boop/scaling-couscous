@@ -217,26 +217,16 @@ localStorage.clear();
 - Sanitización de inputs
 - Sin exposición de datos sensibles
 
-## ✅ Mejoras Implementadas
-
-- [x] **Envío de emails automático**: EmailJS integrado en el formulario de cliente para notificaciones automáticas
-- [x] **Cargar imágenes reales en la galería**: Galería actualizada con imágenes locales del proyecto
-- [x] **Generación de PDF del CV**: Descarga de CV en formato PDF usando html2canvas y jsPDF
-
 ## 🚧 Próximas Mejoras
 
 - [ ] Integración con backend (Node.js/PHP)
 - [ ] Base de datos real (MySQL/MongoDB)
 - [ ] Sistema de autenticación mejorado
+- [ ] Envío de emails automático
 - [ ] Integración con calendario
 - [ ] Sistema de pagos
-
-## 📖 Guías de Git
-
-¿Necesitas ayuda con Git y GitHub? Tenemos guías completas:
-
-- **[Guía Rápida de Merge](MERGE_GUIDE.md)** - Aprende cómo fusionar ramas a main paso a paso
-- **[Tutorial Completo de Git](TUTORIAL_GIT.md)** - Guía completa de Git, branches, commits y Pull Requests
+- [ ] Cargar imágenes reales en la galería
+- [ ] Generación de PDF del CV
 
 ## 📄 Licencia
 
