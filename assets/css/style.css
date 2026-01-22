@@ -860,12 +860,6 @@ main {
     border: 1px solid #f5c6cb;
 }
 
-.alert-warning {
-    background-color: #fff3cd;
-    color: #856404;
-    border: 1px solid #ffeeba;
-}
-
 .alert-info {
     background-color: #d1ecf1;
     color: #0c5460;
@@ -923,42 +917,76 @@ main {
     text-decoration: underline; 
 }
 
-/* Language Flags Styles */
-.language-flags {
-    display: flex;
-    gap: 0.5rem;
-    align-items: center;
+/* Google Translate Widget Styles */
+#google_translate_element {
+    position: absolute;
+    right: 2rem;
+    top: 50%;
+    transform: translateY(-50%);
 }
 
-.flag-btn {
-    background: none;
-    border: none;
-    font-size: 1.5rem;
+.translate-widget {
+    max-width: 90px;
+    font-size: 0.75rem;
+}
+
+/* Hide unnecessary widget elements */
+.goog-te-banner-frame.skiptranslate {
+    display: none !important;
+}
+
+body {
+    top: 0 !important;
+}
+
+.goog-te-gadget {
+    font-size: 0 !important;
+}
+
+.goog-te-gadget > span {
+    display: none;
+}
+
+.goog-te-gadget > div {
+    display: inline-block;
+}
+
+/* Google Translate logo hidden */
+.goog-logo-link {
+    display: none !important;
+}
+
+.goog-te-gadget .goog-te-combo {
+    margin: 0 !important;
+}
+
+.goog-te-combo {
+    padding: 0.3rem 0.4rem !important;
+    font-size: 0.75rem !important;
+    border: 1px solid var(--primary) !important;
+    border-radius: 5px !important;
+    background-color: var(--white) !important;
+    color: var(--secondary) !important;
+    max-width: 90px;
     cursor: pointer;
-    padding: 0.25rem;
     transition: all 0.3s ease;
-    border-radius: 5px;
-    line-height: 1;
+    box-shadow: 0 1px 3px rgba(212, 175, 55, 0.1);
 }
 
-.flag-btn:hover {
-    transform: scale(1.2);
-    background-color: rgba(212, 175, 55, 0.1);
+.goog-te-combo:hover {
+    border-color: var(--accent) !important;
+    box-shadow: 0 2px 5px rgba(212, 175, 55, 0.2);
+    transform: translateY(-1px);
 }
 
-.flag-btn:active {
-    transform: scale(1.1);
+.goog-te-combo:focus {
+    outline: 2px solid var(--primary);
+    outline-offset: 2px;
 }
 
-/* Responsive - adjust for mobile */
+/* Responsive - hide on mobile */
 @media (max-width: 768px) {
-    .language-flags {
-        margin-top: 1rem;
-        justify-content: center;
-    }
-    
-    .flag-btn {
-        font-size: 1.8rem;
-        padding: 0.5rem;
+    #google_translate_element {
+        display: none;
     }
 }
