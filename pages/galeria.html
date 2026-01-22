@@ -258,11 +258,7 @@
                 <li><a href="cv.html" class="nav-link">CV</a></li>
                 <li><a href="dashboard-admin.html" class="nav-link">Admin</a></li>
             </ul>
-            <div class="language-flags">
-                <button onclick="changeLanguage('es')" title="Español" class="flag-btn">🇪🇸</button>
-                <button onclick="changeLanguage('en')" title="English" class="flag-btn">🇺🇸</button>
-                <button onclick="changeLanguage('fr')" title="Français" class="flag-btn">🇫🇷</button>
-            </div>
+            <div id="google_translate_element" class="translate-widget"></div>
         </div>
     </nav>
 
@@ -552,19 +548,17 @@
         setTimeout(observeGalleryItems, 100);
     </script>
 
-    <!-- Language Change Script -->
+    <!-- Google Translate -->
     <script>
-    function changeLanguage(lang) {
-        localStorage.setItem('selectedLanguage', lang);
-        const url = window.location.href.split('?')[0].split('#')[0];
-        if (lang === 'es') {
-            window.location.href = url;
-        } else if (lang === 'en') {
-            window.location.href = 'https://translate.google.com/translate?sl=es&tl=en&u=' + encodeURIComponent(url);
-        } else if (lang === 'fr') {
-            window.location.href = 'https://translate.google.com/translate?sl=es&tl=fr&u=' + encodeURIComponent(url);
-        }
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({
+        pageLanguage: 'es',
+        includedLanguages: 'en,fr,de,it,pt,ja,zh-CN,ko,ru',
+        layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+        autoDisplay: false
+      }, 'google_translate_element');
     }
     </script>
+    <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 </body>
 </html>

@@ -80,11 +80,7 @@ git push origin main<!DOCTYPE html>
                 <li><a href="pages/cv.html" class="nav-link">CV</a></li>
                 <li><a href="pages/dashboard-admin.html" class="nav-link">Admin</a></li>
             </ul>
-            <div class="language-flags">
-                <button onclick="changeLanguage('es')" title="Espa├▒ol" class="flag-btn">­ƒç¬­ƒç©</button>
-                <button onclick="changeLanguage('en')" title="English" class="flag-btn">­ƒç║­ƒç©</button>
-                <button onclick="changeLanguage('fr')" title="Fran├ºais" class="flag-btn">­ƒç½­ƒçÀ</button>
-            </div>
+            <div id="google_translate_element" class="translate-widget"></div>
         </div>
     </nav>
 
@@ -404,30 +400,17 @@ git push origin main<!DOCTYPE html>
     <!-- Navigation Script -->
     <script src="assets/js/main.js"></script>
     <!-- Navigation Script -->
-    <!-- Language Change Script -->></script>
+    <!-- Google Translate -->
     <script>
-    function changeLanguage(lang) {
-        const translations = {
-            'es': window.location.href,
-            'en': window.location.href + (window.location.href.includes('?') ? '&' : '?') + 'lang=en',
-            'fr': window.location.href + (window.location.href.includes('?') ? '&' : '?') + 'lang=fr'
-        };  'en': window.location.href + (window.location.href.includes('?') ? '&' : '?') + 'lang=en',
-            'fr': window.location.href + (window.location.href.includes('?') ? '&' : '?') + 'lang=fr'
-        // Store selected language
-        localStorage.setItem('selectedLanguage', lang);
-        // Store selected language
-        // Redirect to Google Translateanguage', lang);
-        const url = window.location.href.split('?')[0].split('#')[0];
-        if (lang === 'es') {e Translate
-            window.location.href = url;f.split('?')[0].split('#')[0];
-        } else if (lang === 'en') {
-            window.location.href = 'https://translate.google.com/translate?sl=es&tl=en&u=' + encodeURIComponent(url);
-        } else if (lang === 'fr') {
-            window.location.href = 'https://translate.google.com/translate?sl=es&tl=fr&u=' + encodeURIComponent(url);
-        } else if (lang === 'fr') {
-    }       window.location.href = 'https://translate.google.com/translate?sl=es&tl=fr&u=' + encodeURIComponent(url);
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({
+        pageLanguage: 'es',
+        includedLanguages: 'en,fr,de,it,pt,ja,zh-CN,ko,ru',
+        layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+        autoDisplay: false
+      }, 'google_translate_element');
+    }
     </script>
-</body>
-</html>cript>
+    <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 </body>
 </html>
